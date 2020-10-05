@@ -18,4 +18,4 @@ To develop a Smart Home Simulator application
 * Fahim Bhuiyan (40091942) : fahimrbhuiyan@gmail.com
 * David Rady: David.Rady16@alumni.loyola.ca
 * Mark Said marksaid206@gmail.com
-* Lauren Lim mnxnhl@gmail.com
+* Lauren Lim (40097885) mnxnhl@gmail.com
