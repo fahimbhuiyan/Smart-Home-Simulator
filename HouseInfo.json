@@ -1,0 +1,28 @@
+{
+  "listOfRoom": {
+    "room1": {
+      "name": "Living Room",
+      "nbDoor": 3,
+      "nbLight": 3,
+      "nbWindow": 2
+    },
+    "room2": {
+      "name": "Kitchen",
+      "nbDoor": 3,
+      "nbLight": 1,
+      "nbWindow": 4
+    },
+    "room3": {
+      "name": "Toilet",
+      "nbDoor": 1,
+      "nbLight": 1,
+      "nbWindow": 2
+    },
+    "room4": {
+      "name": "Basement",
+      "nbDoor": 1,
+      "nbLight": 2,
+      "nbWindow": 3
+    }
+  }
+}

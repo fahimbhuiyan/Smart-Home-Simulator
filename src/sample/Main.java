@@ -5,7 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Model.DoorModel;
+
+import sample.Model.ReadHouseLayout;
 
 public class Main extends Application {
 
@@ -20,6 +21,9 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
+        ReadHouseLayout readHouseLayout = new ReadHouseLayout();
+        readHouseLayout.ReadJSON("HouseInfo.json");
 
         launch(args);
     }
