@@ -1,4 +1,4 @@
 package sample.SmartHomeController;
 
-public class MainController {
+public class MainViewController {
 }
