@@ -1,12 +1,15 @@
-package sample.Model;
+package sample.SmartHomeModel;
 
-public class LightModel {
 
+public class WindowModel {
+	
 	private int id;
 	private int roomID;
 	private boolean isOpen = false;
+	private boolean hasObject = false;
 	
-	public LightModel(int id, int roomID) {
+	public WindowModel(int id, int roomID) {
+		
 		super();
 		this.id = id;
 		this.roomID = roomID;
@@ -34,6 +37,14 @@ public class LightModel {
 
 	public void setOpen(boolean isOpen) {
 		this.isOpen = isOpen;
+	}
+
+	public boolean isHasObject() {
+		return hasObject;
+	}
+
+	public void setHasObject(boolean hasObject) {
+		this.hasObject = hasObject;
 	}
 	
 }

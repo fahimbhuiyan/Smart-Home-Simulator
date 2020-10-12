@@ -1,18 +1,20 @@
-package sample.Model;
+package sample.SmartHomeModel;
 
+public class DoorModel {
 
-public class WindowModel {
+	
 	
 	private int id;
 	private int roomID;
 	private boolean isOpen = false;
-	private boolean hasObject = false;
+	private boolean isLocked = false;
 	
-	public WindowModel(int id, int roomID) {
+	public DoorModel(int id, int roomID) {
 		
 		super();
 		this.id = id;
 		this.roomID = roomID;
+
 	}
 
 	public int getId() {
@@ -39,12 +41,13 @@ public class WindowModel {
 		this.isOpen = isOpen;
 	}
 
-	public boolean isHasObject() {
-		return hasObject;
+	public boolean isLocked() {
+		return isLocked;
 	}
 
-	public void setHasObject(boolean hasObject) {
-		this.hasObject = hasObject;
+	public void setLocked(boolean isLocked) {
+		this.isLocked = isLocked;
 	}
-	
+		
+		
 }
