@@ -1,7 +1,6 @@
-package sample.Model;
+package sample.SmartHomeModel;
 
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,11 +9,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ReadHouseLayout {
+public class ReadHouseLayoutModel {
+
+
 
     public void ReadJSON(String fileName){
 
         JSONParser parser = new JSONParser();
+
+
 
         try{
             Object obj = parser.parse(new FileReader(fileName));
