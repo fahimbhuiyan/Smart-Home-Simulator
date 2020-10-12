@@ -8,14 +8,14 @@ To develop a Smart Home Simulator application
 
 ## **Technologies Used **
 ### ** Front-end ** ###
-* Angular
+* JavaFX
 ### ** Back-end ** ###
 * Java
-* MySQL
+
 
 ## **Team Members**
 * Razvan Ivan: razvan.ivan10@yahoo.com
 * Fahim Bhuiyan (40091942) : fahimrbhuiyan@gmail.com
-* David Rady: David.Rady16@alumni.loyola.ca
+* David Rady (40098177) : David.Rady16@alumni.loyola.ca
 * Mark Said marksaid206@gmail.com
-* Lauren Lim (40097885) mnxnhl@gmail.com
+* Lauren Lim (40097885) : mnxnhl@gmail.com
