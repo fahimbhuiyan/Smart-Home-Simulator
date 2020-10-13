@@ -1,6 +1,7 @@
 package sample.SmartHomeModel;
 
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -9,14 +10,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ReadHouseLayoutModel {
+public class ReadHouseLayout {
 
+
+    JSONObject[] jsonObjectArray;
 
 
     public void ReadJSON(String fileName){
 
         JSONParser parser = new JSONParser();
-
 
 
         try{
@@ -26,6 +28,8 @@ public class ReadHouseLayoutModel {
             JSONObject listInfo = (JSONObject) jsonObj.get("listOfRoom");
             //    System.out.println(listInfo.size());
 
+            jsonObjectArray = new JSONObject[listInfo.size()];
+
             for(int i = 1; i <= listInfo.size(); i++){
 
                 JSONObject roomInfo = (JSONObject) listInfo.get("room"+i);
@@ -34,12 +38,13 @@ public class ReadHouseLayoutModel {
                 String nbDoor = roomInfo.get("nbDoor").toString();
                 String nbLight = roomInfo.get("nbLight").toString();
                 String nbWindow = roomInfo.get("nbWindow").toString();
+                String width = roomInfo.get("width").toString();
+                String height = roomInfo.get("height").toString();
+                String xAxis = roomInfo.get("x-axis").toString();
+                String yAxis = roomInfo.get("y-axis").toString();
 
-                System.out.println("Room name is: " +name);
-                System.out.println("Number of Doors: " +nbDoor);
-                System.out.println("Number of Lights: " +nbLight);
-                System.out.println("Number of Windows: " +nbWindow);
-                System.out.println("");
+
+                jsonObjectArray[i-1] = roomInfo;
 
                 // Instead, create the specific objects
             }
@@ -62,4 +67,13 @@ public class ReadHouseLayoutModel {
         }
 
     }
+
+    public JSONObject [] getHouseLayout(){
+
+        return jsonObjectArray;
+    }
+    public int getJsonArraySize(){
+        return jsonObjectArray.length;
+    }
+
 }

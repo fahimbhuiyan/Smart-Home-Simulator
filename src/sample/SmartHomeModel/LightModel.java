@@ -2,30 +2,20 @@ package sample.SmartHomeModel;
 
 public class LightModel {
 
-	private int id;
-	private int roomID;
+	private String id;
 	private boolean isOpen = false;
 	
-	public LightModel(int id, int roomID) {
+	public LightModel(String id) {
 		super();
 		this.id = id;
-		this.roomID = roomID;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public int getRoomID() {
-		return roomID;
-	}
-
-	public void setRoomID(int roomID) {
-		this.roomID = roomID;
 	}
 
 	public boolean isOpen() {

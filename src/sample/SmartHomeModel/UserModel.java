@@ -3,16 +3,16 @@ package sample.SmartHomeModel;
 public class UserModel {
 
 	 private String name;
-	 private int id;
+	 private String id;
 	 private String user_type;
-	 private String location;
+
 	 
-	public UserModel(String name, int id, String user_type, String location) {
+	public UserModel(String name, String id, String user_type) {
 		super();
 		this.name = name;
 		this.id = id;
 		this.user_type = user_type;
-		this.location = location;
+
 	}
 
 	public String getName() {
@@ -23,11 +23,11 @@ public class UserModel {
 		this.name = name;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -39,13 +39,6 @@ public class UserModel {
 		this.user_type = user_type;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
 	 
 	 
 }
