@@ -3,32 +3,64 @@
     "room1": {
       "name": "House",
       "nbDoor": 2,
-      "nbLight": 3,
-      "nbWindow": 2
+      "nbLight": 1,
+      "nbWindow": 0,
+      "width" :  750,
+      "height" : 500,
+      "x-axis" : 100,
+      "y-axis" : 100
+
     },
     "room2": {
       "name": "Living Room",
-      "nbDoor": 3,
-      "nbLight": 3,
-      "nbWindow": 2
+      "nbDoor": 1,
+      "nbLight": 1,
+      "nbWindow": 1,
+      "width" :  200,
+      "height" : 100,
+      "x-axis" : 100,
+      "y-axis" : 100
     },
     "room3": {
       "name": "Kitchen",
-      "nbDoor": 3,
+      "nbDoor": 1,
       "nbLight": 1,
-      "nbWindow": 4
+      "nbWindow": 1,
+      "width" :  300,
+      "height" : 150,
+      "x-axis" : 550,
+      "y-axis" : 100
     },
     "room4": {
       "name": "Toilet",
       "nbDoor": 1,
       "nbLight": 1,
-      "nbWindow": 2
+      "nbWindow": 1,
+      "width" :  100,
+      "height" : 100,
+      "x-axis" : 400,
+      "y-axis" : 500
     },
     "room5": {
-      "name": "Basement",
+      "name": "Bedroom",
       "nbDoor": 1,
-      "nbLight": 2,
-      "nbWindow": 3
+      "nbLight": 1,
+      "nbWindow": 1,
+      "width" :  300,
+      "height" : 300,
+      "x-axis" : 550,
+      "y-axis" : 300
+    },
+    "room6": {
+      "name": "Child Bedroom",
+      "nbDoor": 1,
+      "nbLight": 1,
+      "nbWindow": 1,
+      "width" :  200,
+      "height" : 150,
+      "x-axis" : 100,
+      "y-axis" : 450
     }
+
   }
 }

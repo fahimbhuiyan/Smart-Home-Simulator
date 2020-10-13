@@ -1,36 +1,33 @@
 package sample.SmartHomeModel;
 
+import org.w3c.dom.ranges.DocumentRange;
+
 public class DoorModel {
 
-	
-	
-	private int id;
-	private int roomID;
+
+
+	private String id;
 	private boolean isOpen = false;
 	private boolean isLocked = false;
-	
-	public DoorModel(int id, int roomID) {
-		
+	private String doorType;
+
+
+
+	public DoorModel(String id, String doorType) {
+
 		super();
 		this.id = id;
-		this.roomID = roomID;
+		this.doorType = doorType;
+
 
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public int getRoomID() {
-		return roomID;
-	}
-
-	public void setRoomID(int roomID) {
-		this.roomID = roomID;
 	}
 
 	public boolean isOpen() {
@@ -47,6 +44,14 @@ public class DoorModel {
 
 	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
+	}
+
+	public String getDoorType() {
+		return doorType;
+	}
+
+	public void setDoorType(String doorType) {
+		this.doorType = doorType;
 	}
 		
 		
