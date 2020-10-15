@@ -3,9 +3,12 @@ package sample.SmartHomeModel;
 import org.json.simple.JSONObject;
 import sample.SmartHomeModel.*;
 
+import java.util.ArrayList;
+
 public class SimulationData {
 
     RoomModel []roomArray;
+    ArrayList<UserModel> userList = new ArrayList<UserModel>();
 
 
     public void createData(String fileName) {
@@ -61,6 +64,20 @@ public class SimulationData {
 
     }
 
+
+    public void createDefaultUser(){
+
+        UserModel defaultParent = new UserModel("Parent", generateId(), "Parent");
+        UserModel defaultChild = new UserModel("Child", generateId(), "Child");
+        UserModel defaultGuest = new UserModel("Guest", generateId(), "Guest");
+        UserModel defaultStranger = new UserModel("Stranger", generateId(), "Stranger");
+        userList.add(defaultParent);
+        userList.add(defaultChild);
+        userList.add(defaultGuest);
+        userList.add(defaultStranger);
+
+    }
+
     public String generateId(){
 
         String uniqueID = java.util.UUID.randomUUID().toString();
@@ -72,5 +89,8 @@ public class SimulationData {
         return roomArray;
     }
 
+    public ArrayList<UserModel> getUserArrayList() {
+        return userList;
+    }
 
 }
