@@ -2,6 +2,9 @@ package sample.SmartHomeController;
 
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.SimulationData;
+import sample.SmartHomeModel.UserModel;
+
+import java.util.ArrayList;
 
 public class SimulationDataController {
 
@@ -14,5 +17,9 @@ public class SimulationDataController {
 
     public RoomModel[] getRoomArray(){
         return smd.getRoomArray();
+    }
+
+    public ArrayList<UserModel> getUserArrayList() {
+        return smd.getUserArrayList();
     }
 }

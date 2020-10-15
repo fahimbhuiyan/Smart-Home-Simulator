@@ -9,10 +9,14 @@ public class SimulationData {
 
     RoomModel []roomArray;
     ArrayList<UserModel> userList = new ArrayList<UserModel>();
+    HouseModel houseModel;
 
 
     public void createData(String fileName) {
 
+        System.out.println("Creating Data");
+        createDefaultUser();
+        createHouse();
         ReadHouseLayout rhm = new ReadHouseLayout();
         rhm.ReadJSON(fileName);
 
@@ -20,6 +24,7 @@ public class SimulationData {
 
         JSONObject []jsonObjectArray = rhm.getHouseLayout();
 
+        System.out.println("Creating Rooms");
         for(int i = 0; i < rhm.getJsonArraySize(); i++){
 
             String name = jsonObjectArray[i].get("name").toString();
@@ -29,7 +34,12 @@ public class SimulationData {
             int yAxis = Integer.parseInt(jsonObjectArray[i].get("y-axis").toString());
 
 
-            DoorModel door = new DoorModel(generateId(), "roomDoor");
+            DoorModel door;
+            if(!name.equals("House")) {
+                 door = new DoorModel(generateId(), "RoomDoor");
+            } else{
+                 door = new DoorModel(generateId(), "HouseDoor");
+            }
             LightModel light = new LightModel(generateId());
             WindowModel window = new WindowModel(generateId());
             RoomModel room = new RoomModel(generateId(),name,width,height,xAxis,yAxis,door,light,window);
@@ -76,6 +86,31 @@ public class SimulationData {
         userList.add(defaultGuest);
         userList.add(defaultStranger);
 
+        System.out.println("Default Users are created");
+        for(int i = 0; i < userList.size(); i++){
+            System.out.println(userList.get(i).getId());
+            System.out.println(userList.get(i).getName());
+            System.out.println(userList.get(i).getUser_type());
+            System.out.println();
+
+
+        }
+
+
+
+    }
+
+    public void createHouse(){
+        houseModel = new HouseModel(0,"",false);
+        System.out.println("House model is created");
+        System.out.println(houseModel.getLoggedUserName());
+        System.out.println(houseModel.getOutsideTemp());
+        System.out.println(houseModel.isSimulationActive());
+        System.out.println();
+    }
+
+    public HouseModel getHouseModel(){
+        return houseModel;
     }
 
     public String generateId(){

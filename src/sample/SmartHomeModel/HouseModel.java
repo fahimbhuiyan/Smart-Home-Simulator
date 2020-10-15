@@ -3,15 +3,12 @@ package sample.SmartHomeModel;
 public class HouseModel {
 
     private int outsideTemp = 0;
-    private DoorModel frontDoor;
-    private DoorModel backDoor;
-    private String userName = "";
+    private String loggedUserName = "";
+    private boolean simulationActive = false;
 
-    public HouseModel(DoorModel frontDoor, DoorModel backDoor, String userName) {
+    public HouseModel(int outsideTemp, String loggedUserName, boolean simulationActive) {
 
-        this.frontDoor = frontDoor;
-        this.backDoor = backDoor;
-        this.userName = userName;
+        this.loggedUserName = loggedUserName;
     }
 
     public int getOutsideTemp() {
@@ -22,27 +19,19 @@ public class HouseModel {
         this.outsideTemp = outsideTemp;
     }
 
-    public DoorModel getFrontDoor() {
-        return frontDoor;
+    public String getLoggedUserName() {
+        return loggedUserName;
     }
 
-    public void setFrontDoor(DoorModel frontDoor) {
-        this.frontDoor = frontDoor;
+    public void setLoggedUserName(String loggedUserName) {
+        this.loggedUserName = loggedUserName;
     }
 
-    public DoorModel getBackDoor() {
-        return backDoor;
+    public boolean isSimulationActive() {
+        return simulationActive;
     }
 
-    public void setBackDoor(DoorModel backDoor) {
-        this.backDoor = backDoor;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setSimulationActive(boolean simulationActive) {
+        this.simulationActive = simulationActive;
     }
 }
