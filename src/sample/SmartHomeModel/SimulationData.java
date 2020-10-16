@@ -109,9 +109,7 @@ public class SimulationData {
         System.out.println();
     }
 
-    public HouseModel getHouseModel(){
-        return houseModel;
-    }
+
 
     public String generateId(){
 
@@ -122,6 +120,10 @@ public class SimulationData {
 
     public RoomModel[] getRoomArray() {
         return roomArray;
+    }
+
+    public HouseModel getHouseModel(){
+        return houseModel;
     }
 
     public ArrayList<UserModel> getUserArrayList() {

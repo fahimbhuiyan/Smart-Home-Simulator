@@ -1,5 +1,6 @@
 package sample.SmartHomeController;
 
+import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.SimulationData;
 import sample.SmartHomeModel.UserModel;
@@ -21,5 +22,9 @@ public class SimulationDataController {
 
     public ArrayList<UserModel> getUserArrayList() {
         return smd.getUserArrayList();
+    }
+
+    public HouseModel getHouseModel(){
+        return  smd.getHouseModel();
     }
 }
