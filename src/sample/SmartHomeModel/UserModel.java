@@ -5,14 +5,14 @@ public class UserModel {
 	 private String name;
 	 private String id;
 	 private String user_type;
+	 private String location;
 
 	 
-	public UserModel(String name, String id, String user_type) {
-		super();
+	public UserModel(String name, String id, String user_type, String location) {
 		this.name = name;
 		this.id = id;
 		this.user_type = user_type;
-
+		this.location = location;
 	}
 
 	public String getName() {
@@ -39,6 +39,11 @@ public class UserModel {
 		this.user_type = user_type;
 	}
 
-	 
-	 
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 }
