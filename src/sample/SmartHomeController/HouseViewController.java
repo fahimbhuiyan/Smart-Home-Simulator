@@ -11,6 +11,9 @@ import sample.SmartHomeModel.RoomModel;
 public class HouseViewController {
 
     public void drawLayout(RoomModel[] roomArray, BorderPane bp){
+
+        bp.getChildren().clear();
+
         for(int i = 0; i < roomArray.length; i++){
 
             Rectangle r1 = new Rectangle();
