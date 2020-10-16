@@ -11,8 +11,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
+import sample.SmartHomeModel.UserModel;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 
 public class MainViewController {
@@ -22,6 +24,8 @@ public class MainViewController {
     SHSController shsController;
     RoomModel[] roomArray;
     HouseModel houseModel;
+    ArrayList<UserModel> userModelArrayList;
+
 
 
     @FXML
@@ -33,6 +37,7 @@ public class MainViewController {
         shsController = new SHSController();
         simulationDataController.loadData();
         roomArray = simulationDataController.getRoomArray();
+        userModelArrayList = simulationDataController.getUserArrayList();
     }
 
     public void drawLayout(){
