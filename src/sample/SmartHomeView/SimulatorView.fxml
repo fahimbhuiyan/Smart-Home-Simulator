@@ -1,22 +1,70 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.GridPane?>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.shape.Rectangle?>
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
-    <left>
+    <right>
     <Button onAction="#drawLayout" text="Click Me"></Button>
-    </left>
-    <center>
-        <BorderPane fx:id="bp">
+    </right>
 
-        </BorderPane>
-    </center>
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+        <padding>
+            <Insets top="30" bottom="30" ></Insets>
+        </padding>
+        <children>
+            <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;">
+                <children>
+                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation" textAlignment="CENTER" />
+                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="161.0" text="On" />
+                    <ImageView fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
+                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User" />
+                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location" textAlignment="CENTER" />
+                </children>
+            </VBox>
 
+            <ScrollPane layoutX="189.0" layoutY="391.0" prefHeight="105.0" prefWidth="559.0" style="-fx-border-color: blue;">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                </content>
+            </ScrollPane>
+            <Label layoutX="455.0" layoutY="368.0" text="Output" />
 
+            <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="315.0" prefWidth="297.0" style="-fx-border-color: blue;">
+                <children>
+                    <MenuBar layoutY="2.0">
+                        <menus>
+                            <Menu mnemonicParsing="false" text="SHS">
+                                <items>
+                                    <MenuItem mnemonicParsing="false" text="Close" />
+                                </items>
+                            </Menu>
+                            <Menu mnemonicParsing="false" text="SHC">
+                                <items>
+                                    <MenuItem mnemonicParsing="false" text="Delete" />
+                                </items>
+                            </Menu>
+                            <Menu mnemonicParsing="false" text="SHP">
+                                <items>
+                                    <MenuItem mnemonicParsing="false" text="About" />
+                                </items>
+                            </Menu>
+                        </menus>
+                    </MenuBar>
+                </children>
+            </AnchorPane>
 
-
-
+            <ScrollPane layoutX="500" layoutY="16.0" prefHeight="350" prefWidth="350">
+                <content>
+                    <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
+                    </BorderPane>
+                </content>
+            </ScrollPane>
+        </children>
+    </AnchorPane>
 </BorderPane>
