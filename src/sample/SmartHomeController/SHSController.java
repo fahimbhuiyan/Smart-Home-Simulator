@@ -29,12 +29,12 @@ public class SHSController {
 
     }
 
-    public void createUserProfile(ArrayList<UserModel> userList, String name, String userType){
-        UserModel user = new UserModel(name, simulationData.generateId(), userType);
+    public void createUserProfile(ArrayList<UserModel> userList, String name, String userType, String location){
+        UserModel user = new UserModel(name, simulationData.generateId(), userType, location);
         userList.add(user);
     }
 
-    public void deleteUserProfile(ArrayList<UserModel> userList, String name){
+    public void deleteUserProfile(ArrayList<UserModel> userList, String name, String location){
         for (int i = 0; i < userList.size(); i++){
             if (userList.get(i).getName().equals(name)){
                 userList.remove(i);

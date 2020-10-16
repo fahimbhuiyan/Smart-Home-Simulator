@@ -20,6 +20,10 @@ public class SimulationDataController {
         return smd.getRoomArray();
     }
 
+    public ArrayList<String> getRoomNameList() {
+        return smd.getRoomNameList();
+    }
+
     public ArrayList<UserModel> getUserArrayList() {
         return smd.getUserArrayList();
     }

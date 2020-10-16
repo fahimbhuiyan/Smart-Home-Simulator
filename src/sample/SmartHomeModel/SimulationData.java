@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class SimulationData {
 
     RoomModel []roomArray;
+    ArrayList<String> roomNameList = new ArrayList<>();
     ArrayList<UserModel> userList = new ArrayList<UserModel>();
     HouseModel houseModel;
 
@@ -45,6 +46,7 @@ public class SimulationData {
             RoomModel room = new RoomModel(generateId(),name,width,height,xAxis,yAxis,door,light,window);
 
             roomArray[i] = room;
+            roomNameList.add(name);
 
             System.out.println("Room Id: "+room.getRoomID());
             System.out.println("Room Name: "+room.getName());
@@ -77,10 +79,10 @@ public class SimulationData {
 
     public void createDefaultUser(){
 
-        UserModel defaultParent = new UserModel("Parent", generateId(), "Parent");
-        UserModel defaultChild = new UserModel("Child", generateId(), "Child");
-        UserModel defaultGuest = new UserModel("Guest", generateId(), "Guest");
-        UserModel defaultStranger = new UserModel("Stranger", generateId(), "Stranger");
+        UserModel defaultParent = new UserModel("Parent", generateId(), "Parent", "TBD");
+        UserModel defaultChild = new UserModel("Child", generateId(), "Child", "TBD");
+        UserModel defaultGuest = new UserModel("Guest", generateId(), "Guest", "TBD");
+        UserModel defaultStranger = new UserModel("Stranger", generateId(), "Stranger", "TBD");
         userList.add(defaultParent);
         userList.add(defaultChild);
         userList.add(defaultGuest);
@@ -120,6 +122,10 @@ public class SimulationData {
 
     public RoomModel[] getRoomArray() {
         return roomArray;
+    }
+
+    public ArrayList<String> getRoomNameList() {
+        return roomNameList;
     }
 
     public HouseModel getHouseModel(){
