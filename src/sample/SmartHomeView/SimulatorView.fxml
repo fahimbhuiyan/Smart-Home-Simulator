@@ -135,9 +135,9 @@
 
                             <Label text="Time (Hour, Minutes)"
                                    GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="hourSHS" initialValue="12" min="0" max="1000000" GridPane.rowIndex="10"
+                            <Spinner fx:id="hourSHS" initialValue="12" min="0" max="23" GridPane.rowIndex="10"
                                      GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="minSHS" initialValue="30" min="0" max="1000000" GridPane.rowIndex="10"
+                            <Spinner fx:id="minSHS" initialValue="30" min="0" max="59" GridPane.rowIndex="10"
                                      GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveTime" onAction="#saveSimulationConditions" text="Save"
                                     GridPane.rowIndex="10" GridPane.columnIndex="3"/>
