@@ -1,5 +1,7 @@
 package sample.SmartHomeController;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,12 +14,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.util.converter.IntegerStringConverter;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.function.UnaryOperator;
 
 
 public class MainViewController {
@@ -64,6 +68,9 @@ public class MainViewController {
     ComboBox<String> addModifyLocComboBoxSHS;
 
     @FXML
+    ComboBox<String> blockWinLocComboBoxSHS;
+
+    @FXML
     TableView<UserModel> userTable;
 
     @FXML
@@ -73,25 +80,25 @@ public class MainViewController {
     TextField addModifyUserName;
 
     @FXML
-    TextField addModifyUserID;
+    Spinner<Integer> addModifyUserID;
 
     @FXML
-    TextField userIdToRemove;
+    Spinner<Integer> userIdToRemove;
 
     @FXML
-    TextField userIdToModify;
+    Spinner<Integer> userIdToLogin;
 
     @FXML
-    TextField hourSHS;
+    Spinner<Integer> hourSHS;
 
     @FXML
-    TextField minSHS;
+    Spinner<Integer> minSHS;
 
     @FXML
-    TextField outTempSHS;
+    Spinner<Integer> outTempSHS;
 
     @FXML
-    TextField inTempSHS;
+    Spinner<Integer> inTempSHS;
 
     private final ObservableList<UserModel> data;
 
@@ -116,9 +123,11 @@ public class MainViewController {
 
         roomNameArrayList.forEach((roomName) -> {
             addModifyLocComboBoxSHS.getItems().add(roomName);
+            blockWinLocComboBoxSHS.getItems().add(roomName);
         });
 
         addModifyLocComboBoxSHS.getItems().add("Outside");
+        addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
 
         userTable.setEditable(true);
         userTable.setItems(data);

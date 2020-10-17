@@ -14,135 +14,203 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.Group?>
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
-    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0"
+                prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <padding>
-            <Insets top="30" bottom="30" ></Insets>
+            <Insets top="30" bottom="30"/>
         </padding>
-        <children>
-            <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;">
-                <children>
-                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation" textAlignment="CENTER" />
-                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="161.0" text="On" />
-                    <ImageView fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User" />
-                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location" textAlignment="CENTER" />
-                    <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Refresh Layout" />
-                </children>
-            </VBox>
+        <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;">
+            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation"
+                   textAlignment="CENTER"/>
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="161.0" text="On"/>
+            <ImageView fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true"/>
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User"/>
+            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location"
+                   textAlignment="CENTER"/>
+            <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0"
+                    text="Refresh Layout"/>
+        </VBox>
 
-            <ScrollPane layoutX="189.0" layoutY="391.0" prefHeight="105.0" prefWidth="810.0" style="-fx-border-color: blue;">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                </content>
-            </ScrollPane>
-            <Label layoutX="455.0" layoutY="368.0" text="Output" />
+        <Label layoutX="600" layoutY="477" text="Output"/>
+        <ScrollPane layoutX="189.0" layoutY="500" prefHeight="105.0" prefWidth="810.0" style="-fx-border-color: blue;">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0"/>
+        </ScrollPane>
 
-            <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="345.0" prefWidth="410.0" style="-fx-border-color: blue;">
-                <children>
+        <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="410" prefWidth="410.0" style="-fx-border-color: blue;">
 
-                    <GridPane>
-                        <Button fx:id="buttonSelectSHS" text="SHS" onAction="#selectModule" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
-                        <Button fx:id="buttonSelectSHC" text="SHC" onAction="#selectModule" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
-                        <Button fx:id="buttonSelectSHP" text="SHP" onAction="#selectModule" GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.halignment="CENTER"/>
-                        <Button fx:id="buttonSelectSHH" text="SHH" onAction="#selectModule" GridPane.rowIndex="0" GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
-                    </GridPane>
+            <GridPane layoutX="5" layoutY="5">
+                <Button fx:id="buttonSelectSHS" text="SHS" onAction="#selectModule" GridPane.rowIndex="0"
+                        GridPane.columnIndex="0" GridPane.halignment="CENTER"/>
+                <Button fx:id="buttonSelectSHC" text="SHC" onAction="#selectModule" GridPane.rowIndex="0"
+                        GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+                <Button fx:id="buttonSelectSHP" text="SHP" onAction="#selectModule" GridPane.rowIndex="0"
+                        GridPane.columnIndex="3" GridPane.halignment="CENTER"/>
+                <Button fx:id="buttonSelectSHH" text="SHH" onAction="#selectModule" GridPane.rowIndex="0"
+                        GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
+            </GridPane>
 
-                    <GridPane fx:id="gridSHS" layoutY="25" visible="false">
-                        <Label text="Manage users in the simulation" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+            <GridPane fx:id="gridSHS" layoutX="5" layoutY="30" visible="false">
+                <Label text="Manage users in the simulation" style="-fx-font-weight: bold"
+                       GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets top="5"/>
+                    </GridPane.margin>
+                </Label>
 
-                        <TableView fx:id="userTable" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="LEFT">
+                <TableView fx:id="userTable"
+                           GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                           GridPane.halignment="LEFT">
 
-                            <columns>
-                                <TableColumn text="Name">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="name" />
-                                    </cellValueFactory>
-                                </TableColumn>
+                    <columns>
+                        <TableColumn text="Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name"/>
+                            </cellValueFactory>
+                        </TableColumn>
 
-                                <TableColumn text="ID">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="id" />
-                                    </cellValueFactory>
-                                </TableColumn>
+                        <TableColumn text="ID">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="id"/>
+                            </cellValueFactory>
+                        </TableColumn>
 
-                                <TableColumn text="Role">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="user_type" />
-                                    </cellValueFactory>
-                                </TableColumn>
+                        <TableColumn text="Role">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="user_type"/>
+                            </cellValueFactory>
+                        </TableColumn>
 
-                                <TableColumn text="Location">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="location" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                            </columns>
+                        <TableColumn text="Location">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="location"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
 
-                        </TableView>
+                </TableView>
 
-                        <Label text="Add/Modify user profile" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="addModifyUserName" promptText="Enter a name" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="addModifyUserID" promptText="Enter an ID" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
-                        <ComboBox fx:id="addModifyRoleComboBoxSHS" promptText="Select a role" GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                        <ComboBox fx:id="addModifyLocComboBoxSHS" promptText="Select a location" GridPane.rowIndex="3" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
-                        <Button text="Add Profile" GridPane.rowIndex="3" GridPane.columnIndex="4" GridPane.halignment="LEFT"/>
+                <Label text="Add/Modify user profile (Name, ID, Role, Location)" style="-fx-font-weight: bold"
+                       GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                       GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets top="5"/>
+                    </GridPane.margin>
+                </Label>
+                <TextField fx:id="addModifyUserName" promptText="Enter a name"
+                           GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                <Spinner fx:id="addModifyUserID" initialValue="0" min="0" max="1000000" GridPane.rowIndex="3"
+                         GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+                <ComboBox fx:id="addModifyRoleComboBoxSHS" promptText="Select a role"
+                          GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <ComboBox fx:id="addModifyLocComboBoxSHS" promptText="Select a location"
+                          GridPane.rowIndex="3" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
+                <Button text="Add Profile" GridPane.rowIndex="3" GridPane.columnIndex="4"
+                        GridPane.halignment="LEFT"/>
 
-                        <Label text="Remove a profile" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="userIdToRemove" promptText="Enter an ID to remove" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                        <Button text="Remove" GridPane.rowIndex="5" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <Label text="Remove a profile with ID" style="-fx-font-weight: bold"
+                       GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets top="5"/>
+                    </GridPane.margin>
+                </Label>
+                <Spinner fx:id="userIdToRemove" initialValue="0" min="0" max="1000000" GridPane.rowIndex="5"
+                         GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+                <Button text="Remove"
+                        GridPane.rowIndex="5" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
-                        <Label text="Login as a profile" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="userIdToModify" promptText="Enter the ID of who you want to log in." GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                        <Button text="Log in" GridPane.rowIndex="7" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <Label text="Login as a profile using ID" style="-fx-font-weight: bold"
+                       GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets top="5"/>
+                    </GridPane.margin>
+                </Label>
+                <Spinner fx:id="userIdToLogin" initialValue="0" min="0" max="1000000" GridPane.rowIndex="7"
+                         GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+                <Button text="Log in" GridPane.rowIndex="7"
+                        GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
-                        <Label text="Date" GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <DatePicker fx:id="dateSHS" GridPane.rowIndex="8" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="8" GridPane.columnIndex="3"/>
+                <Label text="Modify simulation conditions" style="-fx-font-weight: bold"
+                       GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT">
+                    <GridPane.margin>
+                        <Insets top="5"/>
+                    </GridPane.margin>
+                </Label>
 
-                        <Label text="Time" GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="hourSHS" promptText="Hour" GridPane.rowIndex="9" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="minSHS" promptText="Min" GridPane.rowIndex="9" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="9" GridPane.columnIndex="3"/>
+                <Label text="Date"
+                       GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                <DatePicker fx:id="dateSHS"
+                            GridPane.rowIndex="9" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                            GridPane.halignment="LEFT"/>
+                <Button text="Save"
+                        GridPane.rowIndex="9" GridPane.columnIndex="3"/>
 
-                        <Label text="Outside Temperature (Celsius)" GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="outTempSHS" promptText="Enter a temperature" GridPane.rowIndex="10" GridPane.columnIndex="2"  GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="10" GridPane.columnIndex="3"/>
+                <Label text="Time"
+                       GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                <Spinner fx:id="hourSHS" initialValue="12" min="0" max="1000000" GridPane.rowIndex="10"
+                         GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+                <Spinner fx:id="minSHS" initialValue="30" min="0" max="1000000" GridPane.rowIndex="10"
+                         GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <Button text="Save"
+                        GridPane.rowIndex="10" GridPane.columnIndex="3"/>
 
-                        <Label text="Inside Temperature (Celsius)" GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="inTempSHS" promptText="Enter a temperature" GridPane.rowIndex="11" GridPane.columnIndex="2"  GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="11" GridPane.columnIndex="3"/>
+                <Label text="Outside Temperature (Celsius)"
+                       GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT"/>
+                <Spinner fx:id="outTempSHS" initialValue="15" min="-1000000" max="1000000" amountToStepBy=".1" GridPane.rowIndex="11"
+                         GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <Button text="Save"
+                        GridPane.rowIndex="11" GridPane.columnIndex="3"/>
 
-                        <columnConstraints>
-                            <ColumnConstraints maxWidth="130"/>
-                            <ColumnConstraints maxWidth="130"/>
-                            <ColumnConstraints maxWidth="130"/>
-                        </columnConstraints>
+                <Label text="Inside Temperature (Celsius)"
+                       GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT"/>
+                <Spinner fx:id="inTempSHS" initialValue="15" min="-1000000" max="1000000" amountToStepBy=".1" GridPane.rowIndex="12"
+                         GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <Button text="Save"
+                        GridPane.rowIndex="12" GridPane.columnIndex="3"/>
 
-                        <rowConstraints>
-                            <RowConstraints/>
-                            <RowConstraints maxHeight="70"/>
-                        </rowConstraints>
-                    </GridPane>
+                <Label text="Block a room's window with an object"
+                       GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT"/>
+                <ComboBox fx:id="blockWinLocComboBoxSHS" promptText="Select a location"
+                          GridPane.rowIndex="13" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                <Button text="Save"
+                        GridPane.rowIndex="13" GridPane.columnIndex="3"/>
 
-                    <GridPane fx:id="gridSHC" layoutY="25" visible="false">
-                        <Label text="Welcome to the SHC module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                    </GridPane>
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="130"/>
+                    <ColumnConstraints maxWidth="130"/>
+                    <ColumnConstraints maxWidth="130"/>
+                </columnConstraints>
 
-                    <GridPane fx:id="gridSHP" layoutY="25" visible="false">
-                        <Label text="Welcome to the SHP module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                    </GridPane>
-                    <GridPane fx:id="gridSHH" layoutY="25" visible="false">
-                        <Label text="Welcome to the SHH module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                    </GridPane>
-                </children>
-            </AnchorPane>
+                <rowConstraints>
+                    <RowConstraints/>
+                    <RowConstraints maxHeight="115"/>
+                </rowConstraints>
+            </GridPane>
 
-            <ScrollPane layoutX="800" layoutY="16.0" prefHeight="350" prefWidth="350">
-                <content>
-                    <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
-                    </BorderPane>
-                </content>
-            </ScrollPane>
-        </children>
+            <GridPane fx:id="gridSHC" layoutY="25" visible="false">
+                <Label text="Welcome to the SHC module." GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       GridPane.halignment="LEFT"/>
+            </GridPane>
+
+            <GridPane fx:id="gridSHP" layoutY="25" visible="false">
+                <Label text="Welcome to the SHP module." GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       GridPane.halignment="LEFT"/>
+            </GridPane>
+            <GridPane fx:id="gridSHH" layoutY="25" visible="false">
+                <Label text="Welcome to the SHH module." GridPane.rowIndex="0" GridPane.columnIndex="0"
+                       GridPane.halignment="LEFT"/>
+            </GridPane>
+        </AnchorPane>
+
+        <ScrollPane layoutX="800" layoutY="16.0" prefHeight="350" prefWidth="350">
+            <content>
+                <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
+                </BorderPane>
+            </content>
+        </ScrollPane>
     </AnchorPane>
 </BorderPane>
