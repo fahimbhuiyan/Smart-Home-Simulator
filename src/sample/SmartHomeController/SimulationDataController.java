@@ -5,6 +5,7 @@ import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.SimulationData;
 import sample.SmartHomeModel.UserModel;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class SimulationDataController {
@@ -13,7 +14,13 @@ public class SimulationDataController {
 
     public void loadData(){
 
-        smd.createData("HouseInfo.json");
+        try {
+            smd.createData("HouseInfo.json");
+        }
+        catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
     }
 
     public RoomModel[] getRoomArray(){

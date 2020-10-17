@@ -66,13 +66,13 @@ public class MainViewController {
     @FXML
     TableView<UserModel> userTable;
 
-    private final ObservableList<UserModel> data =
-            FXCollections.observableArrayList(
-                    new UserModel("Jacob", "0", "Parent", "TBD"),
-                    new UserModel("Daniel", "1", "Child", "TBD"),
-                    new UserModel("Ana", "2", "Guest", "TBD"),
-                    new UserModel("Rachel", "69", "Stranger", "TBD")
-            );
+    private final ObservableList<UserModel> data;
+//            FXCollections.observableArrayList(
+////                    new UserModel("Jacob", "0", "Parent", "TBD"),
+////                    new UserModel("Daniel", "1", "Child", "TBD"),
+////                    new UserModel("Ana", "2", "Guest", "TBD"),
+////                    new UserModel("Rachel", "69", "Stranger", "TBD")
+ //           );
 
     public MainViewController(){
         simulationDataController = new SimulationDataController();
@@ -82,6 +82,11 @@ public class MainViewController {
         roomArray = simulationDataController.getRoomArray();
         roomNameArrayList = simulationDataController.getRoomNameList();
         userModelArrayList = simulationDataController.getUserArrayList();
+
+        data =
+                FXCollections.observableArrayList(
+                        userModelArrayList.get(0),userModelArrayList.get(1),userModelArrayList.get(2),userModelArrayList.get(3)
+                );
     }
 
     @FXML

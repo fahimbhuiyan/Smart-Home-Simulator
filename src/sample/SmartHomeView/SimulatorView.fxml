@@ -12,6 +12,7 @@
 
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.Group?>
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <padding>
@@ -25,17 +26,18 @@
                     <ImageView fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
                     <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User" />
                     <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location" textAlignment="CENTER" />
+                    <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Refresh Layout" />
                 </children>
             </VBox>
 
-            <ScrollPane layoutX="189.0" layoutY="391.0" prefHeight="105.0" prefWidth="559.0" style="-fx-border-color: blue;">
+            <ScrollPane layoutX="189.0" layoutY="391.0" prefHeight="105.0" prefWidth="810.0" style="-fx-border-color: blue;">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                 </content>
             </ScrollPane>
             <Label layoutX="455.0" layoutY="368.0" text="Output" />
 
-            <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="315.0" prefWidth="297.0" style="-fx-border-color: blue;">
+            <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="345.0" prefWidth="410.0" style="-fx-border-color: blue;">
                 <children>
 
                     <GridPane>
@@ -80,26 +82,35 @@
 
                         <Label text="Date" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                         <DatePicker fx:id="dateSHS" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+                        <Button text="Save" GridPane.rowIndex="2" GridPane.columnIndex="3"></Button>
 
                         <Label text="Time" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                         <TextField fx:id="hourSHS" promptText="Hour" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
                         <TextField fx:id="minSHS" promptText="Min" GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                        <Button text="Save" GridPane.rowIndex="3" GridPane.columnIndex="3"></Button>
 
-                        <Label text="Temperature (Celsius)" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="temperatureSHS" promptText="Enter a temperature" GridPane.rowIndex="4" GridPane.columnIndex="1"  GridPane.halignment="LEFT"/>
+                        <Label text="Outside Temperature (Celsius)" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                        <TextField fx:id="OutsidetemperatureSHS" promptText="Enter a temperature" GridPane.rowIndex="4" GridPane.columnIndex="1"  GridPane.halignment="LEFT"/>
+                        <Button text="Save" GridPane.rowIndex="4" GridPane.columnIndex="3"></Button>
 
-                        <Label text="Location" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <ComboBox fx:id="locationComboBoxSHS" promptText="Select a location" GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+                        <Label text="Inside Temperature (Celsius)" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                        <TextField fx:id="InsidetemperatureSHS" promptText="Enter a temperature" GridPane.rowIndex="5" GridPane.columnIndex="1"  GridPane.halignment="LEFT"/>
+                        <Button text="Save" GridPane.rowIndex="5" GridPane.columnIndex="3"></Button>
+
+
+                        <Label text="Location" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                        <ComboBox fx:id="locationComboBoxSHS" promptText="Select a location" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+                        <Button text="Save" GridPane.rowIndex="6" GridPane.columnIndex="3"></Button>
 
                         <columnConstraints>
-                            <ColumnConstraints maxWidth="107"/>
-                            <ColumnConstraints maxWidth="107"/>
-                            <ColumnConstraints maxWidth="107"/>
+                            <ColumnConstraints maxWidth="130"/>
+                            <ColumnConstraints maxWidth="130"/>
+                            <ColumnConstraints maxWidth="130"/>
                         </columnConstraints>
 
                         <rowConstraints>
                             <RowConstraints/>
-                            <RowConstraints maxHeight="100"/>
+                            <RowConstraints maxHeight="125"/>
                         </rowConstraints>
                     </GridPane>
 
@@ -113,6 +124,8 @@
                     <GridPane fx:id="gridSHH" layoutY="25" visible="false">
                         <Label text="Welcome to the SHH module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                     </GridPane>
+
+
                 </children>
             </AnchorPane>
 

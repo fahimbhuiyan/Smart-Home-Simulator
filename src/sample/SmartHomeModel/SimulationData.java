@@ -3,6 +3,7 @@ package sample.SmartHomeModel;
 import org.json.simple.JSONObject;
 import sample.SmartHomeModel.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class SimulationData {
@@ -13,7 +14,7 @@ public class SimulationData {
     HouseModel houseModel;
 
 
-    public void createData(String fileName) {
+    public void createData(String fileName) throws FileNotFoundException {
 
         System.out.println("Creating Data");
         createDefaultUser();
@@ -79,10 +80,10 @@ public class SimulationData {
 
     public void createDefaultUser(){
 
-        UserModel defaultParent = new UserModel("Parent", generateId(), "Parent", "TBD");
-        UserModel defaultChild = new UserModel("Child", generateId(), "Child", "TBD");
-        UserModel defaultGuest = new UserModel("Guest", generateId(), "Guest", "TBD");
-        UserModel defaultStranger = new UserModel("Stranger", generateId(), "Stranger", "TBD");
+        UserModel defaultParent = new UserModel("Bob", generateId(), "Parent", "TBD");
+        UserModel defaultChild = new UserModel("Daniel", generateId(), "Child", "TBD");
+        UserModel defaultGuest = new UserModel("Boris", generateId(), "Guest", "TBD");
+        UserModel defaultStranger = new UserModel("Tony", generateId(), "Stranger", "TBD");
         userList.add(defaultParent);
         userList.add(defaultChild);
         userList.add(defaultGuest);
