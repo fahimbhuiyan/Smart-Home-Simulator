@@ -27,7 +27,7 @@ public class MainView extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("SimulatorView.fxml"));
         primaryStage.setTitle("Smart Home Simulator");
-        primaryStage.setScene(new Scene(root, 1000, 1000));
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
 
     }

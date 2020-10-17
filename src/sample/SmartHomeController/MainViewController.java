@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -61,18 +58,42 @@ public class MainViewController {
     Button buttonSelectSHH;
 
     @FXML
-    ComboBox<String> locationComboBoxSHS;
+    ComboBox<String> addModifyRoleComboBoxSHS;
+
+    @FXML
+    ComboBox<String> addModifyLocComboBoxSHS;
 
     @FXML
     TableView<UserModel> userTable;
 
+    @FXML
+    DatePicker dateSHS;
+
+    @FXML
+    TextField addModifyUserName;
+
+    @FXML
+    TextField addModifyUserID;
+
+    @FXML
+    TextField userIdToRemove;
+
+    @FXML
+    TextField userIdToModify;
+
+    @FXML
+    TextField hourSHS;
+
+    @FXML
+    TextField minSHS;
+
+    @FXML
+    TextField outTempSHS;
+
+    @FXML
+    TextField inTempSHS;
+
     private final ObservableList<UserModel> data;
-//            FXCollections.observableArrayList(
-////                    new UserModel("Jacob", "0", "Parent", "TBD"),
-////                    new UserModel("Daniel", "1", "Child", "TBD"),
-////                    new UserModel("Ana", "2", "Guest", "TBD"),
-////                    new UserModel("Rachel", "69", "Stranger", "TBD")
- //           );
 
     public MainViewController(){
         simulationDataController = new SimulationDataController();
@@ -94,8 +115,10 @@ public class MainViewController {
         houseViewController.drawLayout(roomArray, bp);
 
         roomNameArrayList.forEach((roomName) -> {
-            locationComboBoxSHS.getItems().add(roomName);
+            addModifyLocComboBoxSHS.getItems().add(roomName);
         });
+
+        addModifyLocComboBoxSHS.getItems().add("Outside");
 
         userTable.setEditable(true);
         userTable.setItems(data);
