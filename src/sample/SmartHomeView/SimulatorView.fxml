@@ -30,14 +30,14 @@
                 </children>
             </VBox>
 
-            <ScrollPane layoutX="189.0" layoutY="391.0" prefHeight="105.0" prefWidth="559.0" style="-fx-border-color: blue;">
+            <ScrollPane layoutX="189.0" layoutY="391.0" prefHeight="105.0" prefWidth="810.0" style="-fx-border-color: blue;">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                 </content>
             </ScrollPane>
             <Label layoutX="455.0" layoutY="368.0" text="Output" />
 
-            <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="315.0" prefWidth="397.0" style="-fx-border-color: blue;">
+            <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="345.0" prefWidth="410.0" style="-fx-border-color: blue;">
                 <children>
 
                     <GridPane>
