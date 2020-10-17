@@ -47,6 +47,8 @@
                         GridPane.columnIndex="3" GridPane.halignment="CENTER"/>
                 <Button fx:id="buttonSelectSHH" text="SHH" onAction="#selectModule" GridPane.rowIndex="0"
                         GridPane.columnIndex="4" GridPane.halignment="CENTER"/>
+                <Button text="+" GridPane.rowIndex="0"
+                        GridPane.columnIndex="5" GridPane.halignment="CENTER"/>
             </GridPane>
 
             <GridPane fx:id="gridSHS" layoutX="5" layoutY="30" visible="false">
@@ -87,7 +89,6 @@
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
-
                 </TableView>
 
                 <Label text="Add/Modify user profile (Name, ID, Role, Location)" style="-fx-font-weight: bold"
@@ -108,8 +109,9 @@
                 <Button text="Add Profile" GridPane.rowIndex="3" GridPane.columnIndex="4"
                         GridPane.halignment="LEFT"/>
 
-                <Label text="Remove a profile with ID" style="-fx-font-weight: bold"
-                       GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT">
+                <Label text="Remove a profile using ID" style="-fx-font-weight: bold"
+                       GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets top="5"/>
                     </GridPane.margin>
@@ -120,7 +122,8 @@
                         GridPane.rowIndex="5" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
                 <Label text="Login as a profile using ID" style="-fx-font-weight: bold"
-                       GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT">
+                       GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                       GridPane.halignment="LEFT">
                     <GridPane.margin>
                         <Insets top="5"/>
                     </GridPane.margin>
@@ -146,7 +149,7 @@
                 <Button text="Save"
                         GridPane.rowIndex="9" GridPane.columnIndex="3"/>
 
-                <Label text="Time"
+                <Label text="Time (Hour, Minutes)"
                        GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                 <Spinner fx:id="hourSHS" initialValue="12" min="0" max="1000000" GridPane.rowIndex="10"
                          GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
@@ -158,7 +161,8 @@
                 <Label text="Outside Temperature (Celsius)"
                        GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
                        GridPane.halignment="LEFT"/>
-                <Spinner fx:id="outTempSHS" initialValue="15" min="-1000000" max="1000000" amountToStepBy=".1" GridPane.rowIndex="11"
+                <Spinner fx:id="outTempSHS" initialValue="15" min="-1000000" max="1000000" amountToStepBy=".1"
+                         GridPane.rowIndex="11"
                          GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                 <Button text="Save"
                         GridPane.rowIndex="11" GridPane.columnIndex="3"/>
@@ -166,7 +170,8 @@
                 <Label text="Inside Temperature (Celsius)"
                        GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
                        GridPane.halignment="LEFT"/>
-                <Spinner fx:id="inTempSHS" initialValue="15" min="-1000000" max="1000000" amountToStepBy=".1" GridPane.rowIndex="12"
+                <Spinner fx:id="inTempSHS" initialValue="15" min="-1000000" max="1000000" amountToStepBy=".1"
+                         GridPane.rowIndex="12"
                          GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                 <Button text="Save"
                         GridPane.rowIndex="12" GridPane.columnIndex="3"/>
