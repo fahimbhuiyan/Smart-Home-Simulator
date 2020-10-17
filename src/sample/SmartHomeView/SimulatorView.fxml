@@ -115,7 +115,7 @@
                             </Label>
                             <Spinner fx:id="userIdToLogin" initialValue="0" min="0" max="1000000" GridPane.rowIndex="7"
                                      GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                            <Button text="Log in" onAction="#login" GridPane.rowIndex="7"
+                            <Button fx:id="loginButton" text="Log in" onAction="#login" GridPane.rowIndex="7"
                                     GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
                             <Label text="Modify simulation conditions" style="-fx-font-weight: bold"

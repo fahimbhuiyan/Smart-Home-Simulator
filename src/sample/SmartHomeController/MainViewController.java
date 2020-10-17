@@ -97,6 +97,9 @@ public class MainViewController {
     Button saveTime;
 
     @FXML
+    Button loginButton;
+
+    @FXML
     Button saveOutsideTemp;
 
     @FXML
@@ -126,10 +129,12 @@ public class MainViewController {
     public void initialize () {
         houseViewController.drawLayout(roomArray, bp);
 
-        roomNameArrayList.forEach((roomName) -> {
-            addModifyLocComboBoxSHS.getItems().add(roomName);
-            blockWinLocComboBoxSHS.getItems().add(roomName);
-        });
+        addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(0));
+
+        for (int i = 1; i < roomNameArrayList.size(); i++) {
+            addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
+            blockWinLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
+        }
 
         addModifyLocComboBoxSHS.getItems().add("Outside");
         addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
@@ -152,18 +157,25 @@ public class MainViewController {
 
     @FXML
     public void startOrStopSimulation () {
-
         if (turnOnOffSimulation.getText().equals("Turn on the simulation")) {
             turnOnOffSimulation.setText("Turn off the simulation");
             consoleTextField.setText(consoleTextField.getText() + "Simulation has been started!\n");
             System.out.println("Simulation has been started!");
-            moduleTabs.getTabs().get(0).setDisable(true);
+            saveDate.setDisable(true);
+            saveTime.setDisable(true);
+            saveOutsideTemp.setDisable(true);
+            saveInsideTemp.setDisable(true);
+            loginButton.setDisable(true);
         }
         else if (turnOnOffSimulation.getText().equals("Turn off the simulation")) {
             turnOnOffSimulation.setText("Turn on the simulation");
             consoleTextField.setText(consoleTextField.getText() + "Simulation has been stopped!\n");
             System.out.println("Simulation has been stopped!");
-            moduleTabs.getTabs().get(0).setDisable(false);
+            saveDate.setDisable(false);
+            saveTime.setDisable(false);
+            saveOutsideTemp.setDisable(false);
+            saveInsideTemp.setDisable(false);
+            loginButton.setDisable(false);
         }
     }
 
