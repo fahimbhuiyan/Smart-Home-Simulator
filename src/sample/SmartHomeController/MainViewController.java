@@ -1,28 +1,18 @@
 package sample.SmartHomeController;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.util.converter.IntegerStringConverter;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
 
-import javax.swing.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.function.UnaryOperator;
-
 
 public class MainViewController {
 
@@ -50,16 +40,10 @@ public class MainViewController {
     GridPane gridSHH;
 
     @FXML
-    Button buttonSelectSHS;
+    GridPane gridAddModule;
 
     @FXML
-    Button buttonSelectSHC;
-
-    @FXML
-    Button buttonSelectSHP;
-
-    @FXML
-    Button buttonSelectSHH;
+    Button turnOnOffSimulation;
 
     @FXML
     ComboBox<String> addModifyRoleComboBoxSHS;
@@ -78,6 +62,12 @@ public class MainViewController {
 
     @FXML
     TextField addModifyUserName;
+
+    @FXML
+    TabPane moduleTabs;
+
+    @FXML
+    TextArea consoleTextField;
 
     @FXML
     Spinner<Integer> addModifyUserID;
@@ -99,6 +89,21 @@ public class MainViewController {
 
     @FXML
     Spinner<Integer> inTempSHS;
+
+    @FXML
+    Button saveDate;
+
+    @FXML
+    Button saveTime;
+
+    @FXML
+    Button saveOutsideTemp;
+
+    @FXML
+    Button saveInsideTemp;
+
+    @FXML
+    Button saveWindowBlock;
 
     private final ObservableList<UserModel> data;
 
@@ -129,40 +134,70 @@ public class MainViewController {
         addModifyLocComboBoxSHS.getItems().add("Outside");
         addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
 
+        addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
+        addModifyRoleComboBoxSHS.getSelectionModel().selectFirst();
+        blockWinLocComboBoxSHS.getSelectionModel().selectFirst();
+
         userTable.setEditable(true);
         userTable.setItems(data);
+
+        dateSHS.setValue(LocalDate.now());
     }
 
-    public void drawLayout(){
+    @FXML
+    public void drawLayout () {
         System.out.println(bp.getChildren().isEmpty());
         houseViewController.drawLayout(roomArray, bp);
     }
 
-    public void selectModule(ActionEvent actionEvent){
+    @FXML
+    public void startOrStopSimulation () {
 
-        if (actionEvent.getSource().equals(buttonSelectSHS)) {
-            gridSHS.setVisible(true);
-            gridSHC.setVisible(false);
-            gridSHP.setVisible(false);
-            gridSHH.setVisible(false);
+        if (turnOnOffSimulation.getText().equals("Turn on the simulation")) {
+            turnOnOffSimulation.setText("Turn off the simulation");
+            consoleTextField.setText(consoleTextField.getText() + "Simulation has been started!\n");
+            System.out.println("Simulation has been started!");
+            moduleTabs.getTabs().get(0).setDisable(true);
         }
-        else if (actionEvent.getSource().equals(buttonSelectSHC)) {
-            gridSHS.setVisible(false);
-            gridSHC.setVisible(true);
-            gridSHP.setVisible(false);
-            gridSHH.setVisible(false);
+        else if (turnOnOffSimulation.getText().equals("Turn off the simulation")) {
+            turnOnOffSimulation.setText("Turn on the simulation");
+            consoleTextField.setText(consoleTextField.getText() + "Simulation has been stopped!\n");
+            System.out.println("Simulation has been stopped!");
+            moduleTabs.getTabs().get(0).setDisable(false);
         }
-        else if (actionEvent.getSource().equals(buttonSelectSHP)) {
-            gridSHS.setVisible(false);
-            gridSHC.setVisible(false);
-            gridSHP.setVisible(true);
-            gridSHH.setVisible(false);
+    }
+
+    @FXML
+    public void addOrModifyUser () {
+        consoleTextField.setText(consoleTextField.getText() + "addOrModifyUser method called!\n");
+    }
+
+    @FXML
+    public void removeUser () {
+        consoleTextField.setText(consoleTextField.getText() + "removeUser method called!\n");
+    }
+
+    @FXML
+    public void login () {
+        consoleTextField.setText(consoleTextField.getText() + "login method called!\n");
+    }
+
+    @FXML
+    public void saveSimulationConditions(ActionEvent actionEvent){
+        if (actionEvent.getSource().equals(saveDate)) {
+            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Date!\n");
         }
-        else if (actionEvent.getSource().equals(buttonSelectSHH)) {
-            gridSHS.setVisible(false);
-            gridSHC.setVisible(false);
-            gridSHP.setVisible(false);
-            gridSHH.setVisible(true);
+        else if (actionEvent.getSource().equals(saveTime)) {
+            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Time!\n");
+        }
+        else if (actionEvent.getSource().equals(saveOutsideTemp)) {
+            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Outside Temp!\n");
+        }
+        else if (actionEvent.getSource().equals(saveInsideTemp)) {
+            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Inside Temp!\n");
+        }
+        else if (actionEvent.getSource().equals(saveWindowBlock)) {
+            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Window Block!\n");
         }
     }
 }
