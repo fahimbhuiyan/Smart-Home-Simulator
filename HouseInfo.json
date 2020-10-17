@@ -2,9 +2,9 @@
   "listOfRoom": {
     "room1": {
       "name": "House",
-      "nbDoor": 2,
+      "nbDoor": 1,
       "nbLight": 1,
-      "nbWindow": 0,
+      "nbWindow": 1,
       "width" :  750,
       "height" : 500,
       "x-axis" : 100,

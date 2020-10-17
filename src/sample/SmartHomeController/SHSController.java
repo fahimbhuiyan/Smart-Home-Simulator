@@ -57,10 +57,27 @@ public class SHSController {
                 for (int j = 0; j < userModelArrayList.size(); j++){
                     if (userModelArrayList.get(j).getName().equals(userNameToMove)){
                         roomArray[i].getListPeopleInRoom().add(userModelArrayList.get(j));
+                        userModelArrayList.get(j).setLocation(roomName);
                     }
                 }
             }
         }
 
+    }
+
+    public void editUserProfileName(ArrayList<UserModel> userModelArrayList, String newName, String oldName){
+        for (int i = 0; i < userModelArrayList.size(); i++){
+            if (userModelArrayList.get(i).getName().equals(oldName)){
+                userModelArrayList.get(i).setName(newName);
+            }
+        }
+    }
+
+    public void editUserProfileType(ArrayList<UserModel> userModelArrayList, String newType, String name){
+        for (int i = 0; i < userModelArrayList.size(); i++){
+            if (userModelArrayList.get(i).getName().equals(name)){
+                userModelArrayList.get(i).setUser_type(newType);
+            }
+        }
     }
 }
