@@ -6,7 +6,7 @@ public class RoomModel {
 	
 	private String roomID;
 	private String name;
-	private int temperature = 0;
+	private double temperature = 0;
 	private int nbPeople = 0;
 
 	private int width = 0;
@@ -85,11 +85,11 @@ public class RoomModel {
 		this.name = name;
 	}
 
-	public int getTemperature() {
+	public double getTemperature() {
 		return temperature;
 	}
 
-	public void setTemperature(int temperature) {
+	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
 

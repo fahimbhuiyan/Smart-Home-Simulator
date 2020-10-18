@@ -68,22 +68,16 @@ public class SimulationData {
             System.out.println("Room Window is open: "+room.getWindow().isOpen());
             System.out.println("Room Window has object: "+room.getWindow().HasObject());
             System.out.println();
-
-
-
         }
-
-
-
     }
 
 
     public void createDefaultUser(){
 
-        UserModel defaultParent = new UserModel("Bob", generateId(), "Parent", "TBD");
-        UserModel defaultChild = new UserModel("Daniel", generateId(), "Child", "TBD");
-        UserModel defaultGuest = new UserModel("Boris", generateId(), "Guest", "TBD");
-        UserModel defaultStranger = new UserModel("Tony", generateId(), "Stranger", "TBD");
+        UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
+        UserModel defaultChild = new UserModel("Daniel", 1, "Child", "Toilet");
+        UserModel defaultGuest = new UserModel("Boris", 2,"Guest", "House");
+        UserModel defaultStranger = new UserModel("Tony", 3, "Stranger", "Outside");
         userList.add(defaultParent);
         userList.add(defaultChild);
         userList.add(defaultGuest);
