@@ -1,17 +1,19 @@
 package sample.SmartHomeController;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -20,7 +22,9 @@ import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
 
 import javax.swing.*;
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 
 public class MainViewController {
@@ -133,4 +137,56 @@ public class MainViewController {
             gridSHH.setVisible(true);
         }
     }
+
+    @FXML
+    public VBox locationsVBox;
+
+    @FXML
+    public JFXDatePicker dateSHS;
+
+    @FXML
+    public JFXTimePicker timeSHS;
+
+    @FXML
+    public TextField OutsidetemperatureSHS;
+
+    @FXML
+    public TextField InsidetemperatureSHS;
+
+
+    @FXML
+    public void saveDate(ActionEvent actionEvent) {
+        if (dateSHS.getValue() != null)
+            locationsVBox.getChildren().add(new Label("Date: " + dateSHS.getValue().toString()));
+    }
+
+    @FXML
+    public void saveTime(ActionEvent actionEvent) {
+        if (timeSHS.getValue() != null)
+            locationsVBox.getChildren().add(new Label("Time: " + timeSHS.getValue().toString()));
+    }
+
+    @FXML
+    public void outsideTemp(ActionEvent actionEvent) {
+        if (OutsidetemperatureSHS.getText() != null)
+            locationsVBox.getChildren().add(new Label("Outside Temperature: " + OutsidetemperatureSHS.getText().toString()));
+    }
+
+    @FXML
+    public void insideTemp(ActionEvent actionEvent) {
+        if (InsidetemperatureSHS.getText() != null)
+            locationsVBox.getChildren().add(new Label("Inside Temperature: " + InsidetemperatureSHS.getText().toString()));
+    }
+
+//    @FXML
+//    public void saveLocation(ActionEvent actionEvent) {
+//        if (saveLocation().getItems != null)
+//            locationsVBox.getChildren().add(new Label(saveLocation().getItems().toString()));
+//    }
+
+
+
+
+
+
 }

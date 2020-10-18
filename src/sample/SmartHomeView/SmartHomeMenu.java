@@ -6,6 +6,8 @@ import javafx.scene.control.MenuItem;
 
 public class SmartHomeMenu {
 
+
+
     public MenuBar createSmartHomeMenu(){
 
         Menu home = new Menu("Home");

@@ -13,20 +13,24 @@
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.Group?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <padding>
             <Insets top="30" bottom="30" ></Insets>
         </padding>
         <children>
-            <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;">
+            <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;" fx:id="locationsVBox" >
                 <children>
                     <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation" textAlignment="CENTER" />
                     <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="161.0" text="On" />
-                    <ImageView fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView id="imgView" fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
                     <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User" />
                     <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location" textAlignment="CENTER" />
-                    <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Refresh Layout" />
+                    <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Refresh Layout" textAlignment="CENTER" />
                 </children>
             </VBox>
 
@@ -81,26 +85,31 @@
                         </TableView>
 
                         <Label text="Date" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <DatePicker fx:id="dateSHS" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="2" GridPane.columnIndex="3"></Button>
+                        <JFXDatePicker fx:id="dateSHS" promptText="dd/mm/yy" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
+                        <Button text="Save" onAction="#saveDate" GridPane.rowIndex="2" GridPane.columnIndex="3"></Button>
 
                         <Label text="Time" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="hourSHS" promptText="Hour" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
-                        <TextField fx:id="minSHS" promptText="Min" GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="3" GridPane.columnIndex="3"></Button>
+                        <JFXTimePicker fx:id="timeSHS" promptText="hour:minute" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+<!--                        <TextField fx:id="hourSHS" promptText="Hour" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>-->
+<!--                        <TextField fx:id="minSHS" promptText="Min" GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>-->
+                        <Button text="Save" onAction="#saveTime" GridPane.rowIndex="3" GridPane.columnIndex="3"></Button>
 
                         <Label text="Outside Temperature (Celsius)" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                         <TextField fx:id="OutsidetemperatureSHS" promptText="Enter a temperature" GridPane.rowIndex="4" GridPane.columnIndex="1"  GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="4" GridPane.columnIndex="3"></Button>
+                        <Button text="Save" onAction="#outsideTemp" GridPane.rowIndex="4" GridPane.columnIndex="3"></Button>
 
                         <Label text="Inside Temperature (Celsius)" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                         <TextField fx:id="InsidetemperatureSHS" promptText="Enter a temperature" GridPane.rowIndex="5" GridPane.columnIndex="1"  GridPane.halignment="LEFT"/>
-                        <Button text="Save" GridPane.rowIndex="5" GridPane.columnIndex="3"></Button>
+                        <Button text="Save" onAction="#insideTemp" GridPane.rowIndex="5" GridPane.columnIndex="3"></Button>
 
 
                         <Label text="Location" GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                         <ComboBox fx:id="locationComboBoxSHS" promptText="Select a location" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
                         <Button text="Save" GridPane.rowIndex="6" GridPane.columnIndex="3"></Button>
+<!--                        onAction ="saveLocation"-->
+
+<!--                        <Label fx:id="loadPhoto" text="Photo" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.halignment="LEFT" />-->
+<!--                        <Button text="Load Photo" GridPane.rowIndex="7" GridPane.columnIndex="3" />-->
 
                         <columnConstraints>
                             <ColumnConstraints maxWidth="130"/>
@@ -129,7 +138,7 @@
                 </children>
             </AnchorPane>
 
-            <ScrollPane layoutX="650" layoutY="16.0" prefHeight="350" prefWidth="350">
+            <ScrollPane layoutX="650" layoutY="16.0" prefHeight="350" prefWidth="350" pannable ="true" >
                 <content>
                     <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
                     </BorderPane>
