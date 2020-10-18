@@ -14,8 +14,6 @@ public class RoomModel {
 	private int xAxis = 0;
 	private int yAxis = 0;
 
-	private ArrayList<UserModel> listPeopleInRoom = new ArrayList<>();
-
 	public int getWidth() {
 		return width;
 	}
@@ -63,10 +61,6 @@ public class RoomModel {
 		this.door = door;
 		this.light = light;
 		this.window = window;
-	}
-
-	public ArrayList<UserModel> getListPeopleInRoom() {
-		return listPeopleInRoom;
 	}
 
 	public String getRoomID() {

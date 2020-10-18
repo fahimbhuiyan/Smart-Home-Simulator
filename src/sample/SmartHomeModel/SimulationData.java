@@ -83,6 +83,8 @@ public class SimulationData {
         userList.add(defaultGuest);
         userList.add(defaultStranger);
 
+
+
         System.out.println("Default Users are created");
         for(int i = 0; i < userList.size(); i++){
             System.out.println(userList.get(i).getId());

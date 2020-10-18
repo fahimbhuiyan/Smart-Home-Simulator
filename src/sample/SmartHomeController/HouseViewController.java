@@ -12,10 +12,14 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
+import sample.SmartHomeModel.UserModel;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class HouseViewController {
 
-    public void drawLayout(RoomModel[] roomArray, BorderPane bp, HouseModel houseModel){
+    public void drawLayout(RoomModel[] roomArray, BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList){
 
         bp.getChildren().clear();
 
@@ -56,10 +60,10 @@ public class HouseViewController {
 
                 ImageView imageView = new ImageView();
 
-                if(roomArray[i].getWindow().isOpen() == false){
-                    imageView.setImage(roomArray[i].getWindow().getImageClose());
-                }else{
-                    imageView.setImage(roomArray[i].getWindow().getImageOpen());
+                    if(roomArray[i].getWindow().isOpen() == false){
+                        imageView.setImage(roomArray[i].getWindow().getImageClose());
+                    }else{
+                        imageView.setImage(roomArray[i].getWindow().getImageOpen());
                 }
 
                 Text hasObjectText = new Text();
@@ -84,9 +88,68 @@ public class HouseViewController {
                 bp.getChildren().add(hasObjectText);
             }
 
+            //adding people in room
+            for(int j = 0; j < userList.size(); j++){
+
+                Random r = new Random();
+                Text userName = new Text(userList.get(j).getName());
+
+                if(userList.get(j).getLocation().equals(roomArray[i].getName())){
+
+                    if(!roomArray[i].getName().equals("House")){
+
+                        int xLow = (int) (0.2*roomArray[i].getWidth());
+                        int xHigh = (int) (0.8*roomArray[i].getWidth());
+                        int xResult = r.nextInt(xHigh-xLow) + xLow;
+
+                        int yLow = (int) (0.2*roomArray[i].getHeight());
+                        int yHigh = (int) (0.8*roomArray[i].getHeight());
+                        int yResult = r.nextInt(yHigh-yLow) + yLow;
+
+                        userName.setX(roomArray[i].getxAxis() + xResult);
+                        userName.setY(roomArray[i].getyAxis() + yResult);
+                        bp.getChildren().add(userName);
+                    }
+
+                    if(roomArray[i].getName().equals("House")){
+
+                        int xLow = (int) (0.1*roomArray[i].getWidth());
+                        int xHigh = (int) (0.3*roomArray[i].getWidth());
+                        int xResult = r.nextInt(xHigh-xLow) + xLow;
+
+                        int yLow = (int) (0.4*roomArray[i].getHeight());
+                        int yHigh = (int) (0.6*roomArray[i].getHeight());
+                        int yResult = r.nextInt(yHigh-yLow) + yLow;
+
+                        userName.setX(roomArray[i].getxAxis() + xResult);
+                        userName.setY(roomArray[i].getyAxis() + yResult);
+                        bp.getChildren().add(userName);
+                    }
+                }
+            }
             bp.getChildren().addAll(text,r1);
         }
 
+        //adding people outside
+        for(int j = 0; j < userList.size(); j++){
+            if(userList.get(j).getLocation().equals("Outside")){
+
+                Random r = new Random();
+                Text userName = new Text(userList.get(j).getName());
+                int xLow = 0;
+                int xHigh = (int) (0.8*roomArray[0].getxAxis());
+                int xResult = r.nextInt(xHigh-xLow) + xLow;
+
+                int yLow = 0;
+                int yHigh = (int) (0.8*roomArray[0].getyAxis()+ roomArray[0].getHeight());
+                int yResult = r.nextInt(yHigh-yLow) + yLow;
+
+                userName.setX(xResult);
+                userName.setY(yResult);
+                bp.getChildren().add(userName);
+        }
+
+        }
 
     }
 }

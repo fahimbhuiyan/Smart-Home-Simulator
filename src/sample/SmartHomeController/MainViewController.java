@@ -129,7 +129,7 @@ public class MainViewController {
 
     @FXML
     public void initialize () {
-        houseViewController.drawLayout(roomArray, bp, houseModel);
+        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
 
         addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(0));
 
@@ -162,7 +162,7 @@ public class MainViewController {
     @FXML
     public void drawLayout () {
         System.out.println(bp.getChildren().isEmpty());
-        houseViewController.drawLayout(roomArray, bp, houseModel);
+        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
     }
 
     @FXML
@@ -232,6 +232,7 @@ public class MainViewController {
         data.clear();
         loadUsersInShsTable();
         userTable.setItems(data);
+        drawLayout();
     }
 
     @FXML
@@ -246,6 +247,7 @@ public class MainViewController {
         data.clear();
         loadUsersInShsTable();
         userTable.setItems(data);
+        drawLayout();
     }
 
     @FXML

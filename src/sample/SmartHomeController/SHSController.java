@@ -87,20 +87,6 @@ public class SHSController {
         }
     }
 
-    public void addPeopleInRoom(RoomModel[] roomArray, String roomName, String userNameToMove, ArrayList<UserModel> userModelArrayList) {
-        for (int i = 0; i < roomArray.length; i++){
-            if (roomArray[i].getName().equals(roomName)){
-                for (int j = 0; j < userModelArrayList.size(); j++){
-                    if (userModelArrayList.get(j).getName().equals(userNameToMove)){
-                        roomArray[i].getListPeopleInRoom().add(userModelArrayList.get(j));
-                        userModelArrayList.get(j).setLocation(roomName);
-                    }
-                }
-            }
-        }
-
-    }
-
     public void addModifyUser(ArrayList<UserModel> userList,int id, String name, String userType, String location, TextArea consoleTextField){
         boolean userExist = false;
 
