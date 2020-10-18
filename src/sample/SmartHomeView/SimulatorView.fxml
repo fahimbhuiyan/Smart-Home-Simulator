@@ -23,14 +23,16 @@
             <Insets top="30" bottom="30" ></Insets>
         </padding>
         <children>
-            <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;" fx:id="locationsVBox" >
+            <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: blue;" fx:id="locationsVBox">
                 <children>
-                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation" textAlignment="CENTER" />
+                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation" textAlignment="CENTER" alignment="CENTER" />
                     <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="161.0" text="On" />
                     <ImageView id="imgView" fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
                     <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User" />
-                    <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location" textAlignment="CENTER" />
+                    <Label contentDisplay="CENTER" alignment="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location" textAlignment="CENTER" />
                     <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0" text="Refresh Layout" textAlignment="CENTER" />
+                    <Label fx:id="date" contentDisplay="CENTER" textAlignment="CENTER" alignment="CENTER"  />
+
                 </children>
             </VBox>
 

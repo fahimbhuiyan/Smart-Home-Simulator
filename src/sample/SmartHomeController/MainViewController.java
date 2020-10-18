@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -17,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
@@ -153,11 +155,15 @@ public class MainViewController {
     @FXML
     public TextField InsidetemperatureSHS;
 
+    @FXML
+    public Label date;
 
     @FXML
     public void saveDate(ActionEvent actionEvent) {
+        //Label date = new Label("Date: " + dateSHS.getValue().toString());
+
         if (dateSHS.getValue() != null)
-            locationsVBox.getChildren().add(new Label("Date: " + dateSHS.getValue().toString()));
+            date.setText("Date: " + dateSHS.getValue().toString());
     }
 
     @FXML
