@@ -51,6 +51,7 @@ public class MainViewController {
     @FXML
     ComboBox<String> addModifyLocComboBoxSHS;
 
+    //Check Box for Block Window
     @FXML
     ComboBox<String> blockWinLocComboBoxSHS;
 
@@ -85,10 +86,10 @@ public class MainViewController {
     Spinner<Integer> minSHS;
 
     @FXML
-    Spinner<Integer> outTempSHS;
+    Spinner<Double> outTempSHS;
 
     @FXML
-    Spinner<Integer> inTempSHS;
+    Spinner<Double> inTempSHS;
 
     @FXML
     Button saveDate;
@@ -108,7 +109,9 @@ public class MainViewController {
     @FXML
     Button saveWindowBlock;
 
-    private final ObservableList<UserModel> data;
+
+
+    private ObservableList<UserModel> data;
 
     public MainViewController(){
         simulationDataController = new SimulationDataController();
@@ -118,16 +121,15 @@ public class MainViewController {
         roomArray = simulationDataController.getRoomArray();
         roomNameArrayList = simulationDataController.getRoomNameList();
         userModelArrayList = simulationDataController.getUserArrayList();
+        houseModel = simulationDataController.getHouseModel();
+        loadUsersInShsTable();
 
-        data =
-                FXCollections.observableArrayList(
-                        userModelArrayList.get(0),userModelArrayList.get(1),userModelArrayList.get(2),userModelArrayList.get(3)
-                );
+
     }
 
     @FXML
     public void initialize () {
-        houseViewController.drawLayout(roomArray, bp);
+        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
 
         addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(0));
 
@@ -149,17 +151,49 @@ public class MainViewController {
         dateSHS.setValue(LocalDate.now());
     }
 
+    public void loadUsersInShsTable(){
+        data = FXCollections.observableArrayList();
+        for(int i = 0; i < userModelArrayList.size(); i++){
+            data.add(userModelArrayList.get(i));
+
+        }
+    }
+
     @FXML
     public void drawLayout () {
         System.out.println(bp.getChildren().isEmpty());
-        houseViewController.drawLayout(roomArray, bp);
+        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
     }
 
+    @FXML
+    public void setOutsideTemperature(){
+
+        double value = outTempSHS.getValue();
+        shsController.setOutsideTemperature(houseModel, value);
+        drawLayout();
+    }
+
+    @FXML
+    public void setInsideTemperature(){
+        double value = inTempSHS.getValue();
+        shsController.setInsideTemperature(roomArray, value);
+        drawLayout();
+    }
+
+    @FXML
+    public void addObjectToWindow(){
+
+        String value = blockWinLocComboBoxSHS.getValue();
+        shsController.addObjectToWindow(roomArray, value, consoleTextField);
+        drawLayout();
+
+
+    }
     @FXML
     public void startOrStopSimulation () {
         if (turnOnOffSimulation.getText().equals("Turn on the simulation")) {
             turnOnOffSimulation.setText("Turn off the simulation");
-            consoleTextField.setText(consoleTextField.getText() + "Simulation has been started!\n");
+            consoleTextField.setText("Simulation has been started!\n" + consoleTextField.getText());
             System.out.println("Simulation has been started!");
             saveDate.setDisable(true);
             saveTime.setDisable(true);
@@ -169,7 +203,7 @@ public class MainViewController {
         }
         else if (turnOnOffSimulation.getText().equals("Turn off the simulation")) {
             turnOnOffSimulation.setText("Turn on the simulation");
-            consoleTextField.setText(consoleTextField.getText() + "Simulation has been stopped!\n");
+            consoleTextField.setText("Simulation has been stopped!\n" + consoleTextField.getText());
             System.out.println("Simulation has been stopped!");
             saveDate.setDisable(false);
             saveTime.setDisable(false);
@@ -181,35 +215,57 @@ public class MainViewController {
 
     @FXML
     public void addOrModifyUser () {
-        consoleTextField.setText(consoleTextField.getText() + "addOrModifyUser method called!\n");
-    }
-
-    @FXML
-    public void removeUser () {
-        consoleTextField.setText(consoleTextField.getText() + "removeUser method called!\n");
+        consoleTextField.setText("addOrModifyUser method called!\n" + consoleTextField.getText());
     }
 
     @FXML
     public void login () {
-        consoleTextField.setText(consoleTextField.getText() + "login method called!\n");
+        int id = userIdToLogin.getValue();
+        shsController.login(houseModel,id,userModelArrayList,consoleTextField);
+    }
+
+    @FXML
+    public void deleteUserProfile(){
+        int id = userIdToRemove.getValue();
+        shsController.deleteUserProfile(userModelArrayList,id,consoleTextField, houseModel);
+
+        data.clear();
+        loadUsersInShsTable();
+        userTable.setItems(data);
+        drawLayout();
+    }
+
+    @FXML
+    public void addModifyUser(){
+
+        int id = addModifyUserID.getValue();
+        String name = addModifyUserName.getText();
+        String userType = addModifyRoleComboBoxSHS.getValue();
+        String location = addModifyLocComboBoxSHS.getValue();
+
+        shsController.addModifyUser(userModelArrayList,id,name,userType,location,consoleTextField);
+        data.clear();
+        loadUsersInShsTable();
+        userTable.setItems(data);
+        drawLayout();
     }
 
     @FXML
     public void saveSimulationConditions(ActionEvent actionEvent){
         if (actionEvent.getSource().equals(saveDate)) {
-            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Date!\n");
+            consoleTextField.setText("saveSimulationConditions method called for Date!\n" + consoleTextField.getText());
         }
         else if (actionEvent.getSource().equals(saveTime)) {
-            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Time!\n");
+            consoleTextField.setText("saveSimulationConditions method called for Time!\n" + consoleTextField.getText());
         }
         else if (actionEvent.getSource().equals(saveOutsideTemp)) {
-            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Outside Temp!\n");
+            consoleTextField.setText("saveSimulationConditions method called for Outside Temp!\n" + consoleTextField.getText());
         }
         else if (actionEvent.getSource().equals(saveInsideTemp)) {
-            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Inside Temp!\n");
+            consoleTextField.setText("saveSimulationConditions method called for Inside Temp!\n" + consoleTextField.getText());
         }
         else if (actionEvent.getSource().equals(saveWindowBlock)) {
-            consoleTextField.setText(consoleTextField.getText() + "saveSimulationConditions method called for Window Block!\n");
+            consoleTextField.setText("saveSimulationConditions method called for Window Block!\n" + consoleTextField.getText() );
         }
     }
 }

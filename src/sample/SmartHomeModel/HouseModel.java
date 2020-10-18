@@ -2,8 +2,9 @@ package sample.SmartHomeModel;
 
 public class HouseModel {
 
-    private int outsideTemp = 0;
+    private double outsideTemp = 0;
     private String loggedUserName = "";
+    private int id;
     private boolean simulationActive = false;
 
     public HouseModel(int outsideTemp, String loggedUserName, boolean simulationActive) {
@@ -11,11 +12,11 @@ public class HouseModel {
         this.loggedUserName = loggedUserName;
     }
 
-    public int getOutsideTemp() {
+    public double getOutsideTemp() {
         return outsideTemp;
     }
 
-    public void setOutsideTemp(int outsideTemp) {
+    public void setOutsideTemp(double outsideTemp) {
         this.outsideTemp = outsideTemp;
     }
 

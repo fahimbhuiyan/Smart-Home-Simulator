@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 public class WindowModel {
 	
 	private String id;
-	private boolean isOpen = false;
+	private boolean isOpen = true;
 	private boolean hasObject = false;
 	private Image imageOpen;
 	private Image imageClose;

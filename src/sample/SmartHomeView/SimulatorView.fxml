@@ -90,7 +90,7 @@
                                       GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="addModifyLocComboBoxSHS" promptText="Select a location"
                                       GridPane.rowIndex="3" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
-                            <Button text="Add Profile" onAction="#addOrModifyUser" GridPane.rowIndex="3"
+                            <Button text="Add Profile" onAction="#addModifyUser" GridPane.rowIndex="3"
                                     GridPane.columnIndex="4"
                                     GridPane.halignment="LEFT"/>
 
@@ -103,7 +103,7 @@
                             </Label>
                             <Spinner fx:id="userIdToRemove" initialValue="0" min="0" max="1000000" GridPane.rowIndex="5"
                                      GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="LEFT"/>
-                            <Button text="Remove" onAction="#removeUser"
+                            <Button text="Remove" onAction="#deleteUserProfile"
                                     GridPane.rowIndex="5" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
                             <Label text="Login as a profile using ID" style="-fx-font-weight: bold"
@@ -149,7 +149,7 @@
                                      amountToStepBy=".1"
                                      GridPane.rowIndex="11"
                                      GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveOutsideTemp" onAction="#saveSimulationConditions" text="Save"
+                            <Button fx:id="saveOutsideTemp" onAction="#setOutsideTemperature" text="Save"
                                     GridPane.rowIndex="11" GridPane.columnIndex="3"/>
 
                             <Label text="Inside Temperature (Celsius)"
@@ -159,7 +159,7 @@
                                      amountToStepBy=".1"
                                      GridPane.rowIndex="12"
                                      GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveInsideTemp" onAction="#saveSimulationConditions" text="Save"
+                            <Button fx:id="saveInsideTemp" onAction="#setInsideTemperature" text="Save"
                                     GridPane.rowIndex="12" GridPane.columnIndex="3"/>
 
                             <Label text="Block a room's window with an object"
@@ -167,7 +167,7 @@
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="blockWinLocComboBoxSHS" promptText="Select a location"
                                       GridPane.rowIndex="13" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveWindowBlock" onAction="#saveSimulationConditions" text="Save"
+                            <Button fx:id="saveWindowBlock" onAction="#addObjectToWindow" text="Save"
                                     GridPane.rowIndex="13" GridPane.columnIndex="3"/>
 
                             <columnConstraints>
