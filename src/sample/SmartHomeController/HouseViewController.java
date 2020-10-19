@@ -92,7 +92,7 @@ public class HouseViewController {
             for(int j = 0; j < userList.size(); j++){
 
                 Random r = new Random();
-                Text userName = new Text("• " + userList.get(j).getName() + " (" + userList.get(j).getId() + ")");
+                Text userName = new Text("• " + userList.get(j).getName() + " (ID: " + userList.get(j).getId() + ")");
 
                 if(userList.get(j).getLocation().equals(roomArray[i].getName())){
 
@@ -135,7 +135,7 @@ public class HouseViewController {
             if(userList.get(j).getLocation().equals("Outside")){
 
                 Random r = new Random();
-                Text userName = new Text("• " + userList.get(j).getName()  + " (" + userList.get(j).getId() + ")");
+                Text userName = new Text("• " + userList.get(j).getName()  + " (ID: " + userList.get(j).getId() + ")");
                 int xLow = 0;
                 int xHigh = (int) (0.8*roomArray[0].getxAxis());
                 int xResult = r.nextInt(xHigh-xLow) + xLow;
