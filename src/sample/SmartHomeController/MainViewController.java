@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * The Main view controller.
+ */
 public class MainViewController {
 
     private SimulationDataController simulationDataController;
@@ -29,114 +32,225 @@ public class MainViewController {
     private ArrayList<UserModel> userModelArrayList;
     private ArrayList<String> roomNameArrayList;
 
+    /**
+     * The BorderPane
+     */
     @FXML
     BorderPane bp;
 
+    /**
+     * The SHS grid.
+     */
     @FXML
     GridPane gridSHS;
 
+    /**
+     * The SHC Grid.
+     */
     @FXML
     GridPane gridSHC;
 
+    /**
+     * The SHP Grid.
+     */
     @FXML
     GridPane gridSHP;
 
+    /**
+     * The SHH Grid.
+     */
     @FXML
     GridPane gridSHH;
 
+    /**
+     * The Add Module Grid.
+     */
     @FXML
     GridPane gridAddModule;
 
+    /**
+     * The Turn on off simulation button.
+     */
     @FXML
     Button turnOnOffSimulation;
 
+    /**
+     * Add/modify role of user.
+     */
     @FXML
     ComboBox<String> addModifyRoleComboBoxSHS;
 
+    /**
+     * Add/modify location of user.
+     */
     @FXML
     ComboBox<String> addModifyLocComboBoxSHS;
 
+    /**
+     * Block Window.
+     */
     @FXML
     ComboBox<String> blockWinLocComboBoxSHS;
 
+    /**
+     * The User table.
+     */
     @FXML
     TableView<UserModel> userTable;
 
+    /**
+     * The Date.
+     */
     @FXML
     JFXDatePicker dateSHS;
 
+    /**
+     * The Time.
+     */
     @FXML
     JFXTimePicker timeSHS;
 
+    /**
+     * Add/modify user name.
+     */
     @FXML
     TextField addModifyUserName;
 
+    /**
+     * The Module tabs.
+     */
     @FXML
     TabPane moduleTabs;
 
+    /**
+     * The Console text field.
+     */
     @FXML
     TextArea consoleTextField;
 
+    /**
+     * The Add modify user id.
+     */
     @FXML
     Spinner<Integer> addModifyUserID;
 
+    /**
+     * The User id to remove.
+     */
     @FXML
     Spinner<Integer> userIdToRemove;
 
+    /**
+     * The User id to login.
+     */
     @FXML
     Spinner<Integer> userIdToLogin;
 
+    /**
+     * The Outside temperature of the Simulation.
+     */
     @FXML
     Spinner<Double> outTempSHS;
 
+    /**
+     * The Inside temperature of the Simulation.
+     */
     @FXML
     Spinner<Double> inTempSHS;
 
+    /**
+     * The Save date button.
+     */
     @FXML
     Button saveDate;
 
+    /**
+     * The Save time button.
+     */
     @FXML
     Button saveTime;
 
+    /**
+     * The Login button.
+     */
     @FXML
     Button loginButton;
 
+    /**
+     * The Save outside temp button.
+     */
     @FXML
     Button saveOutsideTemp;
 
+    /**
+     * The Save inside temp button.
+     */
     @FXML
     Button saveInsideTemp;
 
+    /**
+     * The Save window block button.
+     */
     @FXML
     Button saveWindowBlock;
 
+    /**
+     * The Locations v box.
+     */
     @FXML
     VBox locationsVBox;
 
+    /**
+     * The date contained in the Left panel.
+     */
     @FXML
     Label leftPanelDate;
 
+    /**
+     * The time contained in the Left panel.
+     */
     @FXML
     Label leftPanelTime;
 
+    /**
+     * The inside temperature contained in the Left panel.
+     */
     @FXML
     Label leftPanelInTemp;
 
+    /**
+     * The outside temperature contained in the Left panel.
+     */
     @FXML
     Label leftPanelOutTemp;
 
+    /**
+     * The Warning label simulation.
+     */
     @FXML
     Label warningLabelSimulation;
 
+    /**
+     * The User name label.
+     */
     @FXML
     Label userNameLabel;
 
+    /**
+     * The User id label.
+     */
     @FXML
     Label userIDLabel;
 
+    /**
+     * The User location label.
+     */
     @FXML
     Label userLocationLabel;
 
+    /**
+     * The User permission label.
+     */
     @FXML
     Label userPermissionLabel;
 
@@ -146,6 +260,9 @@ public class MainViewController {
 
     private Object[] userInfo;
 
+    /**
+     * Instantiates a new Main view controller.
+     */
     public MainViewController() {
         simulationDataController = new SimulationDataController();
         houseViewController = new HouseViewController();
@@ -158,6 +275,9 @@ public class MainViewController {
         loadUsersInShsTable();
     }
 
+    /**
+     * Initialize the default parameters of the simulation.
+     */
     @FXML
     public void initialize() {
         houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
@@ -186,17 +306,28 @@ public class MainViewController {
         timeSHS.setValue(LocalTime.of(12, 0));
     }
 
+    /**
+     * Add users to the SHS Table
+     */
     private void loadUsersInShsTable() {
         data = FXCollections.observableArrayList();
         data.addAll(userModelArrayList);
     }
 
+    /**
+     * Draw layout of the House
+     */
     @FXML
     private void drawLayout() {
         System.out.println(bp.getChildren().isEmpty());
         houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
     }
 
+    /**
+     * Sets outside temperature.
+     *
+     * @param event the event
+     */
     @FXML
     public void setOutsideTemperature(ActionEvent event) {
         double value = outTempSHS.getValue();
@@ -207,6 +338,11 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
+    /**
+     * Sets inside temperature.
+     *
+     * @param event the event
+     */
     @FXML
     public void setInsideTemperature(ActionEvent event) {
         double value = inTempSHS.getValue();
@@ -217,6 +353,11 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
+    /**
+     * Add object to window.
+     *
+     * @param event the event
+     */
     @FXML
     public void addObjectToWindow(ActionEvent event) {
         String value = blockWinLocComboBoxSHS.getValue();
@@ -225,6 +366,9 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
+    /**
+     * Start or stop simulation.
+     */
     @FXML
     public void startOrStopSimulation() {
         if (turnOnOffSimulation.getText().equals("Start the simulation")) {
@@ -248,6 +392,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Login.
+     */
     @FXML
     public void login() {
         int id = userIdToLogin.getValue();
@@ -258,6 +405,9 @@ public class MainViewController {
         processUserInfo();
     }
 
+    /**
+     * Delete user profile.
+     */
     @FXML
     public void deleteUserProfile() {
         int id = userIdToRemove.getValue();
@@ -270,6 +420,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Add modify user.
+     */
     @FXML
     public void addModifyUser() {
         int id = addModifyUserID.getValue();
@@ -288,6 +441,11 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Save simulation conditions.
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void saveSimulationConditions(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(saveDate)) {
@@ -307,6 +465,9 @@ public class MainViewController {
         turnOffSimulationWarning();
     }
 
+    /**
+     * Disable the simulation warning
+     */
     private void turnOffSimulationWarning() {
         if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
             turnOnOffSimulation.setDisable(false);
@@ -314,6 +475,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Display all information of logged in User.
+     */
     private void processUserInfo() {
 
         boolean actionSuccessful = (boolean) (userInfo[0]);
