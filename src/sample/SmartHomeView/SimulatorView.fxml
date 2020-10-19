@@ -3,9 +3,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTimePicker?>
+
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0"
                 prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -14,18 +14,50 @@
         </padding>
 
         <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: gray;"
-                fx:id="locationsVBox" alignment="TOP_CENTER" >
-            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation controls"
+              fx:id="locationsVBox" alignment="TOP_CENTER">
+            <Label contentDisplay="CENTER" text="Simulation information&#10;and controls"
                    style="-fx-font-weight: bold" textAlignment="CENTER" alignment="CENTER">
                 <VBox.margin>
                     <Insets top="5" bottom="5"/>
                 </VBox.margin>
             </Label>
             <Button fx:id="turnOnOffSimulation" onAction="#startOrStopSimulation" mnemonicParsing="false"
-                    prefHeight="25.0" prefWidth="161.0" text="Turn on the simulation"/>
-            <ImageView fx:id="imageView" fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true"/>
-            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location: "
-                   alignment="CENTER"/>
+                    prefHeight="25.0" prefWidth="161.0" text="Start the simulation"/>
+            <Label fx:id="warningLabelSimulation"
+                   text="Please log in as a user as&#10;well as set the date, time,&#10;inside temperature, and&#10;outside temperature before&#10;starting the simulation."
+                   textFill="red"
+                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets top="5" bottom="10"/>
+                </VBox.margin>
+            </Label>
+            <Label text="User information" style="-fx-font-weight: bold"
+                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+
+            <ImageView
+                    fitHeight="50"
+                    fitWidth="50"
+                    layoutX="61.0"
+                    layoutY="83.0"
+                    pickOnBounds="true"
+                    preserveRatio="true"
+            >
+                <Image
+                        url="img/avatar.png"
+                        backgroundLoading="true"
+                />
+            </ImageView>
+
+            <Label fx:id="userNameLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userIDLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userPermissionLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userLocationLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label text="Simulation parameters" style="-fx-font-weight: bold"
+                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </Label>
             <Label fx:id="leftPanelDate" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
             <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
             <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
@@ -142,7 +174,7 @@
                                    GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
                             <JFXTimePicker fx:id="timeSHS" promptText="hour:minute"
                                            GridPane.rowIndex="10" GridPane.columnIndex="1" GridPane.halignment="LEFT"
-                                            />
+                            />
                             <Button fx:id="saveTime" onAction="#saveSimulationConditions" text="Save"
                                     GridPane.rowIndex="10" GridPane.columnIndex="3"/>
 
@@ -229,10 +261,8 @@
         <AnchorPane prefHeight="370" prefWidth="357" layoutX="830" layoutY="16" style="-fx-border-color: gray;">
             <Label layoutX="150" layoutY="2" text="House layout" style="-fx-font-weight: bold"/>
             <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="459.0">
-                <content>
-                    <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
-                    </BorderPane>
-                </content>
+                <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
+                </BorderPane>
             </ScrollPane>
         </AnchorPane>
 
