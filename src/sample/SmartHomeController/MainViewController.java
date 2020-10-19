@@ -1,5 +1,7 @@
 package sample.SmartHomeController;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTimePicker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
@@ -59,7 +62,10 @@ public class MainViewController {
     TableView<UserModel> userTable;
 
     @FXML
-    DatePicker dateSHS;
+    public JFXDatePicker dateSHS;
+
+    @FXML
+    public JFXTimePicker timeSHS;
 
     @FXML
     TextField addModifyUserName;
@@ -108,6 +114,9 @@ public class MainViewController {
 
     @FXML
     Button saveWindowBlock;
+
+    @FXML
+    public VBox locationsVBox;
 
 
 
@@ -167,10 +176,10 @@ public class MainViewController {
 
     @FXML
     public void setOutsideTemperature(){
-
         double value = outTempSHS.getValue();
         shsController.setOutsideTemperature(houseModel, value);
         drawLayout();
+        locationsVBox.getChildren().add(new Label("Outside Temperature: "+ outTempSHS.getValue().toString()));
     }
 
     @FXML
@@ -178,6 +187,7 @@ public class MainViewController {
         double value = inTempSHS.getValue();
         shsController.setInsideTemperature(roomArray, value);
         drawLayout();
+        locationsVBox.getChildren().add(new Label("Inside Temperature: "+ inTempSHS.getValue().toString()));
     }
 
     @FXML
@@ -254,15 +264,20 @@ public class MainViewController {
     public void saveSimulationConditions(ActionEvent actionEvent){
         if (actionEvent.getSource().equals(saveDate)) {
             consoleTextField.setText("saveSimulationConditions method called for Date!\n" + consoleTextField.getText());
+                locationsVBox.getChildren().add(new Label("Date: " + dateSHS.getValue().toString()));
+
         }
         else if (actionEvent.getSource().equals(saveTime)) {
             consoleTextField.setText("saveSimulationConditions method called for Time!\n" + consoleTextField.getText());
+                locationsVBox.getChildren().add(new Label("Time: " + timeSHS.getValue().toString()));
         }
         else if (actionEvent.getSource().equals(saveOutsideTemp)) {
             consoleTextField.setText("saveSimulationConditions method called for Outside Temp!\n" + consoleTextField.getText());
+                locationsVBox.getChildren().add(new Label("Outside Temperature: "+ outTempSHS.getValue().toString()));
         }
         else if (actionEvent.getSource().equals(saveInsideTemp)) {
             consoleTextField.setText("saveSimulationConditions method called for Inside Temp!\n" + consoleTextField.getText());
+                locationsVBox.getChildren().add(new Label("Inside Temperature: "+ inTempSHS.getValue().toString()));
         }
         else if (actionEvent.getSource().equals(saveWindowBlock)) {
             consoleTextField.setText("saveSimulationConditions method called for Window Block!\n" + consoleTextField.getText() );

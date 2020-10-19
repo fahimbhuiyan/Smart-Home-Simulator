@@ -4,6 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0"
                 prefWidth="781.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -11,7 +13,8 @@
             <Insets top="30" bottom="30"/>
         </padding>
 
-        <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: gray;">
+        <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: gray;"
+                fx:id="locationsVBox" alignment="TOP_CENTER" >
             <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="185.0" text="Simulation controls"
                    style="-fx-font-weight: bold" textAlignment="CENTER" alignment="CENTER">
                 <VBox.margin>
@@ -20,12 +23,10 @@
             </Label>
             <Button fx:id="turnOnOffSimulation" onAction="#startOrStopSimulation" mnemonicParsing="false"
                     prefHeight="25.0" prefWidth="161.0" text="Turn on the simulation"/>
-            <ImageView fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true"/>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="53.0" text="User"/>
-            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location"
-                   textAlignment="CENTER"/>
-            <Button onAction="#drawLayout" mnemonicParsing="false" prefHeight="27.0" prefWidth="100.0"
-                    text="Refresh Layout"/>
+            <ImageView fx:id="imageView" fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true"/>
+            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location: "
+                   alignment="CENTER"/>
+
         </VBox>
 
         <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="410" prefWidth="410.0" style="-fx-border-color: gray;">
@@ -82,7 +83,8 @@
                                 </GridPane.margin>
                             </Label>
                             <TextField fx:id="addModifyUserName" text="Person"
-                                       GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
+                                       GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="LEFT"
+                            />
                             <Spinner fx:id="addModifyUserID" initialValue="0" min="0" max="1000000"
                                      GridPane.rowIndex="3"
                                      GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
@@ -127,18 +129,21 @@
                             </Label>
                             <Label text="Date"
                                    GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                            <DatePicker fx:id="dateSHS"
-                                        GridPane.rowIndex="9" GridPane.columnIndex="1" GridPane.columnSpan="2"
-                                        GridPane.halignment="LEFT"/>
+                            <JFXDatePicker fx:id="dateSHS" promptText="dd/mm/yy"
+                                           GridPane.rowIndex="9" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                                           GridPane.halignment="LEFT"/>
                             <Button fx:id="saveDate" onAction="#saveSimulationConditions" text="Save"
                                     GridPane.rowIndex="9" GridPane.columnIndex="3"/>
 
                             <Label text="Time (Hour, Minutes)"
                                    GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="hourSHS" initialValue="12" min="0" max="23" GridPane.rowIndex="10"
-                                     GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="minSHS" initialValue="30" min="0" max="59" GridPane.rowIndex="10"
-                                     GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <JFXTimePicker fx:id="timeSHS" promptText="hour:minute"
+                                           GridPane.rowIndex="10" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+                                            />
+                            <!--                            <Spinner fx:id="hourSHS" initialValue="12" min="0" max="23" GridPane.rowIndex="10"-->
+<!--                                     GridPane.columnIndex="1" GridPane.halignment="LEFT"/>-->
+<!--                            <Spinner fx:id="minSHS" initialValue="30" min="0" max="59" GridPane.rowIndex="10"-->
+<!--                                     GridPane.columnIndex="2" GridPane.halignment="LEFT"/>-->
                             <Button fx:id="saveTime" onAction="#saveSimulationConditions" text="Save"
                                     GridPane.rowIndex="10" GridPane.columnIndex="3"/>
 
@@ -222,9 +227,9 @@
             </TabPane>
         </AnchorPane>
 
-        <AnchorPane prefHeight="370" prefWidth="357" layoutX="830" layoutY="45" style="-fx-border-color: gray;">
+        <AnchorPane prefHeight="370" prefWidth="357" layoutX="830" layoutY="16" style="-fx-border-color: gray;">
             <Label layoutX="150" layoutY="2" text="House layout" style="-fx-font-weight: bold"/>
-            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350">
+            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="459.0">
                 <content>
                     <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
                     </BorderPane>
