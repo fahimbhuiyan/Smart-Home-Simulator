@@ -4,8 +4,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
+/**
+ * Class for the Smart Home Menu.
+ */
 public class SmartHomeMenu {
 
+    /**
+     * Create the Smart Home Menu.
+     */
     public MenuBar createSmartHomeMenu(){
 
         Menu home = new Menu("Home");
@@ -13,7 +19,7 @@ public class SmartHomeMenu {
         Menu modules = new Menu("Modules");
 
 
-        // create menuitems
+        // create menu items
         MenuItem shc = new MenuItem("SHC");
         MenuItem shp = new MenuItem("SHP");
         MenuItem shh = new MenuItem("SHH");

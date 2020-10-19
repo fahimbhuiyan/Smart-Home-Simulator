@@ -17,8 +17,19 @@ import sample.SmartHomeModel.UserModel;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Class for the House view controller.
+ */
 public class HouseViewController {
 
+    /**
+     * Draw layout of the house.
+     *
+     * @param roomArray  the room array
+     * @param bp         the bp
+     * @param houseModel the house model
+     * @param userList   the user list
+     */
     public void drawLayout(RoomModel[] roomArray, BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList){
 
         bp.getChildren().clear();

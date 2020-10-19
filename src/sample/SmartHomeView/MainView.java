@@ -16,7 +16,15 @@ import sample.SmartHomeController.MainViewController;
 import sample.SmartHomeController.SimulationDataController;
 import sample.SmartHomeModel.SimulationData;
 
+/**
+ * Class for Main View.
+ */
 public class MainView extends Application {
+
+    /**
+     * Start the main view.
+     * @param primaryStage the primary stage.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("SimulatorView.fxml"));
