@@ -26,7 +26,10 @@
             <ImageView fx:id="imageView" fitHeight="137.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true"/>
             <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="165.0" text="Location: "
                    alignment="CENTER"/>
-
+            <Label fx:id="leftPanelDate" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelInTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
         </VBox>
 
         <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="410" prefWidth="410.0" style="-fx-border-color: gray;">
@@ -140,10 +143,6 @@
                             <JFXTimePicker fx:id="timeSHS" promptText="hour:minute"
                                            GridPane.rowIndex="10" GridPane.columnIndex="1" GridPane.halignment="LEFT"
                                             />
-                            <!--                            <Spinner fx:id="hourSHS" initialValue="12" min="0" max="23" GridPane.rowIndex="10"-->
-<!--                                     GridPane.columnIndex="1" GridPane.halignment="LEFT"/>-->
-<!--                            <Spinner fx:id="minSHS" initialValue="30" min="0" max="59" GridPane.rowIndex="10"-->
-<!--                                     GridPane.columnIndex="2" GridPane.halignment="LEFT"/>-->
                             <Button fx:id="saveTime" onAction="#saveSimulationConditions" text="Save"
                                     GridPane.rowIndex="10" GridPane.columnIndex="3"/>
 

@@ -116,7 +116,20 @@ public class MainViewController {
     Button saveWindowBlock;
 
     @FXML
-    public VBox locationsVBox;
+    VBox locationsVBox;
+
+    @FXML
+    Label leftPanelDate;
+
+    @FXML
+    Label leftPanelTime;
+
+    @FXML
+    Label leftPanelInTemp;
+
+    @FXML
+    Label leftPanelOutTemp;
+
 
 
 
@@ -175,27 +188,31 @@ public class MainViewController {
     }
 
     @FXML
-    public void setOutsideTemperature(){
+    public void setOutsideTemperature(ActionEvent event){
         double value = outTempSHS.getValue();
         shsController.setOutsideTemperature(houseModel, value);
         drawLayout();
-        locationsVBox.getChildren().add(new Label("Outside Temperature: "+ outTempSHS.getValue().toString()));
+        saveSimulationConditions(event);
+        leftPanelOutTemp.setText("Outside Temperature: "+ outTempSHS.getValue().toString() + " C");
     }
 
     @FXML
-    public void setInsideTemperature(){
+    public void setInsideTemperature(ActionEvent event){
         double value = inTempSHS.getValue();
         shsController.setInsideTemperature(roomArray, value);
         drawLayout();
-        locationsVBox.getChildren().add(new Label("Inside Temperature: "+ inTempSHS.getValue().toString()));
+        saveSimulationConditions(event);
+        leftPanelInTemp.setText("Inside Temperature: "+ inTempSHS.getValue().toString() + " C");
+
     }
 
     @FXML
-    public void addObjectToWindow(){
+    public void addObjectToWindow(ActionEvent event){
 
         String value = blockWinLocComboBoxSHS.getValue();
         shsController.addObjectToWindow(roomArray, value, consoleTextField);
         drawLayout();
+        saveSimulationConditions(event);
 
 
     }
@@ -263,24 +280,23 @@ public class MainViewController {
     @FXML
     public void saveSimulationConditions(ActionEvent actionEvent){
         if (actionEvent.getSource().equals(saveDate)) {
-            consoleTextField.setText("saveSimulationConditions method called for Date!\n" + consoleTextField.getText());
-                locationsVBox.getChildren().add(new Label("Date: " + dateSHS.getValue().toString()));
+            consoleTextField.setText("The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+                leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
 
         }
         else if (actionEvent.getSource().equals(saveTime)) {
-            consoleTextField.setText("saveSimulationConditions method called for Time!\n" + consoleTextField.getText());
-                locationsVBox.getChildren().add(new Label("Time: " + timeSHS.getValue().toString()));
+            consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+                leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
         }
         else if (actionEvent.getSource().equals(saveOutsideTemp)) {
-            consoleTextField.setText("saveSimulationConditions method called for Outside Temp!\n" + consoleTextField.getText());
-                locationsVBox.getChildren().add(new Label("Outside Temperature: "+ outTempSHS.getValue().toString()));
+            consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         }
         else if (actionEvent.getSource().equals(saveInsideTemp)) {
-            consoleTextField.setText("saveSimulationConditions method called for Inside Temp!\n" + consoleTextField.getText());
-                locationsVBox.getChildren().add(new Label("Inside Temperature: "+ inTempSHS.getValue().toString()));
+            consoleTextField.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         }
         else if (actionEvent.getSource().equals(saveWindowBlock)) {
-            consoleTextField.setText("saveSimulationConditions method called for Window Block!\n" + consoleTextField.getText() );
+            consoleTextField.setText("The window in "  + blockWinLocComboBoxSHS.getValue() + " has been blocked.\n" + consoleTextField.getText());
+
         }
     }
 }
