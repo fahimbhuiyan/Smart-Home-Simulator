@@ -3,7 +3,7 @@ package sample.SmartHomeModel;
 import org.w3c.dom.ranges.DocumentRange;
 
 /**
- * The Door model.
+ * Class for the Door model.
  */
 public class DoorModel {
 

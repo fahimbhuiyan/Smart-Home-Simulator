@@ -13,7 +13,7 @@ public class SmartHomeMenu {
         Menu modules = new Menu("Modules");
 
 
-        // create menuitems
+        // create menu items
         MenuItem shc = new MenuItem("SHC");
         MenuItem shp = new MenuItem("SHP");
         MenuItem shh = new MenuItem("SHH");

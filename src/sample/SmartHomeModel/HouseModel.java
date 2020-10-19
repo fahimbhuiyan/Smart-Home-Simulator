@@ -1,7 +1,7 @@
 package sample.SmartHomeModel;
 
 /**
- * The House model.
+ * Class for the House model.
  */
 public class HouseModel {
 

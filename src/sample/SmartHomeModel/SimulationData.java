@@ -6,6 +6,9 @@ import sample.SmartHomeModel.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+/**
+ * Class for the data of the simulation.
+ */
 public class SimulationData {
 
     RoomModel []roomArray;
@@ -14,6 +17,11 @@ public class SimulationData {
     HouseModel houseModel;
 
 
+    /**
+     * Create the data for the rooms, doors, windows, and lights.
+     *
+     * @param fileName the name of the house layout file
+     */
     public void createData(String fileName) throws FileNotFoundException {
 
         System.out.println("Creating Data");
@@ -72,6 +80,9 @@ public class SimulationData {
     }
 
 
+    /**
+     * Instantiate default users.
+     */
     public void createDefaultUser(){
 
         UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
@@ -99,6 +110,9 @@ public class SimulationData {
 
     }
 
+    /**
+     * Create the House Model.
+     */
     public void createHouse(){
         houseModel = new HouseModel(0,"",false);
         System.out.println("House model is created");
@@ -110,6 +124,9 @@ public class SimulationData {
 
 
 
+    /**
+     * Generate a randomized ID.
+     */
     public String generateId(){
 
         String uniqueID = java.util.UUID.randomUUID().toString();
@@ -117,18 +134,30 @@ public class SimulationData {
 
     }
 
+    /**
+     * Getter for the array of rooms.
+     */
     public RoomModel[] getRoomArray() {
         return roomArray;
     }
 
+    /**
+     * Getter for the array list of room names.
+     */
     public ArrayList<String> getRoomNameList() {
         return roomNameList;
     }
 
+    /**
+     * Getter for the house model.
+     */
     public HouseModel getHouseModel(){
         return houseModel;
     }
 
+    /**
+     * Getter for the array list of users..
+     */
     public ArrayList<UserModel> getUserArrayList() {
         return userList;
     }

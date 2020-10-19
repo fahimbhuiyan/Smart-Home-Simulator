@@ -10,12 +10,19 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Class to read the house layout file.
+ */
 public class ReadHouseLayout {
 
 
     JSONObject[] jsonObjectArray;
 
-
+    /**
+     * Reads the JSON file.
+     *
+     * @param fileName the name of the file.
+     */
     public void ReadJSON(String fileName){
 
         JSONParser parser = new JSONParser();
@@ -67,12 +74,19 @@ public class ReadHouseLayout {
         }
 
     }
-
+    /**
+     * Gets the house layout.
+     */
     public JSONObject [] getHouseLayout(){
 
         return jsonObjectArray;
     }
+
+    /**
+     * Gets the length of the JSON Object array.
+     */
     public int getJsonArraySize(){
+
         return jsonObjectArray.length;
     }
 

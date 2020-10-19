@@ -1,7 +1,7 @@
 package sample.SmartHomeModel;
 
 /**
- * The Light model.
+ * Class for the Light model.
  */
 public class LightModel {
 
