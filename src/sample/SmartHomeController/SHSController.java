@@ -12,7 +12,7 @@ import java.sql.Struct;
 import java.util.ArrayList;
 
 /**
- * The type Shs controller.
+ * Class for the SHS Controller.
  */
 public class SHSController {
 
@@ -31,7 +31,7 @@ public class SHSController {
 
 
     /**
-     * Instantiates a new Shs controller.
+     * Instantiates a new SHS Controller.
      */
     public SHSController() {
         simulationData = new SimulationData();
@@ -142,7 +142,7 @@ public class SHSController {
     }
 
     /**
-     * Add modify user object [ ].
+     * Add/modify user object [ ].
      *
      * @param userList         the user list
      * @param id               the id

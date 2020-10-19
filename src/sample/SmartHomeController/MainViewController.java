@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
- * The Main view controller.
+ * Class for the Main view controller.
  */
 public class MainViewController {
 
@@ -39,37 +39,37 @@ public class MainViewController {
     BorderPane bp;
 
     /**
-     * The SHS grid.
+     * The SHS GridPane.
      */
     @FXML
     GridPane gridSHS;
 
     /**
-     * The SHC Grid.
+     * The SHC GridPane.
      */
     @FXML
     GridPane gridSHC;
 
     /**
-     * The SHP Grid.
+     * The SHP GridPane.
      */
     @FXML
     GridPane gridSHP;
 
     /**
-     * The SHH Grid.
+     * The SHH GridPane.
      */
     @FXML
     GridPane gridSHH;
 
     /**
-     * The Add Module Grid.
+     * The Add Module GridPane.
      */
     @FXML
     GridPane gridAddModule;
 
     /**
-     * The Turn on off simulation button.
+     * The Turn on/off simulation button.
      */
     @FXML
     Button turnOnOffSimulation;
@@ -129,7 +129,7 @@ public class MainViewController {
     TextArea consoleTextField;
 
     /**
-     * The Add modify user id.
+     * The Add/modify user id.
      */
     @FXML
     Spinner<Integer> addModifyUserID;
@@ -421,7 +421,7 @@ public class MainViewController {
     }
 
     /**
-     * Add modify user.
+     * Add/modify user.
      */
     @FXML
     public void addModifyUser() {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * The type House view controller.
+ * Class for the House view controller.
  */
 public class HouseViewController {
 

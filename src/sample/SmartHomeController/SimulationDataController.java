@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
- * The type Simulation data controller.
+ * Class for the Simulation Data Controller.
  */
 public class SimulationDataController {
 
