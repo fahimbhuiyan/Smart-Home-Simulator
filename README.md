@@ -12,10 +12,10 @@ To develop a Smart Home Simulator application. This application will help people
 * Java
 
 ## Note
-The project runs best with JDK 8 or JDK 9.
+The project runs best with JDK 8 or JDK 9. If JDK 11 or later is used, then the [JavaFX library](https://gluonhq.com/products/javafx/) must be downloaded separately and must be added as an external dependency.
 
 ## External Dependencies
-* [json-simple 1.1.1](https://code.google.com/archive/p/json-simple/downloads). This library is used to parse and read the house layout which is stored in a JSON file.
+* [json-simple 1.1.1](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/json-simple/json-simple-1.1.1.jar). This library is used to parse and read the house layout which is stored in a JSON file.
 * [JFoeniX 8](https://search.maven.org/remotecontent?filepath=com/jfoenix/jfoenix/8.0.10/jfoenix-8.0.10.jar) if you are using JDK 8 or [JFoeniX 9](https://search.maven.org/remotecontent?filepath=com/jfoenix/jfoenix/9.0.10/jfoenix-9.0.10.jar) if you are using JDK 9. This library is used in order to add time and date widget pickers.
 
 ## **Team Members**
@@ -27,14 +27,14 @@ The project runs best with JDK 8 or JDK 9.
 
 ## **Getting Started**
 1. Clone/download SOEN343 Project.
-2. Download the External Dependencies. (House layout & JFoenix)
-3. Create a project in IntelliJ IDEA.
+2. Download the External Dependencies. (json-simple & JFoeniX)
+3. Open the SOEN343 folder as a project in IntelliJ IDEA.
 4. Mark the src directory as source code.
-5. Create an out directory and mark it as excluded.
+5. Create a directory called "out" in the SOEN343 folder and mark it as excluded.
 6. Configure project settings by going to File>Project Structure. (CTRL+ALT+SHIFT+S)
-7. Inside the Project Structure window that appeared, go to Project Settings>Project and set the project compiler output path to the out directory that you just created.
+7. Inside the Project Structure window that appeared, go to Project Settings>Project and set the JDK version you're using and set the project compiler output path to the out directory that you just created.
 8. Again, inside the Project Structure window that appeared, go to Project Settings>Libraries and add the two external dependencies by clicking on the plus sign and by specifying the path for each dependency.
-8. Head over to SOEN343\src\sample\SmartHomeView\MainView and press run.
+9. Head over to SOEN343\src\sample\SmartHomeView\MainView and run the main method of the class MainView.
 
 ## **System In Operation**
 ### **Delivery 1**
