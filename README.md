@@ -34,7 +34,7 @@ The project runs best with JDK 8 or JDK 9. If JDK 11 or later is used, then the 
 6. Configure project settings by going to File>Project Structure. (CTRL+ALT+SHIFT+S)
 7. Inside the Project Structure window that appeared, go to Project Settings>Project and set the JDK version you're using and set the project compiler output path to the out directory that you just created.
 8. Again, inside the Project Structure window that appeared, go to Project Settings>Libraries and add the two external dependencies by clicking on the plus sign and by specifying the path for each dependency.
-9. Head over to SOEN343\src\sample\SmartHomeView\MainView and run the main method of the class MainView.
+9. Head over to SOEN343\src\sample\SmartHomeView\MainView, build the project (click on the green hammer icon on the top menu bar), and then run the main method of the class MainView.
 
 ## **System In Operation**
 ### **Delivery 1**
