@@ -542,7 +542,7 @@ public class MainViewController {
         } else if (event.getSource().equals(saveInsideTemp)) {
             consoleTextField.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveWindowBlock)) {
-            consoleTextField.setText("The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked.\n" + consoleTextField.getText());
+            consoleTextField.setText("The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked\\unblocked.\n" + consoleTextField.getText());
         }
 
         turnOffSimulationWarning();

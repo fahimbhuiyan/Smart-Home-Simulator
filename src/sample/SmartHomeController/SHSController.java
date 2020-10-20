@@ -134,8 +134,17 @@ public class SHSController {
             if (roomArray[i].getName().equals(roomName)) {
 
                 if (roomArray[i].getWindow().isOpen()) {
-                    roomArray[i].getWindow().setHasObject(true);
-                    consoleTextField.setText("Adding object to block the window of the " + roomArray[i].getName() + ".\n" + consoleTextField.getText());
+
+                    if (!roomArray[i].getWindow().HasObject()) {
+                        roomArray[i].getWindow().setHasObject(true);
+                        consoleTextField.setText("Adding object to block the window of the " + roomArray[i].getName() + ".\n" + consoleTextField.getText());
+                    }
+                    else {
+                        roomArray[i].getWindow().setHasObject(false);
+                        consoleTextField.setText("Removing blocking object from the window of the " + roomArray[i].getName() + ".\n" + consoleTextField.getText());
+                    }
+
+
                 } else {
                     consoleTextField.setText("You cannot add an object to this window. The window is closed.\n" + consoleTextField.getText());
                 }
