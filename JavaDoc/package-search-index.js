@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"sample.SmartHomeController"},{"l":"sample.SmartHomeModel"},{"l":"sample.SmartHomeView"}];updateSearchResults();
