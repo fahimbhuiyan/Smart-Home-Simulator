@@ -19,6 +19,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the width of the room.
+	 * @return the int width
 	 */
 	public int getWidth() {
 		return width;
@@ -35,6 +36,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the height of the room.
+	 * @return the int height
 	 */
 	public int getHeight() {
 		return height;
@@ -51,6 +53,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the x-axis of the room.
+	 * @return the int x-axis
 	 */
 	public int getxAxis() {
 		return xAxis;
@@ -67,6 +70,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the y-axis of the room.
+	 * @return the int y-axis
 	 */
 	public int getyAxis() {
 		return yAxis;
@@ -112,6 +116,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the ID of the room.
+	 * @return the String roomID
 	 */
 	public String getRoomID() {
 		return roomID;
@@ -128,6 +133,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the name of the room.
+	 * @return the String name.
 	 */
 	public String getName() {
 		return name;
@@ -144,6 +150,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the temperature of the room.
+	 * @return the double temperature.
 	 */
 	public double getTemperature() {
 		return temperature;
@@ -160,6 +167,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the number of people of the room.
+	 * @return the int nbPeople.
 	 */
 	public int getNbPeople() {
 		return nbPeople;
@@ -176,6 +184,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the door of the room.
+	 * @return the DoorModel door.
 	 */
 	public DoorModel getDoor() {
 		return door;
@@ -183,6 +192,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the light of the room.
+	 * @return the LightModel light.
 	 */
 	public LightModel getLight() {
 		return light;
@@ -190,6 +200,7 @@ public class RoomModel {
 
 	/**
 	 * Getter for the window of the room.
+	 * @return the WindowModel window.
 	 */
 	public WindowModel getWindow() {
 		return window;

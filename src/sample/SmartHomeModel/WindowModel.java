@@ -18,6 +18,7 @@ public class WindowModel {
 	/**
 	 * Instantiate a Window.
 	 * @param id the id of the window.
+	 * @throws FileNotFoundException exception is the file is not found.
 	 */
 	public WindowModel(String id) throws FileNotFoundException {
 		super();
@@ -37,6 +38,7 @@ public class WindowModel {
 
 	/**
 	 * Getter for the id of a window.
+	 * @return the String id.
 	 */
 	public String getId() {
 		return id;
@@ -52,6 +54,7 @@ public class WindowModel {
 
 	/**
 	 * Method that returns if a window is open.
+	 * @return the boolean isOpen.
 	 */
 	public boolean isOpen() {
 		return isOpen;
@@ -67,6 +70,7 @@ public class WindowModel {
 
 	/**
 	 * Method that returns if a window has an arbitrary object in front of it.
+	 * @return the boolean hasObject
 	 */
 	public boolean HasObject() {
 		return hasObject;
@@ -82,6 +86,7 @@ public class WindowModel {
 
 	/**
 	 * Getter for window open image.
+	 * @return the Image imageOpen.
 	 */
 	public Image getImageOpen() {
 		return imageOpen;
@@ -89,6 +94,7 @@ public class WindowModel {
 
 	/**
 	 * Getter for window closed image.
+	 * @return the Image imageClose.
 	 */
 	public Image getImageClose() {
 		return imageClose;

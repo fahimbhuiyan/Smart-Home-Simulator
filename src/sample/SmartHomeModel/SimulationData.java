@@ -20,6 +20,7 @@ public class SimulationData {
      * Create the data for the rooms, doors, windows, and lights.
      *
      * @param fileName the name of the house layout file
+     * @throws FileNotFoundException exception if the file is not found.
      */
     public void createData(String fileName) throws FileNotFoundException {
 
@@ -122,6 +123,7 @@ public class SimulationData {
 
     /**
      * Generate a randomized ID.
+     * @return the String uniqueID.
      */
     public String generateId(){
 
@@ -131,6 +133,7 @@ public class SimulationData {
 
     /**
      * Getter for the array of rooms.
+     * @return the RoomModel[] roomArray.
      */
     public RoomModel[] getRoomArray() {
         return roomArray;
@@ -138,6 +141,7 @@ public class SimulationData {
 
     /**
      * Getter for the array list of room names.
+     * @return the roomNameList.
      */
     public ArrayList<String> getRoomNameList() {
         return roomNameList;
@@ -145,13 +149,15 @@ public class SimulationData {
 
     /**
      * Getter for the house model.
+     * @return the HouseModel houseModel.
      */
     public HouseModel getHouseModel(){
         return houseModel;
     }
 
     /**
-     * Getter for the array list of users..
+     * Getter for the array list of users.
+     * @return the userList
      */
     public ArrayList<UserModel> getUserArrayList() {
         return userList;

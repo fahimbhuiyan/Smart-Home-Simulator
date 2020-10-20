@@ -26,6 +26,7 @@ public class UserModel {
 
 	/**
 	 * Getter for the name of a user.
+	 * @return the String name.
 	 */
 	public String getName() {
 		return name;
@@ -41,6 +42,7 @@ public class UserModel {
 
 	/**
 	 * Getter for id of a user.
+	 * @return the int id.
 	 */
 	public int getId() {
 		return id;
@@ -56,6 +58,7 @@ public class UserModel {
 
 	/**
 	 * Getter for the type of a user.
+	 * @return the String user_type.
 	 */
 	public String getUser_type() {
 		return user_type;
@@ -71,6 +74,7 @@ public class UserModel {
 
 	/**
 	 * Getter for the location of a user.
+	 * @return the String location.
 	 */
 	public String getLocation() {
 		return location;
