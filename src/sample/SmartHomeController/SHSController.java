@@ -19,7 +19,7 @@ public class SHSController {
     /**
      * The Simulation data.
      */
-    SimulationData simulationData;
+    private SimulationData simulationData;
     /**
      * The User model.
      */
@@ -27,7 +27,7 @@ public class SHSController {
     /**
      * The Logged user id.
      */
-    int loggedUserID = -1;
+    private int loggedUserID = -1;
 
 
     /**
@@ -83,7 +83,7 @@ public class SHSController {
         }
 
         if (!userExist) {
-            consoleTextField.setText("Try again. No user with id " + id + " exists in the database.\n" + consoleTextField.getText());
+            consoleTextField.setText("Try again. No user with ID " + id + " exists in the database.\n" + consoleTextField.getText());
         }
 
         userInfo[0] = userExist;
@@ -164,7 +164,7 @@ public class SHSController {
 
                 userInfo[1] = userList.get(i);
 
-                consoleTextField.setText("Modifying information for user with id " + userList.get(i).getId() + ".\n" + consoleTextField.getText());
+                consoleTextField.setText("Modifying information for user with ID " + userList.get(i).getId() + ".\n" + consoleTextField.getText());
             }
         }
 
