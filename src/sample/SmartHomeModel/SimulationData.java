@@ -16,11 +16,11 @@ public class SimulationData {
     ArrayList<UserModel> userList = new ArrayList<UserModel>();
     HouseModel houseModel;
 
-
     /**
      * Create the data for the rooms, doors, windows, and lights.
      *
      * @param fileName the name of the house layout file
+     * @throws FileNotFoundException exception if the file is not found.
      */
     public void createData(String fileName) throws FileNotFoundException {
 
@@ -79,7 +79,6 @@ public class SimulationData {
         }
     }
 
-
     /**
      * Instantiate default users.
      */
@@ -94,20 +93,13 @@ public class SimulationData {
         userList.add(defaultGuest);
         userList.add(defaultStranger);
 
-
-
         System.out.println("Default Users are created");
         for(int i = 0; i < userList.size(); i++){
             System.out.println(userList.get(i).getId());
             System.out.println(userList.get(i).getName());
             System.out.println(userList.get(i).getUser_type());
             System.out.println();
-
-
         }
-
-
-
     }
 
     /**
@@ -122,10 +114,10 @@ public class SimulationData {
         System.out.println();
     }
 
-
-
     /**
      * Generate a randomized ID.
+     *
+     * @return the String uniqueID.
      */
     public String generateId(){
 
@@ -136,6 +128,8 @@ public class SimulationData {
 
     /**
      * Getter for the array of rooms.
+     *
+     * @return the RoomModel[] roomArray.
      */
     public RoomModel[] getRoomArray() {
         return roomArray;
@@ -143,6 +137,8 @@ public class SimulationData {
 
     /**
      * Getter for the array list of room names.
+     *
+     * @return the roomNameList.
      */
     public ArrayList<String> getRoomNameList() {
         return roomNameList;
@@ -150,13 +146,17 @@ public class SimulationData {
 
     /**
      * Getter for the house model.
+     *
+     * @return the HouseModel houseModel.
      */
     public HouseModel getHouseModel(){
         return houseModel;
     }
 
     /**
-     * Getter for the array list of users..
+     * Getter for the array list of users.
+     *
+     * @return the userList.
      */
     public ArrayList<UserModel> getUserArrayList() {
         return userList;

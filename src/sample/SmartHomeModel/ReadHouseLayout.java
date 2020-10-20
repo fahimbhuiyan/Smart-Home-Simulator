@@ -76,6 +76,8 @@ public class ReadHouseLayout {
     }
     /**
      * Gets the house layout.
+     *
+     * @return the JSONObject []
      */
     public JSONObject [] getHouseLayout(){
 
@@ -84,6 +86,8 @@ public class ReadHouseLayout {
 
     /**
      * Gets the length of the JSON Object array.
+     *
+     * @return the int size of jsonObjectArray
      */
     public int getJsonArraySize(){
 

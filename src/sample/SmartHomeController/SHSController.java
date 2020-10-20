@@ -99,6 +99,7 @@ public class SHSController {
      * @param id               the id
      * @param consoleTextField the console text field
      * @param houseModel       the house model
+     * @return if user can be removed
      */
     public void deleteUserProfile(ArrayList<UserModel> userList, int id, TextArea consoleTextField, HouseModel houseModel) {
         boolean userExist = false;
@@ -126,6 +127,7 @@ public class SHSController {
      * @param roomArray        the room array
      * @param roomName         the room name
      * @param consoleTextField the console text field
+     * @return print object blocking window
      */
     public void addObjectToWindow(RoomModel[] roomArray, String roomName, TextArea consoleTextField) {
         for (int i = 0; i < roomArray.length; i++) {

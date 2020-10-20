@@ -22,6 +22,7 @@ public class SimulationDataController {
      * Load data from json file
      *
      * @param path a String which specifies the file path of the JSON house layout file.
+     * @return String path
      */
     public void loadData(String path){
 

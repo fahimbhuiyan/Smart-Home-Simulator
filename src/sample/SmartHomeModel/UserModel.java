@@ -12,6 +12,7 @@ public class UserModel {
 
 	/**
 	 * Instantiate a user.
+	 *
 	 * @param name the name of the user.
 	 * @param id the id of the user.
 	 * @param user_type the type of the user.
@@ -26,6 +27,8 @@ public class UserModel {
 
 	/**
 	 * Getter for the name of a user.
+	 *
+	 * @return the String name.
 	 */
 	public String getName() {
 		return name;
@@ -33,6 +36,7 @@ public class UserModel {
 
 	/**
 	 * Setter for name of a user.
+	 *
 	 * @param name the name of a user.
 	 */
 	public void setName(String name) {
@@ -41,6 +45,8 @@ public class UserModel {
 
 	/**
 	 * Getter for id of a user.
+	 *
+	 * @return the int id.
 	 */
 	public int getId() {
 		return id;
@@ -48,6 +54,7 @@ public class UserModel {
 
 	/**
 	 * Setter for id of a user.
+	 *
 	 * @param id the id of a user.
 	 */
 	public void setId(int id) {
@@ -56,6 +63,8 @@ public class UserModel {
 
 	/**
 	 * Getter for the type of a user.
+	 *
+	 * @return the String user_type.
 	 */
 	public String getUser_type() {
 		return user_type;
@@ -63,6 +72,7 @@ public class UserModel {
 
 	/**
 	 * Setter for type of a user.
+	 *
 	 * @param user_type the type of a user.
 	 */
 	public void setUser_type(String user_type) {
@@ -71,6 +81,8 @@ public class UserModel {
 
 	/**
 	 * Getter for the location of a user.
+	 *
+	 * @return the String location.
 	 */
 	public String getLocation() {
 		return location;
@@ -78,6 +90,7 @@ public class UserModel {
 
 	/**
 	 * Setter for location of a user.
+	 *
 	 * @param location the location of a user.
 	 */
 	public void setLocation(String location) {
