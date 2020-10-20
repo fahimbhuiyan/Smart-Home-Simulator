@@ -15,8 +15,8 @@ To develop a Smart Home Simulator application. This application will help people
 The project runs best with JDK 8 or JDK 9.
 
 ## External Dependencies
-* [json-simple 1.1.1](https://code.google.com/archive/p/json-simple/downloads)
-* [JFoeniX 8](https://search.maven.org/remotecontent?filepath=com/jfoenix/jfoenix/8.0.10/jfoenix-8.0.10.jar) if you are using JDK 8 or [JFoeniX 9](https://search.maven.org/remotecontent?filepath=com/jfoenix/jfoenix/9.0.10/jfoenix-9.0.10.jar) if you are using JDK 9
+* [json-simple 1.1.1](https://code.google.com/archive/p/json-simple/downloads). This library is used to parse and read the house layout which is stored in a JSON file.
+* [JFoeniX 8](https://search.maven.org/remotecontent?filepath=com/jfoenix/jfoenix/8.0.10/jfoenix-8.0.10.jar) if you are using JDK 8 or [JFoeniX 9](https://search.maven.org/remotecontent?filepath=com/jfoenix/jfoenix/9.0.10/jfoenix-9.0.10.jar) if you are using JDK 9. This library is used in order to add time and date widget pickers.
 
 ## **Team Members**
 * Razvan Ivan (40096278): razvan.ivan10@yahoo.com
