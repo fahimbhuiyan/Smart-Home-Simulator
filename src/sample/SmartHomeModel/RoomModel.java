@@ -81,7 +81,6 @@ public class RoomModel {
 		this.yAxis = yAxis;
 	}
 
-
 	private DoorModel door;
 	private LightModel light;
 	private WindowModel window;

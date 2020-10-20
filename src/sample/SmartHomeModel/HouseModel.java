@@ -4,7 +4,6 @@ package sample.SmartHomeModel;
  * Class for the House model.
  */
 public class HouseModel {
-
     private double outsideTemp = 0;
     private String loggedUserName = "";
     private int id;
@@ -18,7 +17,6 @@ public class HouseModel {
      * @param simulationActive the simulation active
      */
     public HouseModel(int outsideTemp, String loggedUserName, boolean simulationActive) {
-
         this.loggedUserName = loggedUserName;
     }
 

@@ -20,7 +20,6 @@ public class WindowModel {
 	 * @param id the id of the window.
 	 */
 	public WindowModel(String id) throws FileNotFoundException {
-		
 		super();
 		this.id = id;
 		loadImage();
@@ -30,12 +29,10 @@ public class WindowModel {
 	 * Load the images used for windows.
 	 */
 	public void loadImage() {
-
 			imageOpen = new Image(getClass().getResourceAsStream("/img/window_open.png"));
 			imageClose = new Image(getClass().getResourceAsStream("/img/window_close.png"));
 			System.out.println(imageOpen+"bla");
 			System.out.println(imageClose);
-
 	}
 
 	/**
@@ -47,7 +44,7 @@ public class WindowModel {
 
 	/**
 	 * Setter for the id of a window.
-	 * @param id id of the window
+	 * @param id the id of the window
 	 */
 	public void setId(String id) {
 		this.id = id;

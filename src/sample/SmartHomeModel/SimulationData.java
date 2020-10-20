@@ -16,7 +16,6 @@ public class SimulationData {
     ArrayList<UserModel> userList = new ArrayList<UserModel>();
     HouseModel houseModel;
 
-
     /**
      * Create the data for the rooms, doors, windows, and lights.
      *
@@ -37,6 +36,7 @@ public class SimulationData {
         System.out.println("Creating Rooms");
         for(int i = 0; i < rhm.getJsonArraySize(); i++){
 
+            //dimensions of rooom
             String name = jsonObjectArray[i].get("name").toString();
             int width = Integer.parseInt(jsonObjectArray[i].get("width").toString());
             int height = Integer.parseInt(jsonObjectArray[i].get("height").toString());
@@ -94,8 +94,6 @@ public class SimulationData {
         userList.add(defaultGuest);
         userList.add(defaultStranger);
 
-
-
         System.out.println("Default Users are created");
         for(int i = 0; i < userList.size(); i++){
             System.out.println(userList.get(i).getId());
@@ -105,8 +103,6 @@ public class SimulationData {
 
 
         }
-
-
 
     }
 
@@ -131,7 +127,6 @@ public class SimulationData {
 
         String uniqueID = java.util.UUID.randomUUID().toString();
         return uniqueID;
-
     }
 
     /**

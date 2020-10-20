@@ -14,8 +14,6 @@ import java.io.IOException;
  * Class to read the house layout file.
  */
 public class ReadHouseLayout {
-
-
     JSONObject[] jsonObjectArray;
 
     /**

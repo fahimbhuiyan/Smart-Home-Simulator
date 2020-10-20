@@ -19,7 +19,7 @@ public class SimulationDataController {
     SimulationData smd = new SimulationData();
 
     /**
-     * Load data from json file
+     * Load data from json House file
      */
     public void loadData(){
 

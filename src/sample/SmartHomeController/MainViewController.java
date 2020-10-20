@@ -448,6 +448,7 @@ public class MainViewController {
      */
     @FXML
     public void saveSimulationConditions(ActionEvent actionEvent) {
+        //saves to console and displays to left panel and on the house layout (for all)
         if (actionEvent.getSource().equals(saveDate)) {
             consoleTextField.setText("The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());

@@ -29,7 +29,6 @@ public class SHSController {
      */
     int loggedUserID = -1;
 
-
     /**
      * Instantiates a new SHS Controller.
      */
@@ -81,7 +80,7 @@ public class SHSController {
                 loggedUserID = userList.get(i).getId();
             }
         }
-
+        //validating that user exists
         if (!userExist) {
             consoleTextField.setText("Try again. No user with id " + id + " exists in the database.\n" + consoleTextField.getText());
         }
@@ -90,7 +89,6 @@ public class SHSController {
 
         return userInfo;
     }
-
 
     /**
      * Delete user profile.
@@ -168,6 +166,7 @@ public class SHSController {
             }
         }
 
+        //check if user exists and if not create
         if (!userExist) {
             UserModel user = new UserModel(name, id, userType, location);
             userList.add(user);
