@@ -5,6 +5,7 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.Group?>
 
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0"
@@ -24,44 +25,70 @@
             <Button fx:id="turnOnOffSimulation" onAction="#startOrStopSimulation" mnemonicParsing="false"
                     prefHeight="25.0" prefWidth="161.0" text="Start the simulation"/>
             <Label fx:id="warningLabelSimulation"
-                   text="Please log in as a user as&#10;well as set the date, time,&#10;inside temperature, and&#10;outside temperature before&#10;starting the simulation."
+                   text="Please upload the path&#10;to a house layout file.&#10;For example, the path&#10;should look like this:&#10;C:\Soen 343\HouseInfo.json"
                    textFill="red"
                    contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
                 <VBox.margin>
                     <Insets top="5" bottom="10"/>
                 </VBox.margin>
             </Label>
-            <Label text="User information" style="-fx-font-weight: bold"
-                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="labelUserInfoLeftPanel" text="User information" style="-fx-font-weight: bold"
+                       contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="10"/>
+                    </VBox.margin>
+                </Label>
 
-            <ImageView
-                    fitHeight="50"
-                    fitWidth="50"
-                    layoutX="61.0"
-                    layoutY="83.0"
-                    pickOnBounds="true"
-                    preserveRatio="true"
-            >
-                <Image
-                        url="img/avatar.png"
-                        backgroundLoading="true"
-                />
-            </ImageView>
+                <ImageView fx:id="avatarImageView"
+                           fitHeight="50"
+                           fitWidth="50"
+                           layoutX="61.0"
+                           layoutY="83.0"
+                           pickOnBounds="true"
+                           preserveRatio="true"
+                >
+                    <Image
+                            url="img/avatar.png"
+                            backgroundLoading="true"
+                    />
+                </ImageView>
 
-            <Label fx:id="userNameLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="userIDLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="userPermissionLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="userLocationLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label text="Simulation parameters" style="-fx-font-weight: bold"
+                <Label fx:id="userNameLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="userIDLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="userPermissionLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="userLocationLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="labelLeftPanelSimParam" text="Simulation parameters" style="-fx-font-weight: bold"
+                       contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="10"/>
+                    </VBox.margin>
+                </Label>
+                <Label fx:id="leftPanelDate" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+                <Label fx:id="leftPanelInTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+
+
+            <Label fx:id="labelHouseLayoutFile" text="Upload a house file" style="-fx-font-weight: bold"
                    contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
                 <VBox.margin>
-                    <Insets top="10"/>
+                    <Insets bottom="5"/>
                 </VBox.margin>
             </Label>
-            <Label fx:id="leftPanelDate" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="leftPanelInTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <TextField fx:id="houseLayoutFilePath">
+                <VBox.margin>
+                    <Insets bottom="5"/>
+                </VBox.margin>
+            </TextField>
+            <Button fx:id="saveHouseLayoutFilePath" onAction="#readHouseLayoutFile" text="Upload" contentDisplay="CENTER"
+                    alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="errorLabelHouseLayoutFile"
+                   textFill="red"
+                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets top="5"/>
+                </VBox.margin>
+            </Label>
         </VBox>
 
         <AnchorPane layoutX="189.0" layoutY="16.0" prefHeight="410" prefWidth="410.0" style="-fx-border-color: gray;">

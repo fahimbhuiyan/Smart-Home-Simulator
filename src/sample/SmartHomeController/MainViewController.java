@@ -6,13 +6,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
+
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,12 +29,39 @@ import java.util.ArrayList;
  */
 public class MainViewController {
 
+    /**
+     * A controller which handles the house and user information (i.e. the simulation data).
+     */
     private SimulationDataController simulationDataController;
+
+    /**
+     * A controller which handles the drawing of the house layout.
+     */
     private HouseViewController houseViewController;
+
+    /**
+     * A controller which handles the modification of the simulation data.
+     */
     private SHSController shsController;
+
+    /**
+     * An array with all the rooms of the house.
+     */
     private RoomModel[] roomArray;
+
+    /**
+     * A instance of a HouseModel object which represents the house itself.
+     */
     private HouseModel houseModel;
+
+    /**
+     * A list which contains all the user profiles present in the simulation.
+     */
     private ArrayList<UserModel> userModelArrayList;
+
+    /**
+     * A list which contains all the names of the rooms of the house.
+     */
     private ArrayList<String> roomNameArrayList;
 
     /**
@@ -254,6 +288,50 @@ public class MainViewController {
     Label userPermissionLabel;
 
     /**
+     * A text field where the user enters the path of the house layout JSON file that they wish to upload.
+     */
+    @FXML
+    TextField houseLayoutFilePath;
+
+    /**
+     * A button which saves the path of the house layout JSON file that the user wishes to upload.
+     */
+    @FXML
+    Button saveHouseLayoutFilePath;
+
+    /**
+     * A label which describes the section where the user must upload a path to the house layout JSON file.
+     */
+    @FXML
+    Label labelHouseLayoutFile;
+
+    /**
+     * A label which informs the user of any issues that many arise during the processing of the path to the house layout JSON file.
+     */
+    @FXML
+    Label errorLabelHouseLayoutFile;
+
+    /**
+     * A container which holds the default avatar profile picture of the logged-in user.
+     */
+    @FXML
+    ImageView avatarImageView;
+
+    /**
+     * A label which describes the section that holds general user information (avatar, name, ID, permission level, and
+     * location).
+     */
+    @FXML
+    Label labelUserInfoLeftPanel;
+
+    /**
+     * A label which describes the section that holds general simulation parameters (date, time, inside temperature, and
+     * outside temperature).
+     */
+    @FXML
+    Label labelLeftPanelSimParam;
+
+    /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
     private boolean isLoggedIn = false;
@@ -280,43 +358,28 @@ public class MainViewController {
         simulationDataController = new SimulationDataController();
         houseViewController = new HouseViewController();
         shsController = new SHSController();
-        simulationDataController.loadData();
-        roomArray = simulationDataController.getRoomArray();
-        roomNameArrayList = simulationDataController.getRoomNameList();
-        userModelArrayList = simulationDataController.getUserArrayList();
-        houseModel = simulationDataController.getHouseModel();
-        loadUsersInSHSTable();
     }
 
     /**
-     * Initialize the default parameters of the simulation.
+     * Initialize the simulator by restricting the access of the UI until the user uploads
+     * a path of the house layout JSON file that they wishes to upload.
      */
     @FXML
     public void initialize() {
-        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
-
-        addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(0));
-
-        for (int i = 1; i < roomNameArrayList.size(); i++) {
-            addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
-            blockWinLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
-        }
-
-        addModifyLocComboBoxSHS.getItems().add("Outside");
-        addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
-
-        addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
-        addModifyRoleComboBoxSHS.getSelectionModel().selectFirst();
-        blockWinLocComboBoxSHS.getSelectionModel().selectFirst();
-
-        userTable.setEditable(true);
-        userTable.setItems(data);
-
-        dateSHS.setValue(LocalDate.now());
-
         turnOnOffSimulation.setDisable(true);
+        moduleTabs.setDisable(true);
 
-        timeSHS.setValue(LocalTime.of(12, 0));
+        showUIElement(avatarImageView, false);
+        showUIElement(userNameLabel, false);
+        showUIElement(userIDLabel, false);
+        showUIElement(userPermissionLabel, false);
+        showUIElement(userLocationLabel, false);
+        showUIElement(leftPanelDate, false);
+        showUIElement(leftPanelTime, false);
+        showUIElement(leftPanelOutTemp, false);
+        showUIElement(leftPanelInTemp, false);
+        showUIElement(labelLeftPanelSimParam, false);
+        showUIElement(labelUserInfoLeftPanel, false);
     }
 
     /**
@@ -481,13 +544,14 @@ public class MainViewController {
     }
 
     /**
-     * Disable the simulation warning and allow the user to start the simulation if all the necessary conditions have
+     * Hide the simulation warning message and allow the user to start the simulation if all the necessary conditions have
      * been met.
      */
     private void turnOffSimulationWarning() {
         if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
             turnOnOffSimulation.setDisable(false);
-            warningLabelSimulation.setText("");
+            warningLabelSimulation.setVisible(false);
+            warningLabelSimulation.setManaged(false);
         }
     }
 
@@ -508,6 +572,8 @@ public class MainViewController {
         if (action.equals("login") || (isLoggedIn && action.equals("add/modify") && loggedInUser.getId() == processedUser.getId())) {
             loggedInUser = new UserModel(processedUser.getName(), processedUser.getId(), processedUser.getUser_type(), processedUser.getLocation());
 
+            avatarImageView.setVisible(true);
+            avatarImageView.setManaged(true);
             userNameLabel.setText("Name: " + loggedInUser.getName());
             userIDLabel.setText("ID: " + loggedInUser.getId());
             userPermissionLabel.setText("Permission: " + loggedInUser.getUser_type());
@@ -515,5 +581,96 @@ public class MainViewController {
             isLoggedIn = true;
             turnOffSimulationWarning();
         }
+    }
+
+    /**
+     * Process the path of the house layout JSON file that the user wishes to upload and give access to the rest of
+     * the simulator if the file exists.
+     */
+    @FXML
+    private void readHouseLayoutFile () {
+
+        //For the path, try something like C:\Soen 343\Project\HouseInfo.json
+        JSONParser parser = new JSONParser();
+        String path = houseLayoutFilePath.getText().replaceAll("\\\\+","\\\\\\\\");
+        Object obj = null;
+
+        try {
+            obj = parser.parse(new FileReader(path));
+        } catch (IOException | ParseException e) {
+            System.out.println("File not found or parse error occurred!");
+            System.out.println("Textfield: " + houseLayoutFilePath.getText());
+            System.out.println("Path: " + path);
+            errorLabelHouseLayoutFile.setText("An error has occurred!\nEither the file was not found\nor a parsing error has\noccurred. Please double\ncheck your file path.");
+            return;
+        }
+
+        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\ninside temperature, and\noutside temperature before\nstarting the simulation.");
+        System.out.println("File found!");
+        System.out.println("Textfield: " + houseLayoutFilePath.getText());
+        System.out.println("Path: " + path);
+
+        moduleTabs.setDisable(false);
+        showUIElement(labelHouseLayoutFile, false);
+        showUIElement(houseLayoutFilePath, false);
+        showUIElement(saveHouseLayoutFilePath, false);
+        showUIElement(errorLabelHouseLayoutFile, false);
+
+        showUIElement(avatarImageView, true);
+        showUIElement(userNameLabel, true);
+        showUIElement(userIDLabel, true);
+        showUIElement(userPermissionLabel, true);
+        showUIElement(userLocationLabel, true);
+        showUIElement(leftPanelDate, true);
+        showUIElement(leftPanelTime, true);
+        showUIElement(leftPanelOutTemp, true);
+        showUIElement(leftPanelInTemp, true);
+        showUIElement(labelLeftPanelSimParam, true);
+        showUIElement(labelUserInfoLeftPanel, true);
+
+        // SHS prep
+
+        simulationDataController.loadData(path);
+        roomArray = simulationDataController.getRoomArray();
+        roomNameArrayList = simulationDataController.getRoomNameList();
+        userModelArrayList = simulationDataController.getUserArrayList();
+        houseModel = simulationDataController.getHouseModel();
+        loadUsersInSHSTable();
+
+        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
+
+        addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(0));
+
+        for (int i = 1; i < roomNameArrayList.size(); i++) {
+            addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
+            blockWinLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
+        }
+
+        addModifyLocComboBoxSHS.getItems().add("Outside");
+        addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
+
+        addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
+        addModifyRoleComboBoxSHS.getSelectionModel().selectFirst();
+        blockWinLocComboBoxSHS.getSelectionModel().selectFirst();
+
+        userTable.setEditable(true);
+        userTable.setItems(data);
+
+        dateSHS.setValue(LocalDate.now());
+
+        turnOnOffSimulation.setDisable(true);
+
+        timeSHS.setValue(LocalTime.of(12, 0));
+    }
+
+    /**
+     * Helper method which shows or hides a given UI element.
+     *
+     * @param node the UI element which must either be shown or hidden.
+     * @param bool a boolean where true means to show and false means to hide.
+     */
+    private void showUIElement(Node node, boolean bool) {
+        node.setVisible(bool);
+        node.setManaged(bool);
     }
 }

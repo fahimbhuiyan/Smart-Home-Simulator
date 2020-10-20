@@ -20,11 +20,13 @@ public class SimulationDataController {
 
     /**
      * Load data from json file
+     *
+     * @param path a String which specifies the file path of the JSON house layout file.
      */
-    public void loadData(){
+    public void loadData(String path){
 
         try {
-            smd.createData("HouseInfo.json");
+            smd.createData(path);
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
