@@ -16,7 +16,6 @@ public class SimulationData {
     ArrayList<UserModel> userList = new ArrayList<UserModel>();
     HouseModel houseModel;
 
-
     /**
      * Create the data for the rooms, doors, windows, and lights.
      *
@@ -80,7 +79,6 @@ public class SimulationData {
         }
     }
 
-
     /**
      * Instantiate default users.
      */
@@ -95,20 +93,13 @@ public class SimulationData {
         userList.add(defaultGuest);
         userList.add(defaultStranger);
 
-
-
         System.out.println("Default Users are created");
         for(int i = 0; i < userList.size(); i++){
             System.out.println(userList.get(i).getId());
             System.out.println(userList.get(i).getName());
             System.out.println(userList.get(i).getUser_type());
             System.out.println();
-
-
         }
-
-
-
     }
 
     /**
@@ -122,8 +113,6 @@ public class SimulationData {
         System.out.println(houseModel.isSimulationActive());
         System.out.println();
     }
-
-
 
     /**
      * Generate a randomized ID.

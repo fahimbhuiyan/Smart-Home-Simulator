@@ -6,14 +6,10 @@ import org.w3c.dom.ranges.DocumentRange;
  * Class for the Door model.
  */
 public class DoorModel {
-
-
-
 	private String id;
 	private boolean isOpen = false;
 	private boolean isLocked = false;
 	private String doorType;
-
 
 	/**
 	 * Instantiates a new Door model.
@@ -22,12 +18,9 @@ public class DoorModel {
 	 * @param doorType the door type
 	 */
 	public DoorModel(String id, String doorType) {
-
 		super();
 		this.id = id;
 		this.doorType = doorType;
-
-
 	}
 
 	/**

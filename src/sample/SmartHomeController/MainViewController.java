@@ -101,25 +101,25 @@ public class MainViewController {
     GridPane gridAddModule;
 
     /**
-     * The button used to start/stop the simulation.
+     * The Button used to start/stop the simulation.
      */
     @FXML
     Button turnOnOffSimulation;
 
     /**
-     * A combobox containing the different permission levels (roles) that a user can have.
+     * A ComboBox containing the different permission levels (roles) that a user can have.
      */
     @FXML
     ComboBox<String> addModifyRoleComboBoxSHS;
 
     /**
-     * A combobox containing the different locations that a user can be in.
+     * A ComboBox containing the different locations that a user can be in.
      */
     @FXML
     ComboBox<String> addModifyLocComboBoxSHS;
 
     /**
-     * A combobox containing the different locations that a user can block a window in.
+     * A ComboBox containing the different locations that a user can block a window in.
      */
     @FXML
     ComboBox<String> blockWinLocComboBoxSHS;
@@ -143,19 +143,19 @@ public class MainViewController {
     JFXTimePicker timeSHS;
 
     /**
-     * Text field used to specify the name of a new user or to modify the name of an existing user.
+     * TextField used to specify the name of a new user or to modify the name of an existing user.
      */
     @FXML
     TextField addModifyUserName;
 
     /**
-     * A container which holds the different modules tabs (one tab per module).
+     * TabPane used as a container which holds the different modules tabs (one tab per module).
      */
     @FXML
     TabPane moduleTabs;
 
     /**
-     * The text area used where the console messages will print.
+     * The TextArea used where the console messages will print.
      */
     @FXML
     TextArea consoleTextField;
@@ -227,86 +227,86 @@ public class MainViewController {
     Button saveWindowBlock;
 
     /**
-     * The container (left-side panel) which contains the start/stop simulation button as well as
+     * VBox as the container (left-side panel) which contains the start/stop simulation button as well as
      * general information about the simulation and the logged-in user.
      */
     @FXML
     VBox locationsVBox;
 
     /**
-     * The label displaying the simulation date in the left-side panel.
+     * The Label displaying the simulation date in the left-side panel.
      */
     @FXML
     Label leftPanelDate;
 
     /**
-     * The label displaying the simulation time in the left-side panel.
+     * The Label displaying the simulation time in the left-side panel.
      */
     @FXML
     Label leftPanelTime;
 
     /**
-     * The label displaying the inside temperature of the simulation in the left-side panel.
+     * The Label displaying the inside temperature of the simulation in the left-side panel.
      */
     @FXML
     Label leftPanelInTemp;
 
     /**
-     * The label displaying the outside temperature of the simulation in the left-side panel.
+     * The Label displaying the outside temperature of the simulation in the left-side panel.
      */
     @FXML
     Label leftPanelOutTemp;
 
     /**
-     * The label which warns the user of the conditions that must be met before being able to start the simulation.
+     * The Label which warns the user of the conditions that must be met before being able to start the simulation.
      */
     @FXML
     Label warningLabelSimulation;
 
     /**
-     * The label displaying the name of the user that is currently logged into the simulation.
+     * The Label displaying the name of the user that is currently logged into the simulation.
      */
     @FXML
     Label userNameLabel;
 
     /**
-     * The label displaying the ID of the user that is currently logged into the simulation.
+     * The Label displaying the ID of the user that is currently logged into the simulation.
      */
     @FXML
     Label userIDLabel;
 
     /**
-     * The label displaying the location of the user that is currently logged into the simulation.
+     * The Label displaying the location of the user that is currently logged into the simulation.
      */
     @FXML
     Label userLocationLabel;
 
     /**
-     * The label displaying the permission level of the user that is currently logged into the simulation.
+     * The Label displaying the permission level of the user that is currently logged into the simulation.
      */
     @FXML
     Label userPermissionLabel;
 
     /**
-     * A text field where the user enters the path of the house layout JSON file that they wish to upload.
+     * A TextField where the user enters the path of the house layout JSON file that they wish to upload.
      */
     @FXML
     TextField houseLayoutFilePath;
 
     /**
-     * A button which saves the path of the house layout JSON file that the user wishes to upload.
+     * A Button which saves the path of the house layout JSON file that the user wishes to upload.
      */
     @FXML
     Button saveHouseLayoutFilePath;
 
     /**
-     * A label which describes the section where the user must upload a path to the house layout JSON file.
+     * A Label which describes the section where the user must upload a path to the house layout JSON file.
      */
     @FXML
     Label labelHouseLayoutFile;
 
     /**
-     * A label which informs the user of any issues that many arise during the processing of the path to the house layout JSON file.
+     * A Label which informs the user of any issues that many arise during the processing of the path to the house layout JSON file.
      */
     @FXML
     Label errorLabelHouseLayoutFile;
@@ -318,7 +318,7 @@ public class MainViewController {
     ImageView avatarImageView;
 
     /**
-     * A label which describes the section that holds general user information (avatar, name, ID, permission level, and
+     * A Label which describes the section that holds general user information (avatar, name, ID, permission level, and
      * location).
      */
     @FXML
@@ -403,6 +403,7 @@ public class MainViewController {
      * Set outside temperature.
      *
      * @param event the event which indicates that the user interacted with the button that saves the outside temperature.
+     * @return prints on left panel and also on House Layout
      */
     @FXML
     public void setOutsideTemperature(ActionEvent event) {
@@ -418,6 +419,7 @@ public class MainViewController {
      * Set inside temperature.
      *
      * @param event the event which indicates that the user interacted with the button that saves the inside temperature.
+     * @return prints on left panel and also on House Layout
      */
     @FXML
     public void setInsideTemperature(ActionEvent event) {
@@ -434,6 +436,7 @@ public class MainViewController {
      *
      * @param event the event which indicates that the user interacted with the button that saves the location in
      *              which the window must be blocked by an object.
+     *
      */
     @FXML
     public void addObjectToWindow(ActionEvent event) {
@@ -445,6 +448,7 @@ public class MainViewController {
 
     /**
      * Start or stop the simulation and enable or disable the needed UI controls.
+     * @return prints on output console
      */
     @FXML
     public void startOrStopSimulation() {
@@ -523,6 +527,7 @@ public class MainViewController {
      *
      * @param event the event which specifies the button which the user interacted with in order to save a certain
      *              simulation condition.
+     * @return prints on left panel and on House Layout
      */
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
