@@ -38,6 +38,8 @@ The project runs best with JDK 8 or JDK 9. If JDK 11 or later is used, then the 
 
 ## **System In Operation**
 ### **Delivery 1**
+* [Report](https://docs.google.com/document/d/1CJXxn7XZUxPXvwjpcWOrYFK7pl63NPytqWtMBpBK6ZA/edit#)
+
 Dashboard as soon as the application is running. 
 ![alt text](https://imgur.com/Tpmhajq.png)
 
