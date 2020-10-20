@@ -31,16 +31,23 @@ The project runs best with JDK 8 or JDK 9. If JDK 11 or later is used, then the 
 3. Open the SOEN343 folder as a project in IntelliJ IDEA.
 4. Mark the src directory as source code.
 5. Create a directory called "out" in the SOEN343 folder and mark it as excluded.
-6. Configure project settings by going to File>Project Structure. (CTRL+ALT+SHIFT+S)
+6. Configure project settings by going to File>Project Structure. `(CTRL+ALT+SHIFT+S)`
 7. Inside the Project Structure window that appeared, go to Project Settings>Project and set the JDK version you're using and set the project compiler output path to the out directory that you just created.
 8. Again, inside the Project Structure window that appeared, go to Project Settings>Libraries and add the two external dependencies by clicking on the plus sign and by specifying the path for each dependency.
 9. Head over to SOEN343\src\sample\SmartHomeView\MainView, build the project (click on the green hammer icon on the top menu bar), and then run the main method of the class MainView.
+10. The application will ask to upload a house file. In the SOEN343 directory, there should a json file called `HouseInfo`. On the text field, type the location of the file. (Ex: D:\Documents\GitHub\SOEN343\HouseInfo.json)
 
 ## **System In Operation**
 ### **Delivery 1**
 * [Report](https://docs.google.com/document/d/1CJXxn7XZUxPXvwjpcWOrYFK7pl63NPytqWtMBpBK6ZA/edit#)
 
 Dashboard as soon as the application is running. 
+![alt text](https://imgur.com/gHF1wsm.png)
+
+Enter file location on text field.
+![alt text](https://imgur.com/TpUimvS.png)
+
+Dashboard after file upload. 
 ![alt text](https://imgur.com/Tpmhajq.png)
 
 Dashboard when the user is logged in and has set the date, time, and inside and outside temperatures.
