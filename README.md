@@ -1,4 +1,4 @@
-# SOEN 343 Project
+# SOEN 343 Project (Team 22)
 
 # **Project Name: Smart Home Simulator (SHS)**
 
