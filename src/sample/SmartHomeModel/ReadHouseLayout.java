@@ -56,9 +56,6 @@ public class ReadHouseLayout {
                 // Instead, create the specific objects
             }
 
-
-
-
         }
         catch (FileNotFoundException e){
             e.printStackTrace();
