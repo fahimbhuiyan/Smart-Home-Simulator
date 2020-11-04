@@ -32,7 +32,7 @@
       "y-axis" : 100
     },
     "room4": {
-      "name": "Toilet",
+      "name": "Garage",
       "nbDoor": 1,
       "nbLight": 1,
       "nbWindow": 1,
