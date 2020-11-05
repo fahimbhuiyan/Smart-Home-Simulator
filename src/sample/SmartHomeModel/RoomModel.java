@@ -1,7 +1,5 @@
 package sample.SmartHomeModel;
 
-import java.util.ArrayList;
-
 /**
  * Class for the Room Model.
  */
@@ -11,6 +9,10 @@ public class RoomModel {
 	private String name;
 	private double temperature = 0;
 	private int nbPeople = 0;
+
+	private DoorModel door;
+	private LightModel light;
+	private WindowModel window;
 
 	private int width = 0;
 	private int height = 0;
@@ -89,11 +91,6 @@ public class RoomModel {
 		this.yAxis = yAxis;
 	}
 
-
-	private DoorModel door;
-	private LightModel light;
-	private WindowModel window;
-
 	/**
 	 * Instantiates a new Room model.
 	 *
@@ -124,7 +121,7 @@ public class RoomModel {
 	 *
 	 * @return the String roomID
 	 */
-	public String getRoomID() {
+	String getRoomID() {
 		return roomID;
 	}
 

@@ -1,24 +1,22 @@
 package sample.SmartHomeModel;
 
 import org.json.simple.JSONObject;
-import sample.SmartHomeModel.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class for the data of the simulation.
  */
 public class SimulationData {
 
-    RoomModel []roomArray;
-    ArrayList<String> roomNameList = new ArrayList<>();
-    ArrayList<UserModel> userList = new ArrayList<UserModel>();
-    HouseModel houseModel;
-    PrintWriter printWriter;
-    BufferedReader bufferedReader;
-
-
+    private Map<String, RoomModel> rooms;
+    private ArrayList<UserModel> userList = new ArrayList<>();
+    private HouseModel houseModel;
+    private PrintWriter printWriter;
+    private BufferedReader bufferedReader;
 
     /**
      * Create the data for the rooms, doors, windows, and lights.
@@ -29,37 +27,28 @@ public class SimulationData {
     public void createData(String fileName) throws IOException {
 
         System.out.println("Creating Data");
-        createDefaultUser();
-        createHouse();
+        createDefaultUsers();
         ReadHouseLayout rhm = new ReadHouseLayout();
         rhm.ReadJSON(fileName);
 
-        roomArray = new RoomModel[rhm.getJsonArraySize()];
-
-        JSONObject []jsonObjectArray = rhm.getHouseLayout();
+        rooms = new HashMap<>();
+        ArrayList<JSONObject> jsonObjectArray = rhm.getHouseLayout();
 
         System.out.println("Creating Rooms");
-        for(int i = 0; i < rhm.getJsonArraySize(); i++){
+        for(int i = 1; i < jsonObjectArray.size(); i++){
 
-            String name = jsonObjectArray[i].get("name").toString();
-            int width = Integer.parseInt(jsonObjectArray[i].get("width").toString());
-            int height = Integer.parseInt(jsonObjectArray[i].get("height").toString());
-            int xAxis = Integer.parseInt(jsonObjectArray[i].get("x-axis").toString());
-            int yAxis = Integer.parseInt(jsonObjectArray[i].get("y-axis").toString());
+            String name = jsonObjectArray.get(i).get("name").toString();
+            int width = Integer.parseInt(jsonObjectArray.get(i).get("width").toString());
+            int height = Integer.parseInt(jsonObjectArray.get(i).get("height").toString());
+            int xAxis = Integer.parseInt(jsonObjectArray.get(i).get("x-axis").toString());
+            int yAxis = Integer.parseInt(jsonObjectArray.get(i).get("y-axis").toString());
 
+            DoorModel door = new DoorModel(generateId(), name);
+            LightModel light = new LightModel(generateId(), name);
+            WindowModel window = new WindowModel(generateId(), name);
+            RoomModel room = new RoomModel(generateId(), name, width, height, xAxis, yAxis, door, light, window);
 
-            DoorModel door;
-            if(!name.equals("House")) {
-                 door = new DoorModel(generateId(), "RoomDoor");
-            } else{
-                 door = new DoorModel(generateId(), "HouseDoor");
-            }
-            LightModel light = new LightModel(generateId());
-            WindowModel window = new WindowModel(generateId());
-            RoomModel room = new RoomModel(generateId(),name,width,height,xAxis,yAxis,door,light,window);
-
-            roomArray[i] = room;
-            roomNameList.add(name);
+            rooms.put(name, room);
 
             System.out.println("Room Id: "+room.getRoomID());
             System.out.println("Room Name: "+room.getName());
@@ -74,23 +63,22 @@ public class SimulationData {
             System.out.println("Room Door ID: "+room.getDoor().getId());
             System.out.println("Room Door is Open: "+room.getDoor().isOpen());
             System.out.println("Room Door is Lock: "+room.getDoor().isLocked());
-            System.out.println("Room Door type: "+room.getDoor().getDoorType());
 
             System.out.println("Room Window ID: "+room.getWindow().getId());
             System.out.println("Room Window is open: "+room.getWindow().isOpen());
             System.out.println("Room Window has object: "+room.getWindow().HasObject());
             System.out.println();
         }
+
+        createHouse(Integer.parseInt(jsonObjectArray.get(0).get("width").toString()), Integer.parseInt(jsonObjectArray.get(0).get("height").toString()), Integer.parseInt(jsonObjectArray.get(0).get("x-axis").toString()), Integer.parseInt(jsonObjectArray.get(0).get("y-axis").toString()));
     }
 
     /**
      * Instantiate default users.
      */
-    public void createDefaultUser() throws IOException {
-
+    private void createDefaultUsers() throws IOException {
 
         loadExistingUser();
-
 
         if(userList.size() == 0){
             UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
@@ -105,15 +93,15 @@ public class SimulationData {
 
 
         System.out.println("Default Users are created");
-        for(int i = 0; i < userList.size(); i++){
-            System.out.println(userList.get(i).getId());
-            System.out.println(userList.get(i).getName());
-            System.out.println(userList.get(i).getUser_type());
+        for (UserModel userModel : userList) {
+            System.out.println(userModel.getId());
+            System.out.println(userModel.getName());
+            System.out.println(userModel.getUser_type());
             System.out.println();
         }
     }
 
-    public void loadExistingUser() throws IOException{
+    private void loadExistingUser() throws IOException{
         try {
             bufferedReader = new BufferedReader(new FileReader("Profiles.txt"));
             String currentLine;
@@ -132,7 +120,7 @@ public class SimulationData {
             }
         }
         catch (FileNotFoundException e){
-
+            System.out.println("File was not found");
         }
         catch (NullPointerException e){
             System.out.println("Reached end of file");
@@ -141,13 +129,29 @@ public class SimulationData {
     /**
      * Create the House Model.
      */
-    public void createHouse(){
+    private void createHouse(int width, int height, int xAxis, int yAxis){
 
-        houseModel = new HouseModel(0,"",false);
+        Map<String, LightModel> lights = new HashMap<>();
+        Map<String, DoorModel> doors = new HashMap<>();
+        Map<String, WindowModel> windows = new HashMap<>();
+
+        lights.put("front-door", new LightModel(generateId(), "front-door"));
+        lights.put("backyard", new LightModel(generateId(), "backyard"));
+
+        doors.put("front-door", new DoorModel(generateId(), "front-door"));
+        doors.put("backyard", new DoorModel(generateId(), "backyard"));
+
+        for (String roomName : rooms.keySet()) {
+            lights.put(roomName, rooms.get(roomName).getLight());
+            doors.put(roomName, rooms.get(roomName).getDoor());
+            windows.put(roomName, rooms.get(roomName).getWindow());
+        }
+
+        houseModel = new HouseModel(0,"", rooms, lights, doors, windows, width, height, xAxis, yAxis);
+
         System.out.println("House model is created");
         System.out.println(houseModel.getLoggedUserName());
         System.out.println(houseModel.getOutsideTemp());
-        System.out.println(houseModel.isSimulationActive());
         System.out.println();
     }
 
@@ -156,29 +160,8 @@ public class SimulationData {
      *
      * @return the String uniqueID.
      */
-    public String generateId(){
-
-        String uniqueID = java.util.UUID.randomUUID().toString();
-        return uniqueID;
-
-    }
-
-    /**
-     * Getter for the array of rooms.
-     *
-     * @return the RoomModel[] roomArray.
-     */
-    public RoomModel[] getRoomArray() {
-        return roomArray;
-    }
-
-    /**
-     * Getter for the array list of room names.
-     *
-     * @return the roomNameList.
-     */
-    public ArrayList<String> getRoomNameList() {
-        return roomNameList;
+    private String generateId(){
+        return java.util.UUID.randomUUID().toString();
     }
 
     /**
@@ -198,5 +181,4 @@ public class SimulationData {
     public ArrayList<UserModel> getUserArrayList() {
         return userList;
     }
-
 }

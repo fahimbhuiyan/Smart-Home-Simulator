@@ -1,6 +1,5 @@
 package sample.SmartHomeModel;
 
-
 import javafx.scene.image.Image;
 import java.io.FileNotFoundException;
 
@@ -10,6 +9,7 @@ import java.io.FileNotFoundException;
 public class WindowModel {
 	
 	private String id;
+	private String name;
 	private boolean isOpen = true;
 	private boolean hasObject = false;
 	private Image imageOpen;
@@ -19,25 +19,22 @@ public class WindowModel {
 	 * Instantiate a Window.
 	 *
 	 * @param id the id of the window.
-	 * @throws FileNotFoundException exception is the file is not found.
 	 */
-	public WindowModel(String id) throws FileNotFoundException {
-		
-		super();
+	public WindowModel(String id, String name) {
 		this.id = id;
+		this.name = name;
 		loadImage();
 	}
 
 	/**
 	 * Load the images used for windows.
 	 */
-	public void loadImage() {
+	private void loadImage() {
 
 			imageOpen = new Image(getClass().getResourceAsStream("/img/window_open.png"));
 			imageClose = new Image(getClass().getResourceAsStream("/img/window_close.png"));
 			System.out.println(imageOpen+"bla");
 			System.out.println(imageClose);
-
 	}
 
 	/**
@@ -50,12 +47,12 @@ public class WindowModel {
 	}
 
 	/**
-	 * Setter for the id of a window.
+	 * Getter for the name of a window.
 	 *
-	 * @param id id of the window
+	 * @return the String name.
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public String getName() {
+		return name;
 	}
 
 	/**

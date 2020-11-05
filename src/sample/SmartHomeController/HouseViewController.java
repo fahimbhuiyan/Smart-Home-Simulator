@@ -25,156 +25,152 @@ public class HouseViewController {
     /**
      * Draw layout of the house.
      *
-     * @param roomArray  the room array
      * @param bp         the bp
      * @param houseModel the house model
      * @param userList   the user list
      */
-    public void drawLayout(RoomModel[] roomArray, BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList) {
+    void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList) {
 
         bp.getChildren().clear();
 
-        for (int i = 0; i < roomArray.length; i++) {
+        // Drawing the empty house layout
+        Rectangle r1 = new Rectangle();
+        r1.setStroke(Color.BLUE);
+        r1.setFill(Color.TRANSPARENT);
+
+        //Add outside temperature
+        Text outsideTemperature = new Text("Outside Temperature: " + Double.toString(houseModel.getOutsideTemp()) + "°C");
+        outsideTemperature.setX(houseModel.getxAxis() - 25);
+        outsideTemperature.setY(houseModel.getyAxis() - 25);
+
+        r1.setWidth(houseModel.getWidth());
+        r1.setHeight(houseModel.getHeight());
+        r1.setX(houseModel.getxAxis());
+        r1.setY(houseModel.getyAxis());
+
+        bp.getChildren().addAll(outsideTemperature, r1);
+
+        for (String roomName : houseModel.getRooms().keySet()) {
 
             //Draw Room
-            Rectangle r1 = new Rectangle();
+            r1 = new Rectangle();
             r1.setStroke(Color.BLUE);
             r1.setFill(Color.TRANSPARENT);
 
             //Add Room Name
-            Text text = new Text(roomArray[i].getName());
+            Text text = new Text(roomName);
 
-            if (!roomArray[i].getName().equals("House")) {
+            text.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
+            text.setY(houseModel.getRooms().get(roomName).getyAxis() + 15);
+            text.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 14));
 
-                text.setX(roomArray[i].getxAxis() + 5);
-                text.setY(roomArray[i].getyAxis() + 15);
-                text.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 14));
+            r1.setWidth(houseModel.getRooms().get(roomName).getWidth());
+            r1.setHeight(houseModel.getRooms().get(roomName).getHeight());
+            r1.setX(houseModel.getRooms().get(roomName).getxAxis());
+            r1.setY(houseModel.getRooms().get(roomName).getyAxis());
+
+            Text temperature = new Text(Double.toString(houseModel.getRooms().get(roomName).getTemperature()) + "°C");
+            temperature.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
+            temperature.setY(houseModel.getRooms().get(roomName).getyAxis() + 30);
+            temperature.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
+
+            ImageView windowImageView = new ImageView();
+
+            if (!houseModel.getRooms().get(roomName).getWindow().isOpen()) {
+                windowImageView.setImage(houseModel.getRooms().get(roomName).getWindow().getImageClose());
+            } else {
+                windowImageView.setImage(houseModel.getRooms().get(roomName).getWindow().getImageOpen());
             }
 
-            if (roomArray[i].getName().equals("House")) {
-                //Add outside temperature
-                Text outsideTemperature = new Text("Outside Temperature: " + Double.toString(houseModel.getOutsideTemp()) + "°C");
-                outsideTemperature.setX(roomArray[i].getxAxis() - 25);
-                outsideTemperature.setY(roomArray[i].getyAxis() - 25);
-
-                bp.getChildren().add(outsideTemperature);
+            Text hasObjectText;
+            if (!houseModel.getRooms().get(roomName).getWindow().HasObject()) {
+                hasObjectText = new Text("No Object");
+            } else {
+                hasObjectText = new Text("Has Object");
             }
 
-            r1.setWidth(roomArray[i].getWidth());
-            r1.setHeight(roomArray[i].getHeight());
-            r1.setX(roomArray[i].getxAxis());
-            r1.setY(roomArray[i].getyAxis());
+            hasObjectText.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
+            hasObjectText.setY(houseModel.getRooms().get(roomName).getyAxis() + 60);
 
-            if (!roomArray[i].getName().equals("House")) {
+            ImageView lightImageView = new ImageView();
 
-                Text temperature = new Text(Double.toString(roomArray[i].getTemperature()) + "°C");
-                temperature.setX(roomArray[i].getxAxis() + 5);
-                temperature.setY(roomArray[i].getyAxis() + 30);
-                temperature.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
-
-                ImageView windowImageView = new ImageView();
-
-                if (roomArray[i].getWindow().isOpen() == false) {
-                    windowImageView.setImage(roomArray[i].getWindow().getImageClose());
-                } else {
-                    windowImageView.setImage(roomArray[i].getWindow().getImageOpen());
-                }
-
-                Text hasObjectText;
-                if (roomArray[i].getWindow().HasObject() == false) {
-                    hasObjectText = new Text("No Object");
-                } else {
-                    hasObjectText = new Text("Has Object");
-                }
-
-                hasObjectText.setX(roomArray[i].getxAxis() + roomArray[i].getWidth() - 50);
-                hasObjectText.setY(roomArray[i].getyAxis() + 60);
-
-                ImageView lightImageView = new ImageView();
-
-                if(roomArray[i].getLight().isOpen()){
-                    lightImageView.setImage(roomArray[i].getLight().getImageOpen());
-                }
-                else{
-                    lightImageView.setImage(roomArray[i].getLight().getImageClose());
-                }
-
-                lightImageView.setFitWidth(50);
-                lightImageView.setFitHeight(50);
-                lightImageView.setX(roomArray[i].getxAxis() + roomArray[i].getWidth() - 50);
-                lightImageView.setY(roomArray[i].getyAxis() + roomArray[i].getHeight() - 53) ;
-
-                windowImageView.setFitWidth(50);
-                windowImageView.setFitHeight(50);
-                windowImageView.setX(roomArray[i].getxAxis() + roomArray[i].getWidth() - 50);
-                windowImageView.setY(roomArray[i].getyAxis());
-
-                bp.getChildren().add(temperature);
-                bp.getChildren().add(windowImageView);
-                bp.getChildren().add(lightImageView);
-                bp.getChildren().add(hasObjectText);
+            if (houseModel.getRooms().get(roomName).getLight().isOpen()) {
+                lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageOpen());
+            } else {
+                lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageClose());
             }
+
+            lightImageView.setFitWidth(50);
+            lightImageView.setFitHeight(50);
+            lightImageView.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
+            lightImageView.setY(houseModel.getRooms().get(roomName).getyAxis() + houseModel.getRooms().get(roomName).getHeight() - 53);
+
+            windowImageView.setFitWidth(50);
+            windowImageView.setFitHeight(50);
+            windowImageView.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
+            windowImageView.setY(houseModel.getRooms().get(roomName).getyAxis());
+
+            bp.getChildren().add(temperature);
+            bp.getChildren().add(windowImageView);
+            bp.getChildren().add(lightImageView);
+            bp.getChildren().add(hasObjectText);
 
             //adding people in room
-            for (int j = 0; j < userList.size(); j++) {
+            for (UserModel userModel : userList) {
 
                 Random r = new Random();
-                Text userName = new Text("• " + userList.get(j).getName() + " (ID: " + userList.get(j).getId() + ")");
+                Text userName = new Text("• " + userModel.getName() + " (ID: " + userModel.getId() + ")");
 
-                if (userList.get(j).getLocation().equals(roomArray[i].getName())) {
+                if (userModel.getLocation().equals(houseModel.getRooms().get(roomName).getName())) {
+                    int xLow = (int) (0.2 * houseModel.getRooms().get(roomName).getWidth());
+                    int xHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getWidth());
+                    int xResult = r.nextInt(xHigh - xLow) + xLow;
 
-                    if (!roomArray[i].getName().equals("House")) {
+                    int yLow = (int) (0.2 * houseModel.getRooms().get(roomName).getHeight());
+                    int yHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getHeight());
+                    int yResult = r.nextInt(yHigh - yLow) + yLow;
 
-                        int xLow = (int) (0.2 * roomArray[i].getWidth());
-                        int xHigh = (int) (0.8 * roomArray[i].getWidth());
-                        int xResult = r.nextInt(xHigh - xLow) + xLow;
-
-                        int yLow = (int) (0.2 * roomArray[i].getHeight());
-                        int yHigh = (int) (0.8 * roomArray[i].getHeight());
-                        int yResult = r.nextInt(yHigh - yLow) + yLow;
-
-                        userName.setX(roomArray[i].getxAxis() + xResult);
-                        userName.setY(roomArray[i].getyAxis() + yResult);
-                        bp.getChildren().add(userName);
-                    }
-
-                    if (roomArray[i].getName().equals("House")) {
-
-                        int xLow = (int) (0.1 * roomArray[i].getWidth());
-                        int xHigh = (int) (0.3 * roomArray[i].getWidth());
-                        int xResult = r.nextInt(xHigh - xLow) + xLow;
-
-                        int yLow = (int) (0.4 * roomArray[i].getHeight());
-                        int yHigh = (int) (0.6 * roomArray[i].getHeight());
-                        int yResult = r.nextInt(yHigh - yLow) + yLow;
-
-                        userName.setX(roomArray[i].getxAxis() + xResult);
-                        userName.setY(roomArray[i].getyAxis() + yResult);
-                        bp.getChildren().add(userName);
-                    }
+                    userName.setX(houseModel.getRooms().get(roomName).getxAxis() + xResult);
+                    userName.setY(houseModel.getRooms().get(roomName).getyAxis() + yResult);
+                    bp.getChildren().add(userName);
                 }
             }
+
             bp.getChildren().addAll(text, r1);
         }
 
-        //adding people outside
-        for (int j = 0; j < userList.size(); j++) {
-            if (userList.get(j).getLocation().equals("Outside")) {
+        // Adding people outside of rooms (such as in the general area of the house and outside).
+        for (UserModel userModel : userList) {
 
-                Random r = new Random();
-                Text userName = new Text("• " + userList.get(j).getName() + " (ID: " + userList.get(j).getId() + ")");
+            Random r = new Random();
+            Text userName = new Text("• " + userModel.getName() + " (ID: " + userModel.getId() + ")");
+
+            if (userModel.getLocation().equals("Outside")) {
                 int xLow = 0;
-                int xHigh = (int) (0.8 * roomArray[0].getxAxis());
+                int xHigh = (int) (0.8 * houseModel.getxAxis());
                 int xResult = r.nextInt(xHigh - xLow) + xLow;
 
                 int yLow = 0;
-                int yHigh = (int) (0.8 * roomArray[0].getyAxis() + roomArray[0].getHeight());
+                int yHigh = (int) (0.8 * houseModel.getyAxis() + houseModel.getHeight());
                 int yResult = r.nextInt(yHigh - yLow) + yLow;
 
                 userName.setX(xResult);
                 userName.setY(yResult);
-                bp.getChildren().add(userName);
+            } else if (userModel.getLocation().equals("House")) {
+
+                int xLow = (int) (0.1 * houseModel.getWidth());
+                int xHigh = (int) (0.3 * houseModel.getWidth());
+                int xResult = r.nextInt(xHigh - xLow) + xLow;
+
+                int yLow = (int) (0.4 * houseModel.getHeight());
+                int yHigh = (int) (0.6 * houseModel.getHeight());
+                int yResult = r.nextInt(yHigh - yLow) + yLow;
+
+                userName.setX(houseModel.getxAxis() + xResult);
+                userName.setY(houseModel.getyAxis() + yResult);
             }
+
+            bp.getChildren().add(userName);
         }
     }
 }

@@ -1,26 +1,23 @@
 package sample.SmartHomeModel;
 
-import org.w3c.dom.ranges.DocumentRange;
-
 /**
  * Class for the Door model.
  */
 public class DoorModel {
 	private String id;
+	private String name;
 	private boolean isOpen = false;
 	private boolean isLocked = false;
-	private String doorType;
 
 	/**
 	 * Instantiates a new Door model.
 	 *
-	 * @param id       the id
-	 * @param doorType the door type
+	 * @param name	   the name of the door
+	 * @param id       the id of the door
 	 */
-	public DoorModel(String id, String doorType) {
-		super();
+	public DoorModel(String id, String name) {
+		this.name = name;
 		this.id = id;
-		this.doorType = doorType;
 	}
 
 	/**
@@ -33,12 +30,12 @@ public class DoorModel {
 	}
 
 	/**
-	 * Sets id of the Door.
+	 * Gets name of the Door.
 	 *
-	 * @param id the id
+	 * @return the name
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -76,24 +73,4 @@ public class DoorModel {
 	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
 	}
-
-	/**
-	 * Gets door type.
-	 *
-	 * @return the door type
-	 */
-	public String getDoorType() {
-		return doorType;
-	}
-
-	/**
-	 * Sets door type.
-	 *
-	 * @param doorType the door type
-	 */
-	public void setDoorType(String doorType) {
-		this.doorType = doorType;
-	}
-		
-		
 }

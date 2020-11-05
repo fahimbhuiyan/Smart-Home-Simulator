@@ -18,43 +18,19 @@ public class SimulationDataController {
     /**
      * The Simulation Data.
      */
-    SimulationData smd = new SimulationData();
+    private SimulationData smd = new SimulationData();
 
     /**
      * Load data from json file
      *
      * @param path a String which specifies the file path of the JSON house layout file.
-     * @return String path
      */
-    public void loadData(String path){
-
+    void loadData(String path){
         try {
             smd.createData(path);
-        }
-        catch (FileNotFoundException | UnsupportedEncodingException e){
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
         }
-
-    }
-
-    /**
-     * Get room array room model [ ].
-     *
-     * @return the room model [ ]
-     */
-    public RoomModel[] getRoomArray(){
-        return smd.getRoomArray();
-    }
-
-    /**
-     * Gets room name list.
-     *
-     * @return the room name list
-     */
-    public ArrayList<String> getRoomNameList() {
-        return smd.getRoomNameList();
     }
 
     /**
@@ -62,7 +38,7 @@ public class SimulationDataController {
      *
      * @return the user array list
      */
-    public ArrayList<UserModel> getUserArrayList() {
+    ArrayList<UserModel> getUserArrayList() {
         return smd.getUserArrayList();
     }
 
@@ -71,7 +47,7 @@ public class SimulationDataController {
      *
      * @return the house model
      */
-    public HouseModel getHouseModel(){
+    HouseModel getHouseModel(){
         return  smd.getHouseModel();
     }
 }

@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Class for the Main view controller.
@@ -47,7 +49,7 @@ public class MainViewController {
     /**
      * An array with all the rooms of the house.
      */
-    private RoomModel[] roomArray;
+    private Map<String, RoomModel> rooms;
 
     /**
      * A instance of a HouseModel object which represents the house itself.
@@ -62,7 +64,7 @@ public class MainViewController {
     /**
      * A list which contains all the names of the rooms of the house.
      */
-    private ArrayList<String> roomNameArrayList;
+    private Set<String> roomNamesSet;
 
     /**
      * The BorderPane holding the house layout.
@@ -396,14 +398,13 @@ public class MainViewController {
     @FXML
     private void drawLayout() {
         System.out.println(bp.getChildren().isEmpty());
-        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
+        houseViewController.drawLayout(bp, houseModel, userModelArrayList);
     }
 
     /**
-     * Set outside temperature.
+     * Set outside temperature (prints on left panel and also on House Layout).
      *
      * @param event the event which indicates that the user interacted with the button that saves the outside temperature.
-     * @return prints on left panel and also on House Layout
      */
     @FXML
     public void setOutsideTemperature(ActionEvent event) {
@@ -416,16 +417,15 @@ public class MainViewController {
     }
 
     /**
-     * Set inside temperature.
+     * Set inside temperature (prints on left panel and also on House Layout).
      *
      * @param event the event which indicates that the user interacted with the button that saves the inside temperature.
-     * @return prints on left panel and also on House Layout
      */
     @FXML
     public void setInsideTemperature(ActionEvent event) {
         double value = inTempSHS.getValue();
 
-        shsController.setInsideTemperature(roomArray, value);
+        shsController.setInsideTemperature(rooms, value);
         drawLayout();
         leftPanelInTemp.setText("Inside Temperature: " + inTempSHS.getValue().toString() + " C");
         saveSimulationConditions(event);
@@ -436,19 +436,17 @@ public class MainViewController {
      *
      * @param event the event which indicates that the user interacted with the button that saves the location in
      *              which the window must be blocked by an object.
-     *
      */
     @FXML
     public void addObjectToWindow(ActionEvent event) {
         String value = blockWinLocComboBoxSHS.getValue();
-        shsController.addObjectToWindow(roomArray, value, consoleTextField);
+        shsController.addObjectToWindow(rooms, value, consoleTextField);
         drawLayout();
         saveSimulationConditions(event);
     }
 
     /**
-     * Start or stop the simulation and enable or disable the needed UI controls.
-     * @return prints on output console
+     * Start or stop the simulation and enable or disable the needed UI controls (also prints on output console).
      */
     @FXML
     public void startOrStopSimulation() {
@@ -523,11 +521,10 @@ public class MainViewController {
     }
 
     /**
-     * Save the simulation conditions.
+     * Save the simulation conditions (also prints on left panel and on House Layout).
      *
      * @param event the event which specifies the button which the user interacted with in order to save a certain
      *              simulation condition.
-     * @return prints on left panel and on House Layout
      */
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
@@ -636,19 +633,20 @@ public class MainViewController {
         // SHS prep
 
         simulationDataController.loadData(path);
-        roomArray = simulationDataController.getRoomArray();
-        roomNameArrayList = simulationDataController.getRoomNameList();
-        userModelArrayList = simulationDataController.getUserArrayList();
         houseModel = simulationDataController.getHouseModel();
+        rooms = houseModel.getRooms();
+        roomNamesSet = houseModel.getRooms().keySet();
+        userModelArrayList = simulationDataController.getUserArrayList();
+
         loadUsersInSHSTable();
 
-        houseViewController.drawLayout(roomArray, bp, houseModel, userModelArrayList);
+        houseViewController.drawLayout(bp, houseModel, userModelArrayList);
 
-        addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(0));
+        addModifyLocComboBoxSHS.getItems().add("House");
 
-        for (int i = 1; i < roomNameArrayList.size(); i++) {
-            addModifyLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
-            blockWinLocComboBoxSHS.getItems().add(roomNameArrayList.get(i));
+        for (String roomName : roomNamesSet) {
+            addModifyLocComboBoxSHS.getItems().add(roomName);
+            blockWinLocComboBoxSHS.getItems().add(roomName);
         }
 
         addModifyLocComboBoxSHS.getItems().add("Outside");

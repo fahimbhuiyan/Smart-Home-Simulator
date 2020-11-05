@@ -1,5 +1,7 @@
 package sample.SmartHomeModel;
 
+import java.util.Map;
+
 /**
  * Class for the House model.
  */
@@ -7,19 +9,33 @@ public class HouseModel {
 
     private double outsideTemp = 0;
     private String loggedUserName = "";
-    private int id;
-    private boolean simulationActive = false;
+    private Map<String, RoomModel> rooms;
+    private Map<String, LightModel> lights;
+    private Map<String, DoorModel> doors;
+    private Map<String, WindowModel> windows;
+
+    private int width = 0;
+    private int height = 0;
+    private int xAxis = 0;
+    private int yAxis = 0;
 
     /**
      * Instantiates a new House model.
      *
      * @param outsideTemp      the outside temp
      * @param loggedUserName   the logged user name
-     * @param simulationActive the simulation active
      */
-    public HouseModel(int outsideTemp, String loggedUserName, boolean simulationActive) {
-
+    public HouseModel(int outsideTemp, String loggedUserName, Map<String, RoomModel> rooms, Map<String, LightModel> lights, Map<String, DoorModel> doors, Map<String, WindowModel> windows, int width, int height, int xAxis, int yAxis) {
+        this.outsideTemp = outsideTemp;
         this.loggedUserName = loggedUserName;
+        this.rooms = rooms;
+        this.lights = lights;
+        this.doors = doors;
+        this.windows = windows;
+        this.width = width;
+        this.height = height;
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
     }
 
     /**
@@ -45,7 +61,7 @@ public class HouseModel {
      *
      * @return the logged user name
      */
-    public String getLoggedUserName() {
+    String getLoggedUserName() {
         return loggedUserName;
     }
 
@@ -59,20 +75,38 @@ public class HouseModel {
     }
 
     /**
-     * Is simulation active boolean.
+     * Returns the lights of the house.
      *
-     * @return the boolean
+     * @return a Map which maps the name of the light to the light object.
      */
-    public boolean isSimulationActive() {
-        return simulationActive;
-    }
+    public Map<String, LightModel> getLights() {return lights;}
 
     /**
-     * Sets simulation active.
+     * Returns the doors of the house.
      *
-     * @param simulationActive the simulation active
+     * @return a Map which maps the name of the door to the door object.
      */
-    public void setSimulationActive(boolean simulationActive) {
-        this.simulationActive = simulationActive;
-    }
+    public Map<String, DoorModel> getDoors() {return doors;}
+
+    /**
+     * Returns the windows of the house.
+     *
+     * @return a Map which maps the name of the window to the window object.
+     */
+    public Map<String, WindowModel> getWindows() {return windows;}
+
+    /**
+     * Returns the rooms of the house rooms.
+     *
+     * @return a Map which maps the name of the room to the room object.
+     */
+    public Map<String, RoomModel> getRooms() {return rooms;}
+
+    public int getHeight() {return height;}
+
+    public int getWidth() {return width;}
+
+    public int getxAxis() {return xAxis;}
+
+    public int getyAxis() {return yAxis;}
 }

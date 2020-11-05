@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 public class LightModel {
 
 	private String id;
+	private String name;
 	private boolean isOpen = false;
 	private Image imageOpen;
 	private Image imageClose;
@@ -17,9 +18,9 @@ public class LightModel {
 	 *
 	 * @param id the id
 	 */
-	public LightModel(String id) {
-		super();
+	public LightModel(String id, String name) {
 		this.id = id;
+		this.name = name;
 		loadImage();
 	}
 
@@ -45,12 +46,12 @@ public class LightModel {
 	}
 
 	/**
-	 * Sets id of the light.
+	 * Gets name of the light.
 	 *
-	 * @param id the id
+	 * @return the name
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -88,5 +89,4 @@ public class LightModel {
 	public Image getImageClose() {
 		return imageClose;
 	}
-	
 }
