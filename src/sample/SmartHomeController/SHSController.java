@@ -10,6 +10,7 @@ import sample.SmartHomeModel.UserModel;
 import java.awt.*;
 import java.sql.Struct;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Class for the SHS Controller.
@@ -20,10 +21,12 @@ public class SHSController {
      * The Simulation data.
      */
     private SimulationData simulationData;
+
     /**
      * The User model.
      */
     UserModel userModel;
+
     /**
      * The Logged user id.
      */
@@ -43,20 +46,20 @@ public class SHSController {
      * @param houseModel the house model
      * @param value      the value
      */
-    public void setOutsideTemperature(HouseModel houseModel, double value) {
+    void setOutsideTemperature(HouseModel houseModel, double value) {
         houseModel.setOutsideTemp(value);
     }
 
     /**
      * Sets inside temperature.
      *
-     * @param roomArray the room array
-     * @param value     the value
+     * @param rooms the rooms map
+     * @param value the value
      */
-    public void setInsideTemperature(RoomModel[] roomArray, double value) {
-        for (int i = 0; i < roomArray.length; i++) {
-            roomArray[i].setTemperature(value);
-        }
+    void setInsideTemperature(Map<String, RoomModel> rooms, double value) {
+        rooms.forEach((name, room) -> {
+            room.setTemperature(value);
+        });
     }
 
     /**
@@ -68,7 +71,7 @@ public class SHSController {
      * @param consoleTextField the console text field
      * @return the object [ ]
      */
-    public Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, TextArea consoleTextField) {
+    Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, TextArea consoleTextField) {
         boolean userExist = false;
         Object[] userInfo = new Object[2];
 
@@ -93,15 +96,14 @@ public class SHSController {
 
 
     /**
-     * Delete user profile.
+     * Delete user profile (if user can be removed).
      *
      * @param userList         the user list
      * @param id               the id
      * @param consoleTextField the console text field
      * @param houseModel       the house model
-     * @return if user can be removed
      */
-    public void deleteUserProfile(ArrayList<UserModel> userList, int id, TextArea consoleTextField, HouseModel houseModel) {
+    void deleteUserProfile(ArrayList<UserModel> userList, int id, TextArea consoleTextField, HouseModel houseModel) {
         boolean userExist = false;
 
         for (int i = 0; i < userList.size(); i++) {
@@ -122,34 +124,28 @@ public class SHSController {
     }
 
     /**
-     * Add object to window.
+     * Add object to window (and print object blocking window).
      *
-     * @param roomArray        the room array
+     * @param rooms            the room map (mapping each name of a room to the corresponding room object)
      * @param roomName         the room name
      * @param consoleTextField the console text field
-     * @return print object blocking window
      */
-    public void addObjectToWindow(RoomModel[] roomArray, String roomName, TextArea consoleTextField) {
-        for (int i = 0; i < roomArray.length; i++) {
-            if (roomArray[i].getName().equals(roomName)) {
-
-                if (roomArray[i].getWindow().isOpen()) {
-
-                    if (!roomArray[i].getWindow().HasObject()) {
-                        roomArray[i].getWindow().setHasObject(true);
-                        consoleTextField.setText("Adding object to block the window of the " + roomArray[i].getName() + ".\n" + consoleTextField.getText());
+    void addObjectToWindow(Map<String, RoomModel> rooms, String roomName, TextArea consoleTextField) {
+        rooms.forEach((name, room) -> {
+            if (name.equals(roomName)) {
+                if (room.getWindow().isOpen()) {
+                    if (!room.getWindow().HasObject()) {
+                        room.getWindow().setHasObject(true);
+                        consoleTextField.setText("Adding object to block the window of the " + room.getName() + ".\n" + consoleTextField.getText());
+                    } else {
+                        room.getWindow().setHasObject(false);
+                        consoleTextField.setText("Removing blocking object from the window of the " + room.getName() + ".\n" + consoleTextField.getText());
                     }
-                    else {
-                        roomArray[i].getWindow().setHasObject(false);
-                        consoleTextField.setText("Removing blocking object from the window of the " + roomArray[i].getName() + ".\n" + consoleTextField.getText());
-                    }
-
-
                 } else {
                     consoleTextField.setText("You cannot add an object to this window. The window is closed.\n" + consoleTextField.getText());
                 }
             }
-        }
+        });
     }
 
     /**
@@ -163,7 +159,7 @@ public class SHSController {
      * @param consoleTextField the console text field
      * @return the object [ ]
      */
-    public Object[] addModifyUser(ArrayList<UserModel> userList, int id, String name, String userType, String location, TextArea consoleTextField) {
+    Object[] addModifyUser(ArrayList<UserModel> userList, int id, String name, String userType, String location, TextArea consoleTextField) {
         boolean userExist = false;
         Object[] userInfo = new Object[2];
         for (int i = 0; i < userList.size(); i++) {
