@@ -3,7 +3,7 @@ package sample.SmartHomeModel;
 import org.json.simple.JSONObject;
 import sample.SmartHomeModel.*;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +15,10 @@ public class SimulationData {
     ArrayList<String> roomNameList = new ArrayList<>();
     ArrayList<UserModel> userList = new ArrayList<UserModel>();
     HouseModel houseModel;
+    PrintWriter printWriter;
+    BufferedReader bufferedReader;
+
+
 
     /**
      * Create the data for the rooms, doors, windows, and lights.
@@ -22,7 +26,7 @@ public class SimulationData {
      * @param fileName the name of the house layout file
      * @throws FileNotFoundException exception if the file is not found.
      */
-    public void createData(String fileName) throws FileNotFoundException {
+    public void createData(String fileName) throws IOException {
 
         System.out.println("Creating Data");
         createDefaultUser();
@@ -82,16 +86,23 @@ public class SimulationData {
     /**
      * Instantiate default users.
      */
-    public void createDefaultUser(){
+    public void createDefaultUser() throws IOException {
 
-        UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
-        UserModel defaultChild = new UserModel("Daniel", 1, "Child", "Toilet");
-        UserModel defaultGuest = new UserModel("Boris", 2,"Guest", "House");
-        UserModel defaultStranger = new UserModel("Tony", 3, "Stranger", "Outside");
-        userList.add(defaultParent);
-        userList.add(defaultChild);
-        userList.add(defaultGuest);
-        userList.add(defaultStranger);
+
+        loadExistingUser();
+
+
+        if(userList.size() == 0){
+            UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
+            UserModel defaultChild = new UserModel("Daniel", 1, "Child", "Toilet");
+            UserModel defaultGuest = new UserModel("Boris", 2,"Guest", "House");
+            UserModel defaultStranger = new UserModel("Tony", 3, "Stranger", "Outside");
+            userList.add(defaultParent);
+            userList.add(defaultChild);
+            userList.add(defaultGuest);
+            userList.add(defaultStranger);
+        }
+
 
         System.out.println("Default Users are created");
         for(int i = 0; i < userList.size(); i++){
@@ -102,10 +113,36 @@ public class SimulationData {
         }
     }
 
+    public void loadExistingUser() throws IOException{
+        try {
+            bufferedReader = new BufferedReader(new FileReader("Profiles.txt"));
+            String currentLine;
+
+            String [] profileArray = new String[4];
+            currentLine = bufferedReader.readLine();
+
+            while (currentLine.length() > 0) {
+                profileArray = currentLine.split(",");
+                System.out.println("Length"+profileArray.length);
+                UserModel user = new UserModel(profileArray[0],Integer.parseInt(profileArray[1]),profileArray[2],profileArray[3]);
+                userList.add(user);
+
+                currentLine = bufferedReader.readLine();
+
+            }
+        }
+        catch (FileNotFoundException e){
+
+        }
+        catch (NullPointerException e){
+            System.out.println("Reached end of file");
+        }
+    }
     /**
      * Create the House Model.
      */
     public void createHouse(){
+
         houseModel = new HouseModel(0,"",false);
         System.out.println("House model is created");
         System.out.println(houseModel.getLoggedUserName());

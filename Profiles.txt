@@ -1,0 +1,3 @@
+Cosmin,0,Parent,Toilet
+Boris,2,Guest,Living Room
+Cristiano,3,Stranger,Bedroom

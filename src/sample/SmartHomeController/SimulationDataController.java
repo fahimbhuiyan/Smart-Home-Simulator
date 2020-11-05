@@ -6,6 +6,8 @@ import sample.SmartHomeModel.SimulationData;
 import sample.SmartHomeModel.UserModel;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +31,9 @@ public class SimulationDataController {
         try {
             smd.createData(path);
         }
-        catch (FileNotFoundException e){
+        catch (FileNotFoundException | UnsupportedEncodingException e){
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
