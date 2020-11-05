@@ -253,8 +253,84 @@
                 <Tab text="SHC">
                     <AnchorPane>
                         <GridPane fx:id="gridSHC">
-                            <Label text="Welcome to the SHC module." GridPane.rowIndex="0" GridPane.columnIndex="0"
+                            <Label text="Welcome to the SHC module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="3"
                                    GridPane.halignment="LEFT"/>
+                            <Label text="Manage general house items: Doors, Windows, Lights." style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="Door" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Door"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="doorComboBoxSHC" promptText="Select a location"
+                                      GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="openDoor" text="Open" onAction="#doorOpen"
+                                    GridPane.rowIndex="4" GridPane.columnIndex="4"/>
+                            <Button fx:id="closeDoor" text="Close" onAction="#closeDoor"
+                                    GridPane.rowIndex="4" GridPane.columnIndex="5"/>
+
+                            <Label text="Windows" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Window"
+                                   GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="winComboBoxSHC" promptText="Select a location"
+                                      GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="openWindow" text="Open" onAction="#windowOpen"
+                                    GridPane.rowIndex="6" GridPane.columnIndex="4"/>
+                            <Button fx:id="closeWindow" text="Close" onAction="#windowClose"
+                                    GridPane.rowIndex="6" GridPane.columnIndex="5"/>
+
+
+                            <Label text="Lights" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Lights"
+                                   GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="lightComboBoxSHC" promptText="Select a location"
+                                      GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="turnOnLight" text="On" onAction="#lightOn"
+                                    GridPane.rowIndex="8" GridPane.columnIndex="4"/>
+                            <Button fx:id="turnOffLight" text="Off" onAction="#lightOff"
+                                    GridPane.rowIndex="8" GridPane.columnIndex="5"
+                                    />
+
+                            <Button fx:id="turnOnOffAutomode" onAction="#automode"
+                                    prefHeight="25.0" prefWidth="161.0" text="Turn on Automode"
+                                    GridPane.rowIndex="9" GridPane.columnIndex="3" GridPane.columnSpan="5"
+                                    GridPane.halignment="CENTER"/>
+
+                            <columnConstraints>
+                                <ColumnConstraints maxWidth="134"/>
+                                <ColumnConstraints maxWidth="134"/>
+                                <ColumnConstraints maxWidth="134"/>
+                            </columnConstraints>
+
+                            <rowConstraints>
+                                <RowConstraints/>
+                                <RowConstraints maxHeight="115"/>
+                            </rowConstraints>
                         </GridPane>
                     </AnchorPane>
                 </Tab>
@@ -262,8 +338,13 @@
                 <Tab text="SHP">
                     <AnchorPane>
                         <GridPane fx:id="gridSHP">
-                            <Label text="Welcome to the SHP module." GridPane.rowIndex="0" GridPane.columnIndex="0"
+                            <Label text="Welcome to the SHP module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT"/>
+                            <Button fx:id="away" alignment="CENTER"
+                                    prefHeight="25.0" prefWidth="161.0" text="Away"
+                                    GridPane.rowIndex="2" GridPane.columnIndex="3" GridPane.columnSpan="5"
+                                    GridPane.halignment="CENTER"/>
+
                         </GridPane>
                     </AnchorPane>
                 </Tab>
@@ -271,7 +352,7 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-                            <Label text="Welcome to the SHH module." GridPane.rowIndex="0" GridPane.columnIndex="0"
+                            <Label text="Welcome to the SHH module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT"/>
                         </GridPane>
                     </AnchorPane>
@@ -280,7 +361,7 @@
                 <Tab text="+">
                     <AnchorPane>
                         <GridPane fx:id="gridAddModule">
-                            <Label text="Want to add a new module?" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                            <Label text="Want to add a new module?" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT"/>
                         </GridPane>
                     </AnchorPane>
