@@ -333,6 +333,36 @@ public class MainViewController {
     @FXML
     Label labelLeftPanelSimParam;
 
+    @FXML
+    ComboBox<String> doorComboBoxSHC;
+
+    @FXML
+    Button openDoor;
+
+    @FXML
+    Button closeDoor;
+
+    @FXML
+    ComboBox<String> winComboBoxSHC;
+
+    @FXML
+    Button openWindow;
+
+    @FXML
+    Button closeWindow;
+
+    @FXML
+    ComboBox<String> lightComboBoxSHC;
+
+    @FXML
+    Button turnOnLight;
+
+    @FXML
+    Button turnOffLight;
+
+    @FXML
+    Button turnOnOffAutomode;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -663,7 +693,8 @@ public class MainViewController {
 
         turnOnOffSimulation.setDisable(true);
 
-        timeSHS.setValue(LocalTime.of(12, 0));
+//        timeSHS.setValue(LocalTime.of(12, 0));
+        timeSHS.setValue(LocalTime.now());
     }
 
     /**
@@ -675,5 +706,28 @@ public class MainViewController {
     private void showUIElement(Node node, boolean bool) {
         node.setVisible(bool);
         node.setManaged(bool);
+    }
+
+
+    public void automode(ActionEvent event) {
+
+    }
+
+    public void doorOpen(ActionEvent event) {
+    }
+
+    public void closeDoor(ActionEvent event) {
+    }
+
+    public void windowOpen(ActionEvent event) {
+    }
+
+    public void windowClose(ActionEvent event) {
+    }
+
+    public void lightOn(ActionEvent event) {
+    }
+
+    public void lightOff(ActionEvent event) {
     }
 }
