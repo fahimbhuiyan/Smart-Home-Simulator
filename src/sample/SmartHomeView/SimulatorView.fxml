@@ -136,6 +136,9 @@
                                 </columns>
                             </TableView>
 
+                            <Button text="Save Profiles" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP"/>
+
+
                             <Label text="Add/Modify user profile (Name, ID, Role, Location)"
                                    style="-fx-font-weight: bold"
                                    GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3"
