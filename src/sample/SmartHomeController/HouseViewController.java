@@ -1,5 +1,6 @@
 package sample.SmartHomeController;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -89,9 +90,6 @@ public class HouseViewController {
                 hasObjectText = new Text("Has Object");
             }
 
-            hasObjectText.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
-            hasObjectText.setY(houseModel.getRooms().get(roomName).getyAxis() + 60);
-
             ImageView lightImageView = new ImageView();
 
             if (houseModel.getRooms().get(roomName).getLight().isOpen()) {
@@ -100,20 +98,43 @@ public class HouseViewController {
                 lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageClose());
             }
 
+            ImageView doorImageView = new ImageView();
+
+            if (houseModel.getRooms().get(roomName).getDoor().isOpen()) {
+                doorImageView.setImage(houseModel.getRooms().get(roomName).getDoor().getImageOpen());
+            } else {
+                doorImageView.setImage(houseModel.getRooms().get(roomName).getDoor().getImageClose());
+            }
+
+            Text doorIsLock;
+            if (houseModel.getRooms().get(roomName).getDoor().isLocked()) {
+                doorIsLock = new Text("Locked");
+            } else {
+                doorIsLock = new Text("Unlocked");
+            }
+
+            hasObjectText.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
+            hasObjectText.setY(houseModel.getRooms().get(roomName).getyAxis() + 60);
+
+            doorIsLock.setX(houseModel.getRooms().get(roomName).getxAxis());
+            doorIsLock.setY(houseModel.getRooms().get(roomName).getyAxis() + houseModel.getRooms().get(roomName).getHeight() - 55);
+
+            doorImageView.setFitWidth(50);
+            doorImageView.setFitHeight(50);
+            doorImageView.setX(houseModel.getRooms().get(roomName).getxAxis());
+            doorImageView.setY(houseModel.getRooms().get(roomName).getyAxis() + houseModel.getRooms().get(roomName).getHeight() - 52);
+
             lightImageView.setFitWidth(50);
             lightImageView.setFitHeight(50);
             lightImageView.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
-            lightImageView.setY(houseModel.getRooms().get(roomName).getyAxis() + houseModel.getRooms().get(roomName).getHeight() - 53);
+            lightImageView.setY(houseModel.getRooms().get(roomName).getyAxis() + houseModel.getRooms().get(roomName).getHeight() - 52);
 
             windowImageView.setFitWidth(50);
             windowImageView.setFitHeight(50);
             windowImageView.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
             windowImageView.setY(houseModel.getRooms().get(roomName).getyAxis());
 
-            bp.getChildren().add(temperature);
-            bp.getChildren().add(windowImageView);
-            bp.getChildren().add(lightImageView);
-            bp.getChildren().add(hasObjectText);
+            bp.getChildren().addAll(doorIsLock,hasObjectText,temperature,doorImageView,windowImageView,lightImageView);
 
             //adding people in room
             for (UserModel userModel : userList) {
@@ -121,7 +142,7 @@ public class HouseViewController {
                 Random r = new Random();
                 Text userName = new Text("• " + userModel.getName() + " (ID: " + userModel.getId() + ")");
 
-                if (userModel.getLocation().equals(houseModel.getRooms().get(roomName).getName())) {
+                if (userModel.getCurrentLocation().equals(houseModel.getRooms().get(roomName).getName())) {
                     int xLow = (int) (0.2 * houseModel.getRooms().get(roomName).getWidth());
                     int xHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getWidth());
                     int xResult = r.nextInt(xHigh - xLow) + xLow;
@@ -139,13 +160,86 @@ public class HouseViewController {
             bp.getChildren().addAll(text, r1);
         }
 
+        //Adding lights and doors (front,back)
+        ImageView frontDoorImage = new ImageView();
+        ImageView backDoorImage = new ImageView();
+        ImageView frontLightImage = new ImageView();
+        ImageView backLightImage = new ImageView();
+
+        Text frontDoorIsLock;
+        if (houseModel.getDoors().get("Front yard").isLocked()) {
+            frontDoorIsLock = new Text("Locked");
+        } else {
+            frontDoorIsLock = new Text("Unlocked");
+        }
+
+        Text backDoorIsLock;
+        if (houseModel.getDoors().get("Backyard").isLocked()) {
+            backDoorIsLock = new Text("Locked");
+        } else {
+            backDoorIsLock = new Text("Unlocked");
+        }
+
+        if(houseModel.getDoors().get("Front yard").isOpen()){
+            frontDoorImage.setImage(houseModel.getDoors().get("Front yard").getImageOpen());
+        } else{
+            frontDoorImage.setImage(houseModel.getDoors().get("Front yard").getImageClose());
+        }
+
+        if(houseModel.getDoors().get("Backyard").isOpen()){
+            backDoorImage.setImage(houseModel.getDoors().get("Backyard").getImageOpen());
+        } else{
+            backDoorImage.setImage(houseModel.getDoors().get("Backyard").getImageClose());
+        }
+
+        if(houseModel.getLights().get("Front yard").isOpen()){
+            frontLightImage.setImage(houseModel.getLights().get("Front yard").getImageOpen());
+        } else{
+            frontLightImage.setImage(houseModel.getLights().get("Front yard").getImageClose());
+        }
+
+        if(houseModel.getLights().get("Front yard").isOpen()){
+            backLightImage.setImage(houseModel.getLights().get("Backyard").getImageOpen());
+        } else{
+            backLightImage.setImage(houseModel.getLights().get("Backyard").getImageClose());
+        }
+
+        frontDoorIsLock.setX(houseModel.getxAxis() - 55);
+        frontDoorIsLock.setY(houseModel.getyAxis() + (houseModel.getHeight()/2) - 35);
+
+        backDoorIsLock.setX(houseModel.getxAxis() + houseModel.getWidth() + 10);
+        backDoorIsLock.setY(houseModel.getyAxis() + (houseModel.getHeight()/2) - 35);
+
+
+        frontDoorImage.setFitWidth(50);
+        frontDoorImage.setFitHeight(50);
+        frontDoorImage.setX(houseModel.getxAxis() - 55);
+        frontDoorImage.setY(houseModel.getyAxis() + (houseModel.getHeight()/2) - 30);
+
+        backDoorImage.setFitWidth(50);
+        backDoorImage.setFitHeight(50);
+        backDoorImage.setX(houseModel.getxAxis() + houseModel.getWidth() + 10);
+        backDoorImage.setY(houseModel.getyAxis() + (houseModel.getHeight()/2) - 30);
+
+        frontLightImage.setFitWidth(50);
+        frontLightImage.setFitHeight(50);
+        frontLightImage.setX(houseModel.getxAxis()  - 55);
+        frontLightImage.setY(houseModel.getyAxis()  + (houseModel.getHeight()/2) + 30);
+
+        backLightImage.setFitWidth(50);
+        backLightImage.setFitHeight(50);
+        backLightImage.setX(houseModel.getxAxis() + houseModel.getWidth() + 10);
+        backLightImage.setY(houseModel.getyAxis() + (houseModel.getHeight()/2) + 30);
+
+        bp.getChildren().addAll(frontDoorImage,frontLightImage,backDoorImage,backLightImage,frontDoorIsLock, backDoorIsLock);
+
         // Adding people outside of rooms (such as in the general area of the house and outside).
         for (UserModel userModel : userList) {
 
             Random r = new Random();
             Text userName = new Text("• " + userModel.getName() + " (ID: " + userModel.getId() + ")");
 
-            if (userModel.getLocation().equals("Outside")) {
+            if (userModel.getCurrentLocation().equals("Outside")) {
                 int xLow = 0;
                 int xHigh = (int) (0.8 * houseModel.getxAxis());
                 int xResult = r.nextInt(xHigh - xLow) + xLow;
@@ -156,7 +250,7 @@ public class HouseViewController {
 
                 userName.setX(xResult);
                 userName.setY(yResult);
-            } else if (userModel.getLocation().equals("House")) {
+            } else if (userModel.getCurrentLocation().equals("House")) {
 
                 int xLow = (int) (0.1 * houseModel.getWidth());
                 int xHigh = (int) (0.3 * houseModel.getWidth());
@@ -172,5 +266,6 @@ public class HouseViewController {
 
             bp.getChildren().add(userName);
         }
+
     }
 }

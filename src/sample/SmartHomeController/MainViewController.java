@@ -18,8 +18,8 @@ import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
 
-import java.io.FileReader;
-import java.io.IOException;
+import javax.swing.*;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -45,6 +45,11 @@ public class MainViewController {
      * A controller which handles the modification of the simulation data.
      */
     private SHSController shsController;
+
+    /**
+     * A controller which handles the modification of the simulation data.
+     */
+    private SHCController shcController;
 
     /**
      * An array with all the rooms of the house.
@@ -363,6 +368,15 @@ public class MainViewController {
     @FXML
     Button turnOnOffAutomode;
 
+    @FXML
+    ComboBox<String> lockDoorComboBoxSHC;
+
+    @FXML
+    Button lockDoor;
+
+    @FXML
+    Button unlockDoor;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -390,6 +404,7 @@ public class MainViewController {
         simulationDataController = new SimulationDataController();
         houseViewController = new HouseViewController();
         shsController = new SHSController();
+        shcController = new SHCController();
     }
 
     /**
@@ -540,7 +555,11 @@ public class MainViewController {
         String userType = addModifyRoleComboBoxSHS.getValue();
         String location = addModifyLocComboBoxSHS.getValue();
 
-        userInfo = shsController.addModifyUser(userModelArrayList, id, name, userType, location, consoleTextField);
+        userInfo = shsController.addModifyUser(userModelArrayList, rooms, id, name, userType, location, consoleTextField);
+
+        openOrCloseLights(null);
+
+
 
         processUserInfo("add/modify");
 
@@ -548,6 +567,13 @@ public class MainViewController {
         loadUsersInSHSTable();
         userTable.setItems(data);
         drawLayout();
+    }
+
+
+
+    @FXML
+    public void saveUserProfiles(){
+        shsController.saveUserProfiles(userModelArrayList, consoleTextField);
     }
 
     /**
@@ -569,7 +595,7 @@ public class MainViewController {
         } else if (event.getSource().equals(saveInsideTemp)) {
             consoleTextField.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveWindowBlock)) {
-            consoleTextField.setText("The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked\\unblocked.\n" + consoleTextField.getText());
+        //    consoleTextField.setText("The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked\\unblocked.\n" + consoleTextField.getText());
         }
 
         turnOffSimulationWarning();
@@ -602,14 +628,14 @@ public class MainViewController {
         }
 
         if (action.equals("login") || (isLoggedIn && action.equals("add/modify") && loggedInUser.getId() == processedUser.getId())) {
-            loggedInUser = new UserModel(processedUser.getName(), processedUser.getId(), processedUser.getUser_type(), processedUser.getLocation());
+            loggedInUser = new UserModel(processedUser.getName(), processedUser.getId(), processedUser.getUser_type(), processedUser.getCurrentLocation());
 
             avatarImageView.setVisible(true);
             avatarImageView.setManaged(true);
             userNameLabel.setText("Name: " + loggedInUser.getName());
             userIDLabel.setText("ID: " + loggedInUser.getId());
             userPermissionLabel.setText("Permission: " + loggedInUser.getUser_type());
-            userLocationLabel.setText("Location: " + loggedInUser.getLocation());
+            userLocationLabel.setText("Location: " + loggedInUser.getCurrentLocation());
             isLoggedIn = true;
             turnOffSimulationWarning();
         }
@@ -677,7 +703,18 @@ public class MainViewController {
         for (String roomName : roomNamesSet) {
             addModifyLocComboBoxSHS.getItems().add(roomName);
             blockWinLocComboBoxSHS.getItems().add(roomName);
+            doorComboBoxSHC.getItems().add(roomName);
+            winComboBoxSHC.getItems().add(roomName);
+            lightComboBoxSHC.getItems().add(roomName);
+            lockDoorComboBoxSHC.getItems().add(roomName);
         }
+
+        lightComboBoxSHC.getItems().add("Backyard");
+        lightComboBoxSHC.getItems().add("Front yard");
+        doorComboBoxSHC.getItems().add("Backyard");
+        doorComboBoxSHC.getItems().add("Front yard");
+        lockDoorComboBoxSHC.getItems().add("Backyard");
+        lockDoorComboBoxSHC.getItems().add("Front yard");
 
         addModifyLocComboBoxSHS.getItems().add("Outside");
         addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
@@ -685,6 +722,10 @@ public class MainViewController {
         addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
         addModifyRoleComboBoxSHS.getSelectionModel().selectFirst();
         blockWinLocComboBoxSHS.getSelectionModel().selectFirst();
+        doorComboBoxSHC.getSelectionModel().selectFirst();
+        winComboBoxSHC.getSelectionModel().selectFirst();
+        lightComboBoxSHC.getSelectionModel().selectFirst();
+        lockDoorComboBoxSHC.getSelectionModel().selectFirst();
 
         userTable.setEditable(true);
         userTable.setItems(data);
@@ -708,26 +749,78 @@ public class MainViewController {
         node.setManaged(bool);
     }
 
+    @FXML
+    public void setAutoMode() {
+        shcController.setAutoMode(!shcController.isAutoMode());
 
-    public void automode(ActionEvent event) {
-
+        if(shcController.isAutoMode()){
+            turnOnOffAutomode.setText("Turn Off AutoMode");
+        }
+        else {
+            turnOnOffAutomode.setText("Turn On AutoMode");
+        }
     }
 
-    public void doorOpen(ActionEvent event) {
+
+    @FXML
+    public void openDoor() {
+        String value = doorComboBoxSHC.getValue();
+        shcController.openDoor(value, houseModel, consoleTextField);
+        drawLayout();
+    }
+    @FXML
+    public void closeDoor() {
+        String value = doorComboBoxSHC.getValue();
+        shcController.closeDoor(value, houseModel, consoleTextField);
+        drawLayout();
     }
 
-    public void closeDoor(ActionEvent event) {
+    @FXML
+    public void lockDoor() {
+        String value = lockDoorComboBoxSHC.getValue();
+        shcController.lockDoor(value, houseModel, consoleTextField);
+        drawLayout();
+    }
+    @FXML
+    public void unLock() {
+        String value = lockDoorComboBoxSHC.getValue();
+        shcController.unLock(value, houseModel, consoleTextField);
+        drawLayout();
     }
 
-    public void windowOpen(ActionEvent event) {
+    @FXML
+    void openWindow() {
+        String value = winComboBoxSHC.getValue();
+        shcController.openWindow(value, houseModel, consoleTextField);
+        drawLayout();
+    }
+    @FXML
+    void closeWindow() {
+        String value = winComboBoxSHC.getValue();
+        shcController.closeWindow(value, houseModel, consoleTextField);
+        drawLayout();
     }
 
-    public void windowClose(ActionEvent event) {
-    }
+    @FXML
+    void openOrCloseLights(ActionEvent event){
 
-    public void lightOn(ActionEvent event) {
-    }
+        String value = lightComboBoxSHC.getValue();
+        if(event != null && event.getSource().equals("turnOnLight")){
+            shcController.openOrCloseLights(value, true, "open", houseModel, consoleTextField);
+        }
+        else if (event != null && event.getSource().equals("turnOffLight")){
+            shcController.openOrCloseLights(value, true, "close", houseModel, consoleTextField);
+        }
+        else {
+            UserModel user = ((UserModel)userInfo[1]);
+            shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, consoleTextField);
 
-    public void lightOff(ActionEvent event) {
+            if(rooms.get(user.getPreviousLocation()).getNbPeople() == 0){
+                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, consoleTextField);
+            }
+
+        }
+
+        drawLayout();
     }
 }

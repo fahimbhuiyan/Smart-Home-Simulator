@@ -1,5 +1,7 @@
 package sample.SmartHomeModel;
 
+import javafx.scene.image.Image;
+
 /**
  * Class for the Door model.
  */
@@ -8,6 +10,8 @@ public class DoorModel {
 	private String name;
 	private boolean isOpen = false;
 	private boolean isLocked = false;
+	private Image imageOpen;
+	private Image imageClose;
 
 	/**
 	 * Instantiates a new Door model.
@@ -18,7 +22,16 @@ public class DoorModel {
 	public DoorModel(String id, String name) {
 		this.name = name;
 		this.id = id;
+		loadImage();
 	}
+
+	public void loadImage() {
+
+		imageOpen = new Image(getClass().getResourceAsStream("/img/door_open.jpg"));
+		imageClose = new Image(getClass().getResourceAsStream("/img/door_close.jpg"));
+
+	}
+
 
 	/**
 	 * Gets id of the Door.
@@ -27,6 +40,14 @@ public class DoorModel {
 	 */
 	public String getId() {
 		return id;
+	}
+
+	public Image getImageOpen() {
+		return imageOpen;
+	}
+
+	public Image getImageClose() {
+		return imageClose;
 	}
 
 	/**

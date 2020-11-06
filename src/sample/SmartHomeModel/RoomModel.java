@@ -180,12 +180,18 @@ public class RoomModel {
 	}
 
 	/**
-	 * Setter for the number of people of the room.
+	 * Increment the number of people of the room.
 	 *
-	 * @param nbPeople the number of people of the room.
 	 */
-	public void setNbPeople(int nbPeople) {
-		this.nbPeople = nbPeople;
+	public void incrementNbPeople(){
+		nbPeople++;
+	}
+	/**
+	 * Decrement the number of people of the room.
+	 *
+	 */
+	public void decrementNbPeople(){
+		nbPeople--;
 	}
 
 	/**
@@ -241,4 +247,6 @@ public class RoomModel {
 	public void setWindow(WindowModel window) {
 		this.window = window;
 	}
+
+
 }

@@ -8,7 +8,8 @@ public class UserModel {
 	 private String name;
 	 private int id;
 	 private String user_type;
-	 private String location;
+	 private String currentLocation;
+	 private String previousLocation;
 
 	/**
 	 * Instantiate a user.
@@ -16,14 +17,16 @@ public class UserModel {
 	 * @param name the name of the user.
 	 * @param id the id of the user.
 	 * @param user_type the type of the user.
-	 * @param location the location of the user.
+	 * @param currentLocation the location of the user.
 	 */
-	public UserModel(String name, int id, String user_type, String location) {
+	public UserModel(String name, int id, String user_type, String currentLocation) {
 		this.name = name;
 		this.id = id;
 		this.user_type = user_type;
-		this.location = location;
+		this.currentLocation = currentLocation;
+		this.previousLocation = currentLocation;
 	}
+
 
 	/**
 	 * Getter for the name of a user.
@@ -84,8 +87,8 @@ public class UserModel {
 	 *
 	 * @return the String location.
 	 */
-	public String getLocation() {
-		return location;
+	public String getCurrentLocation() {
+		return currentLocation;
 	}
 
 	/**
@@ -93,8 +96,26 @@ public class UserModel {
 	 *
 	 * @param location the location of a user.
 	 */
-	public void setLocation(String location) {
-		this.location = location;
+	public void setCurrentLocation(String location) {
+		this.currentLocation = location;
+	}
+
+	/**
+	 * Getter for the location of a user.
+	 *
+	 * @return the String location.
+	 */
+	public String getPreviousLocation() {
+		return previousLocation;
+	}
+
+	/**
+	 * Setter for location of a user.
+	 *
+	 * @param location the location of a user.
+	 */
+	public void setPreviousLocation(String location) {
+		this.previousLocation = location;
 	}
 
 }
