@@ -253,7 +253,7 @@
                 <Tab text="SHC">
                     <AnchorPane>
                         <GridPane fx:id="gridSHC">
-                            <Label text="Welcome to the SHC module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                            <Label text="Welcome to the Smart Home Core (SHC) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
                             <Label text="Manage general house items: Doors, Windows, Lights." style="-fx-font-weight: bold"
                                    GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="4"
@@ -316,10 +316,16 @@
                                     GridPane.rowIndex="8" GridPane.columnIndex="5"
                                     />
 
-                            <Button fx:id="turnOnOffAutomode" onAction="#automode"
-                                    prefHeight="25.0" prefWidth="161.0" text="Turn on Automode"
+                            <Button text="Turn on Automode" style="-fx-font-weight: bold"
+                                    fx:id="turnOnOffAutomode" onAction="#automode"
+                                    prefHeight="25.0" prefWidth="161.0"
                                     GridPane.rowIndex="9" GridPane.columnIndex="3" GridPane.columnSpan="5"
-                                    GridPane.halignment="CENTER"/>
+                                    GridPane.halignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
+
 
                             <columnConstraints>
                                 <ColumnConstraints maxWidth="134"/>
@@ -338,12 +344,61 @@
                 <Tab text="SHP">
                     <AnchorPane>
                         <GridPane fx:id="gridSHP">
-                            <Label text="Welcome to the SHP module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
-                            <Button fx:id="away" alignment="CENTER"
-                                    prefHeight="25.0" prefWidth="161.0" text="Away"
-                                    GridPane.rowIndex="2" GridPane.columnIndex="3" GridPane.columnSpan="5"
-                                    GridPane.halignment="CENTER"/>
+
+                            <Label text="Lights" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Lights Remain On"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="lightComboBoxSHP" promptText="Select a location"
+                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="turnOnLightSHP" text="On" onAction="#lightOnSHP"
+                                    GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+                            <Button fx:id="turnOffLightSHP" text="Off" onAction="#lightOffSHP"
+                                    GridPane.rowIndex="2" GridPane.columnIndex="4"/>
+
+                            <Label text="Duration (Hour, Minute)"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="timerHour" initialValue="1" min="0" max="1000000" GridPane.rowIndex="3"
+                                     GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="timerMinute" initialValue="0" min="0" max="1000000" GridPane.rowIndex="3"
+                                     GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveDuration" text="Save" onAction="#saveHourMinute"
+                                    GridPane.rowIndex="3" GridPane.columnIndex="6"/>
+
+                            <Label text="Authorities" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="After How Long Authorities will respond."
+                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000" GridPane.rowIndex="5"
+                                     GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveDurationAuth" text="Save" onAction="#saveAuthority"
+                                    GridPane.rowIndex="5" GridPane.columnIndex="6"/>
+
+                            <Button text="Away" style="-fx-font-weight: bold"
+                                    fx:id="away" onAction="#awayButton"
+                                    prefHeight="25.0" prefWidth="161.0"
+                                   GridPane.rowIndex="12" GridPane.columnIndex="2" GridPane.columnSpan="5"
+                                   GridPane.halignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
+
 
                         </GridPane>
                     </AnchorPane>
@@ -352,7 +407,7 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-                            <Label text="Welcome to the SHH module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                            <Label text="Welcome to the Smart Home Heating (SHH) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
                         </GridPane>
                     </AnchorPane>
