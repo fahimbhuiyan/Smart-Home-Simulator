@@ -593,8 +593,6 @@ public class MainViewController {
             consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveInsideTemp)) {
             consoleTextField.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
-        } else if (event.getSource().equals(saveWindowBlock)) {
-        //    consoleTextField.setText("The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked\\unblocked.\n" + consoleTextField.getText());
         }
 
         turnOffSimulationWarning();
@@ -715,7 +713,8 @@ public class MainViewController {
         lockDoorComboBoxSHC.getItems().add("Backyard");
         lockDoorComboBoxSHC.getItems().add("Front yard");
 
-        addModifyLocComboBoxSHS.getItems().add("Outside");
+        addModifyLocComboBoxSHS.getItems().add("Front yard");
+        addModifyLocComboBoxSHS.getItems().add("Backyard");
         addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
 
         addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
@@ -802,19 +801,22 @@ public class MainViewController {
 
     @FXML
     void openOrCloseLights(ActionEvent event){
-
         String value = lightComboBoxSHC.getValue();
-        if(event != null && event.getSource().equals("turnOnLight")){
+        if(event != null && event.getSource().equals(turnOnLight)){
             shcController.openOrCloseLights(value, true, "open", houseModel, consoleTextField);
+            turnOnOffAutomode.setText("Turn On AutoMode");
         }
-        else if (event != null && event.getSource().equals("turnOffLight")){
+        else if (event != null && event.getSource().equals(turnOffLight)){
             shcController.openOrCloseLights(value, true, "close", houseModel, consoleTextField);
+            turnOnOffAutomode.setText("Turn On AutoMode");
         }
         else {
             UserModel user = ((UserModel)userInfo[1]);
-            shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, consoleTextField);
+            if(rooms.containsKey(user.getCurrentLocation())) {
+                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, consoleTextField);
+            }
 
-            if(rooms.get(user.getPreviousLocation()).getNbPeople() == 0){
+            if(rooms.containsKey(user.getPreviousLocation()) && rooms.get(user.getPreviousLocation()).getNbPeople() == 0){
                 shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, consoleTextField);
             }
 

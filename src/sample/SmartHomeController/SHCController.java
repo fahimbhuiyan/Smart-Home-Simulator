@@ -1,13 +1,7 @@
 package sample.SmartHomeController;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.TextArea;
 import sample.SmartHomeModel.HouseModel;
-import sample.SmartHomeModel.RoomModel;
-import sample.SmartHomeModel.UserModel;
-
-import javax.swing.*;
-import java.util.Map;
 
 /**
  * Class for the SHC Controller.
@@ -20,17 +14,25 @@ public class SHCController {
         this.autoMode = false;
     }
 
-    void openOrCloseLights(String roomName, boolean manualControl, String action, HouseModel houseModel, TextArea consoleTextField) {
+    void openOrCloseLights(String areaName, boolean manualControl, String action, HouseModel houseModel, TextArea consoleTextField) {
 
         if(manualControl || autoMode){
+
+            autoMode = !manualControl;
+
             if(action.equals("close")){
-                houseModel.getLights().get(roomName).setOpen(false);
-                consoleTextField.setText("Closing the lights in " + roomName + ".\n" + consoleTextField.getText());
+                System.out.println("Light to close: " + houseModel.getLights().get(areaName).getName());
+                houseModel.getLights().get(areaName).setOpen(false);
+                consoleTextField.setText("Closing the lights in " + areaName + ".\n" + consoleTextField.getText());
             }
             else if(action.equals("open")){
-                houseModel.getLights().get(roomName).setOpen(true);
-                consoleTextField.setText("Opening the lights in " + roomName + ".\n" + consoleTextField.getText());
+                System.out.println("Light to open: " + houseModel.getLights().get(areaName).getName());
+                houseModel.getLights().get(areaName).setOpen(true);
+                consoleTextField.setText("Opening the lights in " + areaName + ".\n" + consoleTextField.getText());
             }
+        }
+        else {
+            System.out.println("Manual control: " + manualControl + ", and autoMode: " + autoMode);
         }
     }
 

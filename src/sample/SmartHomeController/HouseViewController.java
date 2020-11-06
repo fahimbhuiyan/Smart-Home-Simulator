@@ -193,7 +193,7 @@ public class HouseViewController {
             frontLightImage.setImage(houseModel.getLights().get("Front yard").getImageClose());
         }
 
-        if(houseModel.getLights().get("Front yard").isOpen()){
+        if(houseModel.getLights().get("Backyard").isOpen()){
             backLightImage.setImage(houseModel.getLights().get("Backyard").getImageOpen());
         } else{
             backLightImage.setImage(houseModel.getLights().get("Backyard").getImageClose());
@@ -234,7 +234,10 @@ public class HouseViewController {
             Random r = new Random();
             Text userName = new Text("• " + userModel.getName() + " (ID: " + userModel.getId() + ")");
 
-            if (userModel.getCurrentLocation().equals("Outside")) {
+            /**
+             * Complete if for Backyard
+             */
+            if (userModel.getCurrentLocation().equals("Front yard")) {
                 int xLow = 0;
                 int xHigh = (int) (0.8 * houseModel.getxAxis());
                 int xResult = r.nextInt(xHigh - xLow) + xLow;

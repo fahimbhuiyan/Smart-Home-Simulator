@@ -27,7 +27,6 @@ public class UserModel {
 		this.previousLocation = currentLocation;
 	}
 
-
 	/**
 	 * Getter for the name of a user.
 	 *
@@ -117,5 +116,4 @@ public class UserModel {
 	public void setPreviousLocation(String location) {
 		this.previousLocation = location;
 	}
-
 }

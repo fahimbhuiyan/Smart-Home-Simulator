@@ -176,8 +176,14 @@ public class SHSController {
                 userList.get(i).setUser_type(userType);
 
                 previousLocation = userList.get(i).getCurrentLocation();
-                rooms.get(location).incrementNbPeople();
-                rooms.get(previousLocation).decrementNbPeople();
+
+                if (rooms.containsKey(location)) {
+                    rooms.get(location).incrementNbPeople();
+                }
+
+                if (rooms.containsKey(previousLocation)) {
+                    rooms.get(previousLocation).decrementNbPeople();
+                }
 
                 userList.get(i).setCurrentLocation(location);
                 userList.get(i).setPreviousLocation(previousLocation);
