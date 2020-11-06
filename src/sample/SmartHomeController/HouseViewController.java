@@ -1,10 +1,7 @@
 package sample.SmartHomeController;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -12,9 +9,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import sample.SmartHomeModel.HouseModel;
-import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,7 +25,7 @@ public class HouseViewController {
      * @param houseModel the house model
      * @param userList   the user list
      */
-    void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList) {
+    public void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList) {
 
         bp.getChildren().clear();
 
@@ -250,6 +245,8 @@ public class HouseViewController {
 
                 userName.setX(xResult);
                 userName.setY(yResult);
+
+                bp.getChildren().add(userName);
             } else if (userModel.getCurrentLocation().equals("House")) {
 
                 int xLow = (int) (0.1 * houseModel.getWidth());
@@ -262,10 +259,9 @@ public class HouseViewController {
 
                 userName.setX(houseModel.getxAxis() + xResult);
                 userName.setY(houseModel.getyAxis() + yResult);
+
+                bp.getChildren().add(userName);
             }
-
-            bp.getChildren().add(userName);
         }
-
     }
 }

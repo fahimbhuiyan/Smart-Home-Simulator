@@ -105,6 +105,8 @@ public class SimulationData {
             System.out.println(userModel.getId());
             System.out.println(userModel.getName());
             System.out.println(userModel.getUser_type());
+            System.out.println(userModel.getCurrentLocation());
+            System.out.println(userModel.getPreviousLocation());
             System.out.println();
         }
     }

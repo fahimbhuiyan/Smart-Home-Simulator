@@ -18,7 +18,6 @@ import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
 
-import javax.swing.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;

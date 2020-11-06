@@ -130,7 +130,7 @@
 
                                     <TableColumn text="Location">
                                         <cellValueFactory>
-                                            <PropertyValueFactory property="location"/>
+                                            <PropertyValueFactory property="currentLocation"/>
                                         </cellValueFactory>
                                     </TableColumn>
                                 </columns>
