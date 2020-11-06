@@ -175,18 +175,33 @@ public class SHSController {
                 userList.get(i).setName(name);
                 userList.get(i).setUser_type(userType);
 
-                previousLocation = userList.get(i).getCurrentLocation();
+                if(!userList.get(i).getCurrentLocation().equals(location)){
 
-                if (rooms.containsKey(location)) {
-                    rooms.get(location).incrementNbPeople();
+                    if(( (location.equals("House"))|| (location.equals("Backyard")) || (location.equals("Front yard")) || (rooms.get(location).getDoor().isOpen() == true) ||
+                            (rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == false))){
+
+                        previousLocation = userList.get(i).getCurrentLocation();
+
+                        if (rooms.containsKey(location)) {
+                            rooms.get(location).incrementNbPeople();
+                        }
+
+                        if (rooms.containsKey(previousLocation)) {
+                            rooms.get(previousLocation).decrementNbPeople();
+                        }
+
+                        userList.get(i).setCurrentLocation(location);
+                        userList.get(i).setPreviousLocation(previousLocation);
+
+                    }
+                    else if((rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == true)){
+                        consoleTextField.setText("Cannot move this user in " + location+ ". The door is locked.\n" + consoleTextField.getText());
+                    }
+                }
+                else if (userList.get(i).getCurrentLocation().equals(location)){
+                    consoleTextField.setText("User is already in " + location+ ".\n" + consoleTextField.getText());
                 }
 
-                if (rooms.containsKey(previousLocation)) {
-                    rooms.get(previousLocation).decrementNbPeople();
-                }
-
-                userList.get(i).setCurrentLocation(location);
-                userList.get(i).setPreviousLocation(previousLocation);
 
                 userInfo[1] = userList.get(i);
 

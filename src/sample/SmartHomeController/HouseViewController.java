@@ -250,6 +250,20 @@ public class HouseViewController {
                 userName.setY(yResult);
 
                 bp.getChildren().add(userName);
+            }
+             else if (userModel.getCurrentLocation().equals("Backyard")) {
+                int xLow = houseModel.getxAxis() + houseModel.getWidth() + 10;
+                int xHigh = houseModel.getxAxis() + houseModel.getWidth() + 70;
+                int xResult = r.nextInt(xHigh - xLow) + xLow;
+
+                int yLow = houseModel.getxAxis();
+                int yHigh = houseModel.getyAxis() + houseModel.getHeight();
+                int yResult = r.nextInt(yHigh - yLow) + yLow;
+
+                userName.setX(xResult);
+                userName.setY(yResult);
+
+                bp.getChildren().add(userName);
             } else if (userModel.getCurrentLocation().equals("House")) {
 
                 int xLow = (int) (0.1 * houseModel.getWidth());

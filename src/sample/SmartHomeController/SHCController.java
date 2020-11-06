@@ -37,8 +37,14 @@ public class SHCController {
     }
 
     void openDoor(String roomName, HouseModel houseModel, TextArea consoleTextField) {
-        houseModel.getDoors().get(roomName).setOpen(true);
-        consoleTextField.setText("Opening the door in " + roomName + ".\n" + consoleTextField.getText());
+
+        if(houseModel.getDoors().get(roomName).isLocked() && houseModel.getDoors().get(roomName).isOpen() == false){
+            consoleTextField.setText("Cannot open the door in " + roomName + ".\n" + consoleTextField.getText());
+        }
+        else{
+            houseModel.getDoors().get(roomName).setOpen(true);
+            consoleTextField.setText("Opening the door in " + roomName + ".\n" + consoleTextField.getText());
+        }
     }
     void closeDoor(String roomName, HouseModel houseModel, TextArea consoleTextField) {
         houseModel.getDoors().get(roomName).setOpen(false);
