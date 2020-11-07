@@ -564,18 +564,17 @@ public class MainViewController {
         userInfo = shsController.addModifyUser(userModelArrayList, rooms, id, name, userType, location, consoleTextField);
 
         //Catching exception, this method is only called when the autoMode is turned on
-        try{
+        try {
             openOrCloseLights(null);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Creating new user");
         }
 
 
-
         processUserInfo("add/modify");
-        try{
+        try {
             processPermission((UserModel) userInfo[1]);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Creating new user");
         }
 
@@ -587,9 +586,8 @@ public class MainViewController {
     }
 
 
-
     @FXML
-    public void saveUserProfiles(){
+    public void saveUserProfiles() {
         shsController.saveUserProfiles(userModelArrayList, consoleTextField);
     }
 
@@ -660,29 +658,29 @@ public class MainViewController {
     /**
      * Display available commands for logged user.
      */
-    private void processPermission(UserModel user){
+    private void processPermission(UserModel user) {
 
-        if(user.getUser_type().equals("Parent")){
+        if (user.getUser_type().equals("Parent")) {
             gridSHC.setDisable(false);
             gridSHH.setDisable(false);
             gridSHP.setDisable(false);
             turnOnOffAutomode.setDisable(false);
-            fillDefaultComboBox();
+            fillDefaultComboBox(false);
         }
-        if(user.getUser_type().equals("Stranger")){
+        if (user.getUser_type().equals("Stranger")) {
             gridSHC.setDisable(true);
             gridSHH.setDisable(true);
             gridSHP.setDisable(true);
         }
         //Permission revoke if child or guest are not in a room
-        if((user.getUser_type().equals("Child") || user.getUser_type().equals("Guest")) && (user.getCurrentLocation().equals("Backyard") ||
+        if ((user.getUser_type().equals("Child") || user.getUser_type().equals("Guest")) && (user.getCurrentLocation().equals("Backyard") ||
                 user.getCurrentLocation().equals("Front yard") || user.getCurrentLocation().equals("House"))) {
             gridSHC.setDisable(true);
             gridSHH.setDisable(true);
             gridSHP.setDisable(true);
         }
         //Limited Permission if child or guest are in a room
-        if((user.getUser_type().equals("Child") || user.getUser_type().equals("Guest")) && (!user.getCurrentLocation().equals("Backyard") &&
+        if ((user.getUser_type().equals("Child") || user.getUser_type().equals("Guest")) && (!user.getCurrentLocation().equals("Backyard") &&
                 !user.getCurrentLocation().equals("Front yard") && !user.getCurrentLocation().equals("House"))) {
             gridSHC.setDisable(false);
             gridSHH.setDisable(true);
@@ -707,11 +705,11 @@ public class MainViewController {
      * the simulator if the file exists.
      */
     @FXML
-    private void readHouseLayoutFile () {
+    private void readHouseLayoutFile() {
 
         //For the path, try something like C:\Soen 343\Project\HouseInfo.json
         JSONParser parser = new JSONParser();
-        String path = houseLayoutFilePath.getText().replaceAll("\\\\+","\\\\\\\\");
+        String path = houseLayoutFilePath.getText().replaceAll("\\\\+", "\\\\\\\\");
         Object obj = null;
 
         try {
@@ -759,7 +757,7 @@ public class MainViewController {
 
         houseViewController.drawLayout(bp, houseModel, userModelArrayList);
 
-        fillDefaultComboBox();
+        fillDefaultComboBox(true);
 
         userTable.setEditable(true);
         userTable.setItems(data);
@@ -773,47 +771,54 @@ public class MainViewController {
     }
 
     // Fill ComboBox of actions (open/close)
-    private void fillDefaultComboBox(){
+    private void fillDefaultComboBox(boolean setup) {
 
-        //Clearing these because of the switching profiles from guest/Children to PArent for example
-        lightComboBoxSHC.getItems().clear();
-        winComboBoxSHC.getItems().clear();
-        addModifyLocComboBoxSHS.getItems().clear();
-        blockWinLocComboBoxSHS.getItems().clear();
-        doorComboBoxSHC.getItems().clear();
-        lockDoorComboBoxSHC.getItems().clear();
-        addModifyRoleComboBoxSHS.getItems().clear();
+        if (!setup) { // We are just reload certain ComboBoxes because the user who just logged in has higher permissions
+            lightComboBoxSHC.getItems().clear();
+            winComboBoxSHC.getItems().clear();
+
+            for (String roomName : roomNamesSet) {
+                winComboBoxSHC.getItems().add(roomName);
+                lightComboBoxSHC.getItems().add(roomName);
+            }
+
+            lightComboBoxSHC.getItems().add("Backyard");
+            lightComboBoxSHC.getItems().add("Front yard");
+
+            winComboBoxSHC.getSelectionModel().selectFirst();
+            lightComboBoxSHC.getSelectionModel().selectFirst();
+        } else { // Initial setup
+
+            addModifyLocComboBoxSHS.getItems().add("House");
+
+            for (String roomName : roomNamesSet) {
+                addModifyLocComboBoxSHS.getItems().add(roomName);
+                blockWinLocComboBoxSHS.getItems().add(roomName);
+                doorComboBoxSHC.getItems().add(roomName);
+                winComboBoxSHC.getItems().add(roomName);
+                lightComboBoxSHC.getItems().add(roomName);
+                lockDoorComboBoxSHC.getItems().add(roomName);
+            }
+
+            lightComboBoxSHC.getItems().add("Backyard");
+            lightComboBoxSHC.getItems().add("Front yard");
+            doorComboBoxSHC.getItems().add("Backyard");
+            doorComboBoxSHC.getItems().add("Front yard");
+            lockDoorComboBoxSHC.getItems().add("Backyard");
+            lockDoorComboBoxSHC.getItems().add("Front yard");
+            addModifyLocComboBoxSHS.getItems().add("Front yard");
+            addModifyLocComboBoxSHS.getItems().add("Backyard");
+            addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
 
 
-        addModifyLocComboBoxSHS.getItems().add("House");
-
-        for (String roomName : roomNamesSet) {
-            addModifyLocComboBoxSHS.getItems().add(roomName);
-            blockWinLocComboBoxSHS.getItems().add(roomName);
-            doorComboBoxSHC.getItems().add(roomName);
-            winComboBoxSHC.getItems().add(roomName);
-            lightComboBoxSHC.getItems().add(roomName);
-            lockDoorComboBoxSHC.getItems().add(roomName);
+            addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
+            addModifyRoleComboBoxSHS.getSelectionModel().selectFirst();
+            blockWinLocComboBoxSHS.getSelectionModel().selectFirst();
+            doorComboBoxSHC.getSelectionModel().selectFirst();
+            lockDoorComboBoxSHC.getSelectionModel().selectFirst();
+            winComboBoxSHC.getSelectionModel().selectFirst();
+            lightComboBoxSHC.getSelectionModel().selectFirst();
         }
-
-        lightComboBoxSHC.getItems().add("Backyard");
-        lightComboBoxSHC.getItems().add("Front yard");
-        doorComboBoxSHC.getItems().add("Backyard");
-        doorComboBoxSHC.getItems().add("Front yard");
-        lockDoorComboBoxSHC.getItems().add("Backyard");
-        lockDoorComboBoxSHC.getItems().add("Front yard");
-        addModifyLocComboBoxSHS.getItems().add("Front yard");
-        addModifyLocComboBoxSHS.getItems().add("Backyard");
-        addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
-
-
-        addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
-        addModifyRoleComboBoxSHS.getSelectionModel().selectFirst();
-        blockWinLocComboBoxSHS.getSelectionModel().selectFirst();
-        doorComboBoxSHC.getSelectionModel().selectFirst();
-        winComboBoxSHC.getSelectionModel().selectFirst();
-        lightComboBoxSHC.getSelectionModel().selectFirst();
-        lockDoorComboBoxSHC.getSelectionModel().selectFirst();
     }
 
     /**
@@ -831,14 +836,12 @@ public class MainViewController {
     public void setAutoMode() {
         shcController.setAutoMode(!shcController.isAutoMode());
 
-        if(shcController.isAutoMode()){
+        if (shcController.isAutoMode()) {
             turnOnOffAutomode.setText("Turn Off AutoMode");
-        }
-        else {
+        } else {
             turnOnOffAutomode.setText("Turn On AutoMode");
         }
     }
-
 
     @FXML
     public void openDoor() {
@@ -846,6 +849,7 @@ public class MainViewController {
         shcController.openDoor(value, houseModel, consoleTextField);
         drawLayout();
     }
+
     @FXML
     public void closeDoor() {
         String value = doorComboBoxSHC.getValue();
@@ -859,6 +863,7 @@ public class MainViewController {
         shcController.lockDoor(value, houseModel, consoleTextField);
         drawLayout();
     }
+
     @FXML
     public void unLock() {
         String value = lockDoorComboBoxSHC.getValue();
@@ -872,6 +877,7 @@ public class MainViewController {
         shcController.openWindow(value, houseModel, consoleTextField);
         drawLayout();
     }
+
     @FXML
     void closeWindow() {
         String value = winComboBoxSHC.getValue();
@@ -880,23 +886,21 @@ public class MainViewController {
     }
 
     @FXML
-    void openOrCloseLights(ActionEvent event){
+    void openOrCloseLights(ActionEvent event) {
         String value = lightComboBoxSHC.getValue();
-        if(event != null && event.getSource().equals(turnOnLight)){
+        if (event != null && event.getSource().equals(turnOnLight)) {
             shcController.openOrCloseLights(value, true, "open", houseModel, consoleTextField);
             turnOnOffAutomode.setText("Turn On AutoMode");
-        }
-        else if (event != null && event.getSource().equals(turnOffLight)){
+        } else if (event != null && event.getSource().equals(turnOffLight)) {
             shcController.openOrCloseLights(value, true, "close", houseModel, consoleTextField);
             turnOnOffAutomode.setText("Turn On AutoMode");
-        }
-        else {
-            UserModel user = ((UserModel)userInfo[1]);
-            if(rooms.containsKey(user.getCurrentLocation())) {
+        } else {
+            UserModel user = ((UserModel) userInfo[1]);
+            if (rooms.containsKey(user.getCurrentLocation())) {
                 shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, consoleTextField);
             }
 
-            if(rooms.containsKey(user.getPreviousLocation()) && rooms.get(user.getPreviousLocation()).getNbPeople() == 0){
+            if (rooms.containsKey(user.getPreviousLocation()) && rooms.get(user.getPreviousLocation()).getNbPeople() == 0) {
                 shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, consoleTextField);
             }
 
