@@ -2,6 +2,7 @@ package sample.SmartHomeController;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class for the Main view controller.
@@ -518,6 +520,31 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
+    boolean check = true;
+    LocalTime chosenTime =null;
+    private class TimeShow extends Thread{
+        @Override
+        public void run() {
+            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+            while (check) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+                Platform.runLater(() -> {
+                    local.getAndSet(local.get().plusSeconds(1));
+                    int h = local.get().getHour();
+                    int m = local.get().getMinute();
+                    int s = local.get().getSecond();
+                    leftPanelTime.setText(
+                            String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                    );
+                });
+            }
+        }
+    }
+
     /**
      * Start or stop the simulation and enable or disable the needed UI controls (also prints on output console).
      */
@@ -543,6 +570,7 @@ public class MainViewController {
             loginButton.setDisable(false);
         }
     }
+
 
     /**
      * Log in the user based on the user ID provided.
@@ -628,7 +656,16 @@ public class MainViewController {
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
         } else if (event.getSource().equals(saveTime)) {
             consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
-            leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
+//            leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
+            chosenTime = timeSHS.getValue();
+            check = false;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            check = true;
+            new TimeShow().start();
         } else if (event.getSource().equals(saveOutsideTemp)) {
             consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveInsideTemp)) {
