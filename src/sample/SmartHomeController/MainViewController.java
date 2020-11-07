@@ -533,7 +533,15 @@ public class MainViewController {
                 }
                 Platform.runLater(() -> {
                     local.getAndSet(local.get().plusSeconds(1));
-                    leftPanelTime.setText("Time: " + local.get().getHour() + ":" + local.get().getMinute() + ":" + local.get().getSecond());
+                    int h = local.get().getHour();
+                    int m = local.get().getHour();
+                    int s = local.get().getSecond();
+                    leftPanelTime.setText(
+                            String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                    );
+                    if (h == 0 && m == 0 && s == 0)
+                        leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
+//                    leftPanelTime.setText("Time: " + local.get().getHour() + ":" + local.get().getMinute() + ":" + local.get().getSecond());
                 });
             }
         }
@@ -648,12 +656,20 @@ public class MainViewController {
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
         if (event.getSource().equals(saveDate)) {
-            consoleTextField.setText("The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            consoleTextField.setText("[" + timeSHS.getValue() + "] " + "The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
         } else if (event.getSource().equals(saveTime)) {
             consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
             chosenTime = timeSHS.getValue();
+//            check = true;
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            check = true;
+//            new TimeShow().start();
         } else if (event.getSource().equals(saveOutsideTemp)) {
             consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveInsideTemp)) {
