@@ -521,7 +521,7 @@ public class MainViewController {
     }
 
     boolean check = true;
-    LocalTime chosenTime =null;
+    LocalTime chosenTime = null;
     private class TimeShow extends Thread{
         @Override
         public void run() {
@@ -540,6 +540,8 @@ public class MainViewController {
                     leftPanelTime.setText(
                             String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
                     );
+                    if (h == 0 && m == 0 && s == 0)
+                        leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
                 });
             }
         }
@@ -656,7 +658,7 @@ public class MainViewController {
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
         } else if (event.getSource().equals(saveTime)) {
             consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
-//            leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
+            leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
             chosenTime = timeSHS.getValue();
             check = false;
             try {
