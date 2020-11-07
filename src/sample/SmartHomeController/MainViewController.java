@@ -2,6 +2,7 @@ package sample.SmartHomeController;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class for the Main view controller.
@@ -518,6 +520,25 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
+    boolean check = false;
+    private class TimeShow extends Thread{
+        @Override
+        public void run() {
+            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+            while (check) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+                Platform.runLater(() -> {
+                    local.getAndSet(local.get().plusSeconds(1));
+                    leftPanelTime.setText("Time: " + local.get().getHour() + ":" + local.get().getMinute() + ":" + local.get().getSecond());
+                });
+            }
+        }
+    }
+
     /**
      * Start or stop the simulation and enable or disable the needed UI controls (also prints on output console).
      */
@@ -532,6 +553,8 @@ public class MainViewController {
             saveOutsideTemp.setDisable(true);
             saveInsideTemp.setDisable(true);
             loginButton.setDisable(true);
+            check = true;
+            new TimeShow().start();
         } else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
             turnOnOffSimulation.setText("Start the simulation");
             consoleTextField.setText("The simulation has been stopped!\n" + consoleTextField.getText());
@@ -541,6 +564,7 @@ public class MainViewController {
             saveOutsideTemp.setDisable(false);
             saveInsideTemp.setDisable(false);
             loginButton.setDisable(false);
+            check = false;
         }
     }
 
@@ -594,7 +618,6 @@ public class MainViewController {
             System.out.println("Creating new user");
         }
 
-
         processUserInfo("add/modify");
         try {
             processPermission((UserModel) userInfo[1]);
@@ -615,6 +638,7 @@ public class MainViewController {
         shsController.saveUserProfiles(userModelArrayList, consoleTextField);
     }
 
+    LocalTime chosenTime = null;
     /**
      * Save the simulation conditions (also prints on left panel and on House Layout).
      *
@@ -629,6 +653,7 @@ public class MainViewController {
         } else if (event.getSource().equals(saveTime)) {
             consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
+            chosenTime = timeSHS.getValue();
         } else if (event.getSource().equals(saveOutsideTemp)) {
             consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveInsideTemp)) {
