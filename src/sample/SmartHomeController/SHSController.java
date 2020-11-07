@@ -77,14 +77,14 @@ public class SHSController {
      * @param consoleTextField the console text field
      * @return the object [ ]
      */
-    Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, TextArea consoleTextField) {
+    Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, TextArea consoleTextField, String currentTime) {
         boolean userExist = false;
         Object[] userInfo = new Object[2];
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId() == (id)) {
                 houseModel.setLoggedUserName(userList.get(i).getName());
-                consoleTextField.setText("You're logged in as " + userList.get(i).getName() + ".\n" + consoleTextField.getText());
+                consoleTextField.setText("[" + currentTime + "]" + "You're logged in as " + userList.get(i).getName() + ".\n" + consoleTextField.getText());
                 userExist = true;
                 userInfo[1] = userList.get(i);
                 loggedUserID = userList.get(i).getId();

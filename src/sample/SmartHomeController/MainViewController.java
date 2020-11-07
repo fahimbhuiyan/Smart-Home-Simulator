@@ -521,6 +521,7 @@ public class MainViewController {
     }
 
     boolean check = false;
+    LocalTime chosenTime = null;
     private class TimeShow extends Thread{
         @Override
         public void run() {
@@ -534,16 +535,16 @@ public class MainViewController {
                 Platform.runLater(() -> {
                     local.getAndSet(local.get().plusSeconds(1));
                     int h = local.get().getHour();
-                    int m = local.get().getHour();
+                    int m = local.get().getMinute();
                     int s = local.get().getSecond();
                     leftPanelTime.setText(
                             String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
                     );
                     if (h == 0 && m == 0 && s == 0)
                         leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
-//                    leftPanelTime.setText("Time: " + local.get().getHour() + ":" + local.get().getMinute() + ":" + local.get().getSecond());
                 });
             }
+            chosenTime = local.get();
         }
     }
 
@@ -573,6 +574,11 @@ public class MainViewController {
             saveInsideTemp.setDisable(false);
             loginButton.setDisable(false);
             check = false;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -583,7 +589,7 @@ public class MainViewController {
     public void login() {
         int id = userIdToLogin.getValue();
 
-        userInfo = shsController.login(houseModel, id, userModelArrayList, consoleTextField);
+        userInfo = shsController.login(houseModel, id, userModelArrayList, consoleTextField, timeSHS.getValue().toString());
 
         turnOffSimulationWarning();
         processUserInfo("login");
@@ -646,7 +652,6 @@ public class MainViewController {
         shsController.saveUserProfiles(userModelArrayList, consoleTextField);
     }
 
-    LocalTime chosenTime = null;
     /**
      * Save the simulation conditions (also prints on left panel and on House Layout).
      *
@@ -656,24 +661,23 @@ public class MainViewController {
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
         if (event.getSource().equals(saveDate)) {
-            consoleTextField.setText("[" + timeSHS.getValue() + "] " + "The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
         } else if (event.getSource().equals(saveTime)) {
-            consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            consoleTextField.setText("[" + timeSHS.getValue() + "] " + "The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
             chosenTime = timeSHS.getValue();
-//            check = true;
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            check = true;
-//            new TimeShow().start();
+
+            int h = LocalTime.now().getHour();
+            int m = LocalTime.now().getMinute();
+            int s = LocalTime.now().getSecond();
+            leftPanelTime.setText(
+                    String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+            );
         } else if (event.getSource().equals(saveOutsideTemp)) {
-            consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
+            consoleTextField.setText("[" + timeSHS.getValue() + "] " +"The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveInsideTemp)) {
-            consoleTextField.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
+            consoleTextField.setText("[" + timeSHS.getValue() + "] " +"The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         }
 
         turnOffSimulationWarning();
@@ -831,7 +835,7 @@ public class MainViewController {
 
         turnOnOffSimulation.setDisable(true);
 
-//        timeSHS.setValue(LocalTime.of(12, 0));
+//        timeSHS.setValue(LocalTime.of(12, 0,0));
         timeSHS.setValue(LocalTime.now());
     }
 
