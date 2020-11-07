@@ -376,6 +376,30 @@ public class MainViewController {
     @FXML
     Button unlockDoor;
 
+    @FXML
+    ComboBox<String> lightComboBoxSHP;
+
+    @FXML
+    JFXTimePicker timerHour;
+
+    @FXML
+    JFXTimePicker timerMinute;
+
+    @FXML
+    Button saveDuration;
+
+    @FXML
+    Spinner<Integer> timerMinuteAuthority;
+
+    @FXML
+    Spinner<Integer> timerHourAuthority;
+
+    @FXML
+    Button saveDurationAuth;
+
+    @FXML
+    Button away;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -907,5 +931,15 @@ public class MainViewController {
         }
 
         drawLayout();
+    }
+
+
+    public void saveHourMinute(ActionEvent event) {
+    }
+
+    public void saveAuthority(ActionEvent event) {
+    }
+
+    public void awayButton(ActionEvent event) {
     }
 }
