@@ -367,22 +367,19 @@ public class MainViewController {
     ComboBox<String> lightComboBoxSHP;
 
     @FXML
-    Button turnOnLightSHP;
+    JFXTimePicker timerHour;
 
     @FXML
-    Button turnOffLightSHP;
-
-    @FXML
-    Spinner<Integer> timerHour;
-
-    @FXML
-    Spinner<Integer> timerMinute;
+    JFXTimePicker timerMinute;
 
     @FXML
     Button saveDuration;
 
     @FXML
     Spinner<Integer> timerMinuteAuthority;
+
+    @FXML
+    Spinner<Integer> timerHourAuthority;
 
     @FXML
     Button saveDurationAuth;
@@ -443,6 +440,7 @@ public class MainViewController {
     }
 
     /**
+     * Add users to the SHS table.
      * Add users to the SHS table.
      */
     private void loadUsersInSHSTable() {
@@ -510,7 +508,7 @@ public class MainViewController {
     public void startOrStopSimulation() {
         if (turnOnOffSimulation.getText().equals("Start the simulation")) {
             turnOnOffSimulation.setText("Stop the simulation");
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "]" + "The simulation has been started!\n" + consoleTextField.getText());
+            consoleTextField.setText("The simulation has been started!\n" + consoleTextField.getText());
             System.out.println("The simulation has been started!");
             saveDate.setDisable(true);
             saveTime.setDisable(true);
@@ -519,7 +517,7 @@ public class MainViewController {
             loginButton.setDisable(true);
         } else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
             turnOnOffSimulation.setText("Start the simulation");
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The simulation has been stopped!\n" + consoleTextField.getText());
+            consoleTextField.setText("The simulation has been stopped!\n" + consoleTextField.getText());
             System.out.println("The simulation has been stopped!");
             saveDate.setDisable(false);
             saveTime.setDisable(false);
@@ -587,17 +585,17 @@ public class MainViewController {
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
         if (event.getSource().equals(saveDate)) {
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            consoleTextField.setText("The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
         } else if (event.getSource().equals(saveTime)) {
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            consoleTextField.setText("The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
             leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
         } else if (event.getSource().equals(saveOutsideTemp)) {
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
+            consoleTextField.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveInsideTemp)) {
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
+            consoleTextField.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
         } else if (event.getSource().equals(saveWindowBlock)) {
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked\\unblocked.\n" + consoleTextField.getText());
+            consoleTextField.setText("The window in " + blockWinLocComboBoxSHS.getValue() + " has been blocked\\unblocked.\n" + consoleTextField.getText());
         }
 
         turnOffSimulationWarning();
@@ -759,11 +757,6 @@ public class MainViewController {
     public void lightOff(ActionEvent event) {
     }
 
-    public void lightOnSHP(ActionEvent event) {
-    }
-
-    public void lightOffSHP(ActionEvent event) {
-    }
 
     public void saveHourMinute(ActionEvent event) {
     }

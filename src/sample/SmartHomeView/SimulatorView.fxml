@@ -348,7 +348,7 @@
                                    GridPane.halignment="LEFT"/>
 
                             <Label text="Lights" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
@@ -358,36 +358,35 @@
                                    GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="lightComboBoxSHP" promptText="Select a location"
-                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="turnOnLightSHP" text="On" onAction="#lightOnSHP"
-                                    GridPane.rowIndex="2" GridPane.columnIndex="3"/>
-                            <Button fx:id="turnOffLightSHP" text="Off" onAction="#lightOffSHP"
-                                    GridPane.rowIndex="2" GridPane.columnIndex="4"/>
+                                      GridPane.rowIndex="2" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
 
-                            <Label text="Duration (Hour, Minute)"
-                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                            <Label text="Duration"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="1"
                                    GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="timerHour" initialValue="1" min="0" max="1000000" GridPane.rowIndex="3"
+                            <JFXTimePicker fx:id="timerHour" GridPane.rowIndex="3"
                                      GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="timerMinute" initialValue="0" min="0" max="1000000" GridPane.rowIndex="3"
-                                     GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+                            <JFXTimePicker fx:id="timerMinute" GridPane.rowIndex="3"
+                                     GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveDuration" text="Save" onAction="#saveHourMinute"
-                                    GridPane.rowIndex="3" GridPane.columnIndex="6"/>
+                                    GridPane.rowIndex="3" GridPane.columnIndex="4"/>
 
                             <Label text="Authorities" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="After How Long Authorities will respond."
-                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                            <Label text="After How Long Authorities will respond. (hh, mm)"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="6"
                                    GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000" GridPane.rowIndex="5"
-                                     GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+
+                            <Spinner fx:id="timerHourAuthority" initialValue="0" min="0" max="1000000" GridPane.rowIndex="6"
+                                     GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000" GridPane.rowIndex="6"
+                                     GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveDurationAuth" text="Save" onAction="#saveAuthority"
-                                    GridPane.rowIndex="5" GridPane.columnIndex="6"/>
+                                    GridPane.rowIndex="6" GridPane.columnIndex="4"/>
 
                             <Button text="Away" style="-fx-font-weight: bold"
                                     fx:id="away" onAction="#awayButton"
