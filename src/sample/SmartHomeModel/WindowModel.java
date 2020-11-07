@@ -33,8 +33,6 @@ public class WindowModel {
 
 			imageOpen = new Image(getClass().getResourceAsStream("/img/window_open.png"));
 			imageClose = new Image(getClass().getResourceAsStream("/img/window_close.png"));
-			System.out.println(imageOpen+"bla");
-			System.out.println(imageClose);
 	}
 
 	/**

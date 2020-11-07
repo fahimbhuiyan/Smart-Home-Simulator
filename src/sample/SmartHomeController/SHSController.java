@@ -2,12 +2,16 @@ package sample.SmartHomeController;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.SimulationData;
 import sample.SmartHomeModel.UserModel;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Map;
@@ -31,6 +35,8 @@ public class SHSController {
      * The Logged user id.
      */
     private int loggedUserID = -1;
+
+    PrintWriter printWriter;
 
 
     /**
@@ -159,15 +165,43 @@ public class SHSController {
      * @param consoleTextField the console text field
      * @return the object [ ]
      */
-    Object[] addModifyUser(ArrayList<UserModel> userList, int id, String name, String userType, String location, TextArea consoleTextField) {
+    Object[] addModifyUser(ArrayList<UserModel> userList, Map<String, RoomModel> rooms, int id, String name, String userType, String location, TextArea consoleTextField) {
         boolean userExist = false;
         Object[] userInfo = new Object[2];
+        String previousLocation = "";
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId() == (id)) {
                 userExist = true;
                 userList.get(i).setName(name);
                 userList.get(i).setUser_type(userType);
-                userList.get(i).setLocation(location);
+
+                if(!userList.get(i).getCurrentLocation().equals(location)){
+
+                    if(( (location.equals("House"))|| (location.equals("Backyard")) || (location.equals("Front yard")) || (rooms.get(location).getDoor().isOpen() == true) ||
+                            (rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == false))){
+
+                        previousLocation = userList.get(i).getCurrentLocation();
+
+                        if (rooms.containsKey(location)) {
+                            rooms.get(location).incrementNbPeople();
+                        }
+
+                        if (rooms.containsKey(previousLocation)) {
+                            rooms.get(previousLocation).decrementNbPeople();
+                        }
+
+                        userList.get(i).setCurrentLocation(location);
+                        userList.get(i).setPreviousLocation(previousLocation);
+
+                    }
+                    else if((rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == true)){
+                        consoleTextField.setText("Cannot move this user in " + location+ ". The door is locked.\n" + consoleTextField.getText());
+                    }
+                }
+                else if (userList.get(i).getCurrentLocation().equals(location)){
+                    consoleTextField.setText("User is already in " + location+ ".\n" + consoleTextField.getText());
+                }
+
 
                 userInfo[1] = userList.get(i);
 
@@ -184,5 +218,27 @@ public class SHSController {
         userInfo[0] = userExist;
 
         return userInfo;
+    }
+
+    void saveUserProfiles(ArrayList<UserModel> userList, TextArea consoleTextField){
+        try{
+
+            printWriter = new PrintWriter("Profiles.txt", "UTF-8");
+
+            for(UserModel userModel : userList){
+                printWriter.println(userModel.getName() + "," + userModel.getId() + "," + userModel.getUser_type() + "," + userModel.getCurrentLocation());
+            }
+            consoleTextField.setText("Saving user profiles.\n" + consoleTextField.getText());
+
+            printWriter.flush();
+            printWriter.close();
+
+        } catch (FileNotFoundException e){
+            System.out.println("File does not exists.");
+        }
+        catch (UnsupportedEncodingException e){
+            System.out.println("UnsupportedEncoding Error");
+        }
+
     }
 }

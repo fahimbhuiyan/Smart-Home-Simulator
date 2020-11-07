@@ -15,7 +15,6 @@ public class SimulationData {
     private Map<String, RoomModel> rooms;
     private ArrayList<UserModel> userList = new ArrayList<>();
     private HouseModel houseModel;
-    private PrintWriter printWriter;
     private BufferedReader bufferedReader;
 
     /**
@@ -27,7 +26,7 @@ public class SimulationData {
     public void createData(String fileName) throws IOException {
 
         System.out.println("Creating Data");
-        createDefaultUsers();
+
         ReadHouseLayout rhm = new ReadHouseLayout();
         rhm.ReadJSON(fileName);
 
@@ -35,6 +34,7 @@ public class SimulationData {
         ArrayList<JSONObject> jsonObjectArray = rhm.getHouseLayout();
 
         System.out.println("Creating Rooms");
+        //start at 1 so we don't include the house room inside the json file
         for(int i = 1; i < jsonObjectArray.size(); i++){
 
             String name = jsonObjectArray.get(i).get("name").toString();
@@ -45,6 +45,7 @@ public class SimulationData {
 
             DoorModel door = new DoorModel(generateId(), name);
             LightModel light = new LightModel(generateId(), name);
+            System.out.println(name+" light");
             WindowModel window = new WindowModel(generateId(), name);
             RoomModel room = new RoomModel(generateId(), name, width, height, xAxis, yAxis, door, light, window);
 
@@ -70,6 +71,8 @@ public class SimulationData {
             System.out.println();
         }
 
+        createDefaultUsers();
+
         createHouse(Integer.parseInt(jsonObjectArray.get(0).get("width").toString()), Integer.parseInt(jsonObjectArray.get(0).get("height").toString()), Integer.parseInt(jsonObjectArray.get(0).get("x-axis").toString()), Integer.parseInt(jsonObjectArray.get(0).get("y-axis").toString()));
     }
 
@@ -82,9 +85,14 @@ public class SimulationData {
 
         if(userList.size() == 0){
             UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
-            UserModel defaultChild = new UserModel("Daniel", 1, "Child", "Toilet");
+            UserModel defaultChild = new UserModel("Daniel", 1, "Child", "Garage");
             UserModel defaultGuest = new UserModel("Boris", 2,"Guest", "House");
-            UserModel defaultStranger = new UserModel("Tony", 3, "Stranger", "Outside");
+            UserModel defaultStranger = new UserModel("Tony", 3, "Stranger", "Backyard");
+
+            rooms.get("Kitchen").incrementNbPeople();
+            rooms.get("Garage").incrementNbPeople();
+
+
             userList.add(defaultParent);
             userList.add(defaultChild);
             userList.add(defaultGuest);
@@ -97,6 +105,8 @@ public class SimulationData {
             System.out.println(userModel.getId());
             System.out.println(userModel.getName());
             System.out.println(userModel.getUser_type());
+            System.out.println(userModel.getCurrentLocation());
+            System.out.println(userModel.getPreviousLocation());
             System.out.println();
         }
     }
@@ -105,7 +115,6 @@ public class SimulationData {
         try {
             bufferedReader = new BufferedReader(new FileReader("Profiles.txt"));
             String currentLine;
-
             String [] profileArray = new String[4];
             currentLine = bufferedReader.readLine();
 
@@ -113,8 +122,14 @@ public class SimulationData {
                 profileArray = currentLine.split(",");
                 System.out.println("Length"+profileArray.length);
                 UserModel user = new UserModel(profileArray[0],Integer.parseInt(profileArray[1]),profileArray[2],profileArray[3]);
-                userList.add(user);
 
+                try{
+                    rooms.get(profileArray[3]).incrementNbPeople();
+                }catch (NullPointerException e){
+                    System.out.println("User does not start in a room.");
+                }
+
+                userList.add(user);
                 currentLine = bufferedReader.readLine();
 
             }
@@ -135,14 +150,15 @@ public class SimulationData {
         Map<String, DoorModel> doors = new HashMap<>();
         Map<String, WindowModel> windows = new HashMap<>();
 
-        lights.put("front-door", new LightModel(generateId(), "front-door"));
-        lights.put("backyard", new LightModel(generateId(), "backyard"));
+        lights.put("Front yard", new LightModel(generateId(), "Front yard"));
+        lights.put("Backyard", new LightModel(generateId(), "Backyard"));
 
-        doors.put("front-door", new DoorModel(generateId(), "front-door"));
-        doors.put("backyard", new DoorModel(generateId(), "backyard"));
+        doors.put("Front yard", new DoorModel(generateId(), "Front yard"));
+        doors.put("Backyard", new DoorModel(generateId(), "Backyard"));
 
         for (String roomName : rooms.keySet()) {
             lights.put(roomName, rooms.get(roomName).getLight());
+            System.out.println(roomName+"key");
             doors.put(roomName, rooms.get(roomName).getDoor());
             windows.put(roomName, rooms.get(roomName).getWindow());
         }

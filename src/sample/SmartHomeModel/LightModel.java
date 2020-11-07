@@ -31,8 +31,6 @@ public class LightModel {
 
 		imageOpen = new Image(getClass().getResourceAsStream("/img/light_bulb_open.jpg"));
 		imageClose = new Image(getClass().getResourceAsStream("/img/light_bulb_close.jpg"));
-		System.out.println(imageOpen+"bla");
-		System.out.println(imageClose);
 
 	}
 
