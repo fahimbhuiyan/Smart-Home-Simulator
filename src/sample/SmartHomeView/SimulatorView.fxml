@@ -32,41 +32,42 @@
                     <Insets top="5" bottom="10"/>
                 </VBox.margin>
             </Label>
-                <Label fx:id="labelUserInfoLeftPanel" text="User information" style="-fx-font-weight: bold"
-                       contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
-                    <VBox.margin>
-                        <Insets top="10"/>
-                    </VBox.margin>
-                </Label>
+            <Label fx:id="labelUserInfoLeftPanel" text="User information" style="-fx-font-weight: bold"
+                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </Label>
 
-                <ImageView fx:id="avatarImageView"
-                           fitHeight="50"
-                           fitWidth="50"
-                           layoutX="61.0"
-                           layoutY="83.0"
-                           pickOnBounds="true"
-                           preserveRatio="true"
-                >
-                    <Image
-                            url="img/avatar.png"
-                            backgroundLoading="true"
-                    />
-                </ImageView>
+            <ImageView fx:id="avatarImageView"
+                       fitHeight="50"
+                       fitWidth="50"
+                       layoutX="61.0"
+                       layoutY="83.0"
+                       pickOnBounds="true"
+                       preserveRatio="true"
+            >
+                <Image
+                        url="img/avatar.png"
+                        backgroundLoading="true"
+                />
+            </ImageView>
 
-                <Label fx:id="userNameLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="userIDLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="userPermissionLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="userLocationLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="labelLeftPanelSimParam" text="Simulation parameters" style="-fx-font-weight: bold"
-                       contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
-                    <VBox.margin>
-                        <Insets top="10"/>
-                    </VBox.margin>
-                </Label>
-                <Label fx:id="leftPanelDate" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-                <Label fx:id="leftPanelInTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userNameLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userIDLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userPermissionLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="userLocationLabel" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="labelLeftPanelSimParam" text="Simulation parameters" style="-fx-font-weight: bold"
+                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </Label>
+            <Label fx:id="leftPanelDate" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelTimeSpeed" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
+            <Label fx:id="leftPanelInTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
 
 
             <Label fx:id="labelHouseLayoutFile" text="Upload a house file" style="-fx-font-weight: bold"
@@ -80,7 +81,8 @@
                     <Insets bottom="5"/>
                 </VBox.margin>
             </TextField>
-            <Button fx:id="saveHouseLayoutFilePath" onAction="#readHouseLayoutFile" text="Upload" contentDisplay="CENTER"
+            <Button fx:id="saveHouseLayoutFilePath" onAction="#readHouseLayoutFile" text="Upload"
+                    contentDisplay="CENTER"
                     alignment="CENTER" textAlignment="CENTER"/>
             <Label fx:id="errorLabelHouseLayoutFile"
                    textFill="red"
@@ -136,7 +138,8 @@
                                 </columns>
                             </TableView>
 
-                            <Button text="Save Profiles" onAction="#saveUserProfiles" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP"/>
+                            <Button text="Save Profiles" onAction="#saveUserProfiles" GridPane.rowIndex="1"
+                                    GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.valignment="TOP"/>
 
 
                             <Label text="Add/Modify user profile (Name, ID, Role, Location)"
@@ -208,33 +211,41 @@
                             <Button fx:id="saveTime" onAction="#saveSimulationConditions" text="Save"
                                     GridPane.rowIndex="10" GridPane.columnIndex="3"/>
 
-                            <Label text="Outside Temperature (Celsius)"
+                            <Label text="Modify the speed of time in the simulation"
                                    GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="timeSpeedComboBoxSHS" promptText="Select the simulation time speed"
+                                      GridPane.rowIndex="11" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveTimeSpeed" onAction="#saveTimeSpeed" text="Save"
+                                    GridPane.rowIndex="11" GridPane.columnIndex="3"/>
+
+                            <Label text="Outside Temperature (Celsius)"
+                                   GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <Spinner fx:id="outTempSHS" initialValue="15" min="-1000000" max="1000000"
                                      amountToStepBy=".1"
-                                     GridPane.rowIndex="11"
+                                     GridPane.rowIndex="12"
                                      GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveOutsideTemp" onAction="#setOutsideTemperature" text="Save"
-                                    GridPane.rowIndex="11" GridPane.columnIndex="3"/>
+                                    GridPane.rowIndex="12" GridPane.columnIndex="3"/>
 
                             <Label text="Inside Temperature (Celsius)"
-                                   GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <Spinner fx:id="inTempSHS" initialValue="15" min="-1000000" max="1000000"
                                      amountToStepBy=".1"
-                                     GridPane.rowIndex="12"
+                                     GridPane.rowIndex="13"
                                      GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveInsideTemp" onAction="#setInsideTemperature" text="Save"
-                                    GridPane.rowIndex="12" GridPane.columnIndex="3"/>
+                                    GridPane.rowIndex="13" GridPane.columnIndex="3"/>
 
                             <Label text="Block\Unblock a room's window with an object"
-                                   GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="blockWinLocComboBoxSHS" promptText="Select a location"
-                                      GridPane.rowIndex="13" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveWindowBlock" onAction="#addObjectToWindow" text="Save"
-                                    GridPane.rowIndex="13" GridPane.columnIndex="3"/>
+                                    GridPane.rowIndex="14" GridPane.columnIndex="3"/>
 
                             <columnConstraints>
                                 <ColumnConstraints maxWidth="134"/>
@@ -253,9 +264,11 @@
                 <Tab text="SHC">
                     <AnchorPane>
                         <GridPane fx:id="gridSHC">
-                            <Label text="Welcome to the Smart Home Core (SHC) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
+                            <Label text="Welcome to the Smart Home Core (SHC) module." GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
-                            <Label text="Manage general house items: Doors, Windows, Lights." style="-fx-font-weight: bold"
+                            <Label text="Manage general house items: Doors, Windows, Lights."
+                                   style="-fx-font-weight: bold"
                                    GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
@@ -331,7 +344,7 @@
                                     GridPane.rowIndex="10" GridPane.columnIndex="4"/>
                             <Button fx:id="turnOffLight" text="Off" onAction="#openOrCloseLights"
                                     GridPane.rowIndex="10" GridPane.columnIndex="5"
-                                    />
+                            />
 
                             <Label text="Auto mode" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
@@ -363,10 +376,12 @@
                 <Tab text="SHP">
                     <AnchorPane>
                         <GridPane fx:id="gridSHP">
-                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
+                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
 
-                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
+                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
 
                             <Label text="Lights" style="-fx-font-weight: bold"
@@ -403,9 +418,11 @@
                                    GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="6"
                                    GridPane.halignment="LEFT"/>
 
-                            <Spinner fx:id="timerHourAuthority" initialValue="0" min="0" max="1000000" GridPane.rowIndex="6"
+                            <Spinner fx:id="timerHourAuthority" initialValue="0" min="0" max="1000000"
+                                     GridPane.rowIndex="6"
                                      GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000" GridPane.rowIndex="6"
+                            <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000"
+                                     GridPane.rowIndex="6"
                                      GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveDurationAuth" text="Save" onAction="#saveAuthority"
                                     GridPane.rowIndex="6" GridPane.columnIndex="4"/>
@@ -427,7 +444,8 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-                            <Label text="Welcome to the Smart Home Heating (SHH) module." GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="5"
+                            <Label text="Welcome to the Smart Home Heating (SHH) module." GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
                                    GridPane.halignment="LEFT"/>
                         </GridPane>
                     </AnchorPane>
@@ -436,7 +454,8 @@
                 <Tab text="+">
                     <AnchorPane>
                         <GridPane fx:id="gridAddModule">
-                            <Label text="Want to add a new module?" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                            <Label text="Want to add a new module?" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                   GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT"/>
                         </GridPane>
                     </AnchorPane>
