@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -126,6 +127,12 @@ public class MainViewController {
      */
     @FXML
     ComboBox<String> addModifyLocComboBoxSHS;
+
+    /**
+     * A ComboBox containing the different possible speeds for the simulation time.
+     */
+    @FXML
+    ComboBox<String> timeSpeedComboBoxSHS;
 
     /**
      * A ComboBox containing the different locations that a user can block a window in.
@@ -253,6 +260,12 @@ public class MainViewController {
      */
     @FXML
     Label leftPanelTime;
+
+    /**
+     * The Label displaying the simulation time speed in the left-side panel.
+     */
+    @FXML
+    Label leftPanelTimeSpeed;
 
     /**
      * The Label displaying the inside temperature of the simulation in the left-side panel.
@@ -392,6 +405,9 @@ public class MainViewController {
     Button saveDuration;
 
     @FXML
+    Button saveTimeSpeed;
+
+    @FXML
     Spinner<Integer> timerMinuteAuthority;
 
     @FXML
@@ -450,7 +466,7 @@ public class MainViewController {
                 });
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     e.getMessage();
                 }
@@ -498,6 +514,7 @@ public class MainViewController {
         showUIElement(userLocationLabel, false);
         showUIElement(leftPanelDate, false);
         showUIElement(leftPanelTime, false);
+        showUIElement(leftPanelTimeSpeed, false);
         showUIElement(leftPanelOutTemp, false);
         showUIElement(leftPanelInTemp, false);
         showUIElement(labelLeftPanelSimParam, false);
@@ -583,6 +600,7 @@ public class MainViewController {
             saveOutsideTemp.setDisable(true);
             saveInsideTemp.setDisable(true);
             loginButton.setDisable(true);
+            saveTimeSpeed.setDisable(true);
 
             running.getAndSet(true);
 
@@ -604,6 +622,7 @@ public class MainViewController {
             saveOutsideTemp.setDisable(false);
             saveInsideTemp.setDisable(false);
             loginButton.setDisable(false);
+            saveTimeSpeed.setDisable(false);
 
             running.getAndSet(false);
 
@@ -681,7 +700,6 @@ public class MainViewController {
         drawLayout();
     }
 
-
     @FXML
     public void saveUserProfiles() {
         shsController.saveUserProfiles(userModelArrayList, printConsole);
@@ -710,6 +728,9 @@ public class MainViewController {
             leftPanelTime.setText(
                     String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
             );
+
+        } else if (event.getSource().equals(saveTimeSpeed)) {
+            printConsole.setText("The simulation time speed has been changed to " + timeSpeedComboBoxSHS.getValue() + "x.");
         } else if (event.getSource().equals(saveOutsideTemp)) {
             printConsole.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.");
         } else if (event.getSource().equals(saveInsideTemp)) {
@@ -724,7 +745,7 @@ public class MainViewController {
      * been met.
      */
     private void turnOffSimulationWarning() {
-        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
+        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
             turnOnOffSimulation.setDisable(false);
             warningLabelSimulation.setVisible(false);
             warningLabelSimulation.setManaged(false);
@@ -758,7 +779,6 @@ public class MainViewController {
             turnOffSimulationWarning();
         }
     }
-
 
     /**
      * Display available commands for logged user.
@@ -827,7 +847,7 @@ public class MainViewController {
             return;
         }
 
-        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\ninside temperature, and\noutside temperature before\nstarting the simulation.");
+        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\nsimulation time speed,\ninside temperature, and\noutside temperature before\nstarting the simulation.");
         System.out.println("File found!");
         System.out.println("Textfield: " + houseLayoutFilePath.getText());
         System.out.println("Path: " + path);
@@ -845,6 +865,7 @@ public class MainViewController {
         showUIElement(userLocationLabel, true);
         showUIElement(leftPanelDate, true);
         showUIElement(leftPanelTime, true);
+        showUIElement(leftPanelTimeSpeed, true);
         showUIElement(leftPanelOutTemp, true);
         showUIElement(leftPanelInTemp, true);
         showUIElement(labelLeftPanelSimParam, true);
@@ -908,15 +929,12 @@ public class MainViewController {
                 lockDoorComboBoxSHC.getItems().add(roomName);
             }
 
-            lightComboBoxSHC.getItems().add("Backyard");
-            lightComboBoxSHC.getItems().add("Front yard");
-            doorComboBoxSHC.getItems().add("Backyard");
-            doorComboBoxSHC.getItems().add("Front yard");
-            lockDoorComboBoxSHC.getItems().add("Backyard");
-            lockDoorComboBoxSHC.getItems().add("Front yard");
-            addModifyLocComboBoxSHS.getItems().add("Front yard");
-            addModifyLocComboBoxSHS.getItems().add("Backyard");
+            lightComboBoxSHC.getItems().addAll("Backyard", "Front yard");
+            doorComboBoxSHC.getItems().addAll("Backyard", "Front yard");
+            lockDoorComboBoxSHC.getItems().addAll("Backyard", "\"Front yard\"");
+            addModifyLocComboBoxSHS.getItems().addAll("Front yard", "Backyard");
             addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
+            timeSpeedComboBoxSHS.getItems().addAll("0.25", "0.5", "0.75", "1", "1.25", "1.5", "1.75", "2");
 
 
             addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
@@ -926,6 +944,7 @@ public class MainViewController {
             lockDoorComboBoxSHC.getSelectionModel().selectFirst();
             winComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHC.getSelectionModel().selectFirst();
+            timeSpeedComboBoxSHS.getSelectionModel().select(3);
         }
     }
 
@@ -1017,7 +1036,15 @@ public class MainViewController {
         drawLayout();
     }
 
+    public void saveTimeSpeed(ActionEvent event) {
 
+        leftPanelTimeSpeed.setText("Simulation time speed: " + timeSpeedComboBoxSHS.getValue() + "x");
+
+        AtomicInteger newSpeed = new AtomicInteger(((Double)(1000 / Double.parseDouble(timeSpeedComboBoxSHS.getValue()))).intValue());
+        speed = newSpeed.get();
+
+        saveSimulationConditions(event);
+    }
 
     public void saveHourMinute(ActionEvent event) {
     }
