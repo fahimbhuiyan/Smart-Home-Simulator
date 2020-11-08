@@ -418,13 +418,13 @@
                             <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000"
                                      GridPane.rowIndex="5"
                                      GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="timerSecondAuthority" initialValue="10" min="0" max="1000000"
+                            <Spinner fx:id="timerSecondAuthority" initialValue="15" min="0" max="1000000"
                                      GridPane.rowIndex="5"
                                      GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveDurationAuth" text="Save" onAction="#saveCountdownAuthority"
                                     GridPane.rowIndex="5" GridPane.columnIndex="4"/>
 
-                            <Button text="Away" style="-fx-font-weight: bold"
+                            <Button text="Turn On Away Mode" style="-fx-font-weight: bold"
                                     fx:id="awayButton" onAction="#enterAwayMode"
                                     prefHeight="25.0" prefWidth="161.0"
                                     GridPane.rowIndex="7" GridPane.columnIndex="2" GridPane.columnSpan="5"
@@ -444,7 +444,8 @@
                                 </GridPane.margin>
                             </Button>
 
-                            <Label text="Min:Sec"
+                            <Label fx:id="callingAuthoritiesLabel"
+                                   text="Calling Authorities In (Min:Sec):"
                                    textFill="red"
                                    contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"
                                    GridPane.rowIndex="9" GridPane.columnIndex="0"
@@ -457,6 +458,15 @@
                                    textFill="red"
                                    contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"
                                    GridPane.rowIndex="9" GridPane.columnIndex="1"
+                                   GridPane.halignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="authoritiesCalledMessage"
+                                   textFill="red"
+                                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"
+                                   GridPane.rowIndex="10" GridPane.columnIndex="0"
                                    GridPane.halignment="CENTER">
                                 <GridPane.margin>
                                     <Insets top="5"/>

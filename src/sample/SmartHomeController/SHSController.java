@@ -112,18 +112,21 @@ public class SHSController implements Subject {
      * @param id               the id
      * @param printConsole     the console object used for printing
      */
-    void deleteUserProfile(ArrayList<UserModel> userList, int id, MainViewController.PrintConsole printConsole) {
+    void deleteUserProfile(ArrayList<UserModel> userList, Map<String, RoomModel> rooms, int id, MainViewController.PrintConsole printConsole) {
         boolean userExist = false;
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId() == (id)) {
                 if (userList.get(i).getId() != loggedUserID) {
                     printConsole.setText("You removed " + userList.get(i).getName() + ".");
+                    rooms.get(userList.get(i).getCurrentLocation()).decrementNbPeople();
                     userList.remove(i);
                 } else {
                     printConsole.setText("You cannot remove yourself. First, make sure the simulation is stopped and then log out if you want to remove the user you're currently logged in as.");
                 }
                 userExist = true;
+
+                break;
             }
         }
 
@@ -180,16 +183,23 @@ public class SHSController implements Subject {
 
                 if(!userList.get(i).getCurrentLocation().equals(location)){
 
+                    System.out.println("userList.get(i).getCurrentLocation(): " + userList.get(i).getCurrentLocation());
+                    System.out.println("location: " + location);
+
                     if(( (location.equals("House"))|| (location.equals("Backyard")) || (location.equals("Front yard")) || (rooms.get(location).getDoor().isOpen() == true) ||
                             (rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == false))){
+
+                        System.out.println("Door is either open or closed and unlocked.");
 
                         previousLocation = userList.get(i).getCurrentLocation();
 
                         if (rooms.containsKey(location)) {
+                            System.out.println("Incrementing for room " + location);
                             rooms.get(location).incrementNbPeople();
                         }
 
                         if (rooms.containsKey(previousLocation)) {
+                            System.out.println("Decrementing for room " + previousLocation);
                             rooms.get(previousLocation).decrementNbPeople();
                         }
 
@@ -214,8 +224,17 @@ public class SHSController implements Subject {
 
         if (!userExist) {
             UserModel user = new UserModel(name, id, userType, location);
+            userInfo[1] = user;
             userList.add(user);
+            rooms.get(location).incrementNbPeople();
             printConsole.setText("Creating new user " + name + ".");
+        }
+
+        System.out.println("\n\nFrom inside the SHS controller");
+        for (String roomName : rooms.keySet()) {
+
+            System.out.println("Room name: " + roomName);
+            System.out.println("rooms.get(roomName).getNbPeople(): " + rooms.get(roomName).getNbPeople());
         }
 
         userInfo[0] = userExist;

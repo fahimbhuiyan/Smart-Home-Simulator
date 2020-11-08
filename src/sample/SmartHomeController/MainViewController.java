@@ -13,11 +13,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import sample.SmartHomeModel.HouseModel;
-import sample.SmartHomeModel.RoomModel;
-import sample.SmartHomeModel.UserModel;
+import sample.SmartHomeModel.*;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -430,6 +429,12 @@ public class MainViewController {
     @FXML
     Label countDownAuthorities;
 
+    @FXML
+    Label authoritiesCalledMessage;
+
+    @FXML
+    Label callingAuthoritiesLabel;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -450,8 +455,8 @@ public class MainViewController {
      */
     private UserModel loggedInUser = null;
 
-    private AtomicBoolean running = new AtomicBoolean(true);
-    private AtomicBoolean countdown = new AtomicBoolean(true);
+    private AtomicBoolean running = new AtomicBoolean(false);
+    private AtomicBoolean countdown = new AtomicBoolean(false);
 
     private LocalTime chosenTime;
 
@@ -466,31 +471,39 @@ public class MainViewController {
     private int countdownMinutesLeft = 0;
     private int countdownSecondsLeft = 0;
 
-    private class Countdown extends Thread{
+    private boolean simulationParametersSet = false;
+
+    private class Countdown extends Thread {
 
         @Override
         public void run() {
             AtomicInteger seconds = new AtomicInteger(countdownSecondsLeft);
             AtomicInteger minutes = new AtomicInteger(countdownMinutesLeft);
-            AtomicReference<PrintConsole> printCons = new AtomicReference<>(printConsole);
+            AtomicReference<PrintConsole> console = new AtomicReference<>(printConsole);
 
-            while (countdown.get()) {
+            if (!running.get()) {
                 Platform.runLater(() -> {
+                    countDownAuthorities.setText(
+                            String.format("%s:%s", minutes.get() < 10 ? "0" + minutes.get() : "" + minutes.get(), seconds.get() < 10 ? "0" + seconds.get() : seconds.get() + "")
+                    );
+                });
+            }
 
+            while (countdown.get() && running.get()) {
+                Platform.runLater(() -> {
                     if (seconds.get() != 0) {
                         seconds.getAndDecrement();
-                    }
-                    else if (minutes.get() != 0) {
+                    } else if (minutes.get() != 0) {
                         minutes.getAndDecrement();
                         seconds.getAndSet(60);
-                    }
-                    else if (seconds.get() == 0 && minutes.get() == 0) {
+                    } else if (seconds.get() == 0 && minutes.get() == 0) {
                         countdown.getAndSet(false);
-                        printCons.get().setText("The authorities have been called!!!");
+                        authoritiesCalledMessage.setText("The authorities have been called!!!");
+                        console.get().setText("The authorities have been called!!!");
                     }
 
                     countDownAuthorities.setText(
-                            String.format("Time: %s:%s",minutes.get()<10?"0"+minutes.get():""+minutes.get(), seconds.get()<10?"0"+seconds.get():seconds.get()+"")
+                            String.format("%s:%s", minutes.get() < 10 ? "0" + minutes.get() : "" + minutes.get(), seconds.get() < 10 ? "0" + seconds.get() : seconds.get() + "")
                     );
                 });
 
@@ -499,15 +512,15 @@ public class MainViewController {
                 } catch (InterruptedException e) {
                     e.getMessage();
                 }
-            }
 
-            // Store the remaining sec and min?
-            countdownSecondsLeft = seconds.get();
-            countdownMinutesLeft = minutes.get();
+                // Store the remaining sec and min
+                countdownSecondsLeft = seconds.get();
+                countdownMinutesLeft = minutes.get();
+            }
         }
     }
 
-    private class Clock extends Thread{
+    private class Clock extends Thread {
 
         @Override
         public void run() {
@@ -520,10 +533,12 @@ public class MainViewController {
                     int m = local.get().getMinute();
                     int s = local.get().getSecond();
                     leftPanelTime.setText(
-                            String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                            String.format("Time: %s:%s:%s", h < 10 ? "0" + h : "" + h, m < 10 ? "0" + m : "" + m, s < 10 ? "0" + s : s + "")
                     );
                     if (h == 0 && m == 0 && s == 0)
-                        leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
+                        leftPanelDate.setText("Date: " + dateSHS.getValue().plusDays(1));
+
+                    chosenTime = local.get();
                 });
 
                 try {
@@ -532,18 +547,17 @@ public class MainViewController {
                     e.getMessage();
                 }
             }
-            chosenTime = local.get();
         }
     }
 
     class PrintConsole {
-        void setText (String message) {
+        void setText(String message) {
 
             int h = chosenTime.getHour();
             int m = chosenTime.getMinute();
             int s = chosenTime.getSecond();
 
-            String time = String.format("%s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"");
+            String time = String.format("%s:%s:%s", h < 10 ? "0" + h : "" + h, m < 10 ? "0" + m : "" + m, s < 10 ? "0" + s : s + "");
 
             consoleTextField.setText("[" + time + "] " + message + "\n" + consoleTextField.getText());
         }
@@ -568,6 +582,8 @@ public class MainViewController {
     public void initialize() {
         turnOnOffSimulation.setDisable(true);
         moduleTabs.setDisable(true);
+        callingAuthoritiesLabel.setVisible(false);
+        countDownAuthorities.setVisible(false);
 
         showUIElement(avatarImageView, false);
         showUIElement(userNameLabel, false);
@@ -588,6 +604,9 @@ public class MainViewController {
 
         shsController.register(shcController);
         shsController.register(shpController);
+
+        countdownSecondsLeft = timerSecondAuthority.getValue();
+        countdownMinutesLeft = timerMinuteAuthority.getValue();
     }
 
     /**
@@ -677,8 +696,15 @@ public class MainViewController {
 
             printConsole.setText("The simulation has been started!");
             (new Clock()).start();
-        }
-        else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
+
+            if (alertTriggered) {
+
+                callingAuthoritiesLabel.setVisible(true);
+                countDownAuthorities.setVisible(true);
+
+                (new Countdown()).start();
+            }
+        } else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
             turnOnOffSimulation.setText("Start the simulation");
 
             System.out.println("The simulation has been stopped!");
@@ -710,9 +736,9 @@ public class MainViewController {
 
         userInfo = shsController.login(houseModel, id, userModelArrayList, printConsole);
 
-        turnOffSimulationWarning();
         processUserInfo("login");
-        processPermission((UserModel) userInfo[1]);
+
+        turnOffSimulationWarning();
 
         checkIfIntrusion();
     }
@@ -724,7 +750,7 @@ public class MainViewController {
     public void deleteUserProfile() {
         int id = userIdToRemove.getValue();
 
-        shsController.deleteUserProfile(userModelArrayList, id, printConsole);
+        shsController.deleteUserProfile(userModelArrayList, rooms, id, printConsole);
 
         data.clear();
         loadUsersInSHSTable();
@@ -755,28 +781,26 @@ public class MainViewController {
         }
 
         processUserInfo("add/modify");
-        try {
-            processPermission((UserModel) userInfo[1]);
-        } catch (Exception e) {
-            System.out.println("Creating new user");
-        }
-
-        checkIfIntrusion();
-
 
         data.clear();
         loadUsersInSHSTable();
         userTable.setItems(data);
         drawLayout();
+
+        checkIfIntrusion();
+
     }
 
     private void checkIfIntrusion() {
         // Check if you can enable away mode.
         awayButton.setDisable(false);
 
+        System.out.println("\n\nCheck intrusion called");
+
         for (String roomName : rooms.keySet()) {
 
             System.out.println("Room name: " + roomName);
+            System.out.println("rooms.get(roomName).getNbPeople(): " + rooms.get(roomName).getNbPeople());
 
             if (rooms.get(roomName).getNbPeople() > 0) {
                 awayButton.setDisable(true);
@@ -791,6 +815,8 @@ public class MainViewController {
         if (alertTriggered) {
             saveDurationAuth.setDisable(true);
             countdown.getAndSet(true);
+            callingAuthoritiesLabel.setVisible(true);
+            countDownAuthorities.setVisible(true);
             (new Countdown()).start();
         }
     }
@@ -821,7 +847,7 @@ public class MainViewController {
             int s = timeSHS.getValue().getSecond();
 
             leftPanelTime.setText(
-                    String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                    String.format("Time: %s:%s:%s", h < 10 ? "0" + h : "" + h, m < 10 ? "0" + m : "" + m, s < 10 ? "0" + s : s + "")
             );
 
         } else if (event.getSource().equals(saveTimeSpeed)) {
@@ -840,10 +866,15 @@ public class MainViewController {
      * been met.
      */
     private void turnOffSimulationWarning() {
-        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
+        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
             turnOnOffSimulation.setDisable(false);
-            warningLabelSimulation.setVisible(false);
-            warningLabelSimulation.setManaged(false);
+
+            warningLabelSimulation.setText("Welcome to the Best Smart\nHome Simulator Ever!\nYou are now Ready to\nStart the Simulation!");
+            warningLabelSimulation.setTextFill(Color.GREEN);
+
+            simulationParametersSet = true;
+
+            processPermission(loggedInUser);
         }
     }
 
@@ -872,6 +903,11 @@ public class MainViewController {
             userLocationLabel.setText("Location: " + loggedInUser.getCurrentLocation());
             isLoggedIn = true;
             turnOffSimulationWarning();
+
+            if (simulationParametersSet) {
+                processPermission(loggedInUser);
+            }
+
         }
     }
 
@@ -945,7 +981,7 @@ public class MainViewController {
             return;
         }
 
-        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\nsimulation time speed,\ninside temperature, and\noutside temperature before\nstarting the simulation.");
+        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\nsimulation time speed,\ninside temperature, and\noutside temperature before\nstarting the simulation\nand accessing the modules.");
         System.out.println("File found!");
         System.out.println("Textfield: " + houseLayoutFilePath.getText());
         System.out.println("Path: " + path);
@@ -990,11 +1026,11 @@ public class MainViewController {
 
         turnOnOffSimulation.setDisable(true);
 
-        timeSHS.setValue(LocalTime.of(12, 0,0));
-        chosenTime = LocalTime.of(12, 0,0);
+        timeSHS.setValue(LocalTime.of(12, 0, 0));
+        chosenTime = LocalTime.of(12, 0, 0);
 
-        timerFrom.setValue(LocalTime.of(12, 0,0));
-        timerTo.setValue(LocalTime.of(12, 1,10));
+        timerFrom.setValue(LocalTime.of(12, 0, 0));
+        timerTo.setValue(LocalTime.of(12, 1, 10));
 
         printConsole = new PrintConsole();
     }
@@ -1020,8 +1056,6 @@ public class MainViewController {
             lightComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHP.getSelectionModel().selectFirst();
         } else { // Initial setup
-
-            addModifyLocComboBoxSHS.getItems().add("House");
 
             for (String roomName : roomNamesSet) {
                 addModifyLocComboBoxSHS.getItems().add(roomName);
@@ -1146,7 +1180,7 @@ public class MainViewController {
 
         leftPanelTimeSpeed.setText("Simulation time speed: " + timeSpeedComboBoxSHS.getValue() + "x");
 
-        AtomicInteger newSpeed = new AtomicInteger(((Double)(1000 / Double.parseDouble(timeSpeedComboBoxSHS.getValue()))).intValue());
+        AtomicInteger newSpeed = new AtomicInteger(((Double) (1000 / Double.parseDouble(timeSpeedComboBoxSHS.getValue()))).intValue());
         speed = newSpeed.get();
 
         saveSimulationConditions(event);
@@ -1161,24 +1195,40 @@ public class MainViewController {
     }
 
     @FXML
-    public void enterAwayMode () {
+    public void enterAwayMode() {
 
+        if (awayModeOn) {
+            awayModeOn = false;
+            awayButton.setText("Turn On Away Mode");
+            printConsole.setText("Turning off Away Mode.");
+            return;
+        }
+
+
+        awayButton.setText("Turn Off Away Mode");
         awayModeOn = true;
+        printConsole.setText("Turning on Away Mode.");
 
-        for (RoomModel room : rooms.values()) {
-            shcController.closeWindow(room.getName(), houseModel, printConsole);
-            shcController.lockDoor(room.getName(), houseModel, printConsole);
+
+        for (String windowName : houseModel.getWindows().keySet()) {
+            shcController.closeWindow(windowName, houseModel, printConsole);
+        }
+
+        for (String doorName : houseModel.getDoors().keySet()) {
+            shcController.lockDoor(doorName, houseModel, printConsole);
         }
 
         drawLayout();
     }
 
-    public void cancelAlert () {
+    public void cancelAlert() {
         countdown.getAndSet(false);
         awayModeOn = false;
         alertTriggered = false;
         saveDurationAuth.setDisable(false);
         printConsole.setText("The alert has been canceled.");
-        countDownAuthorities.setText("Time: ----");
+        countDownAuthorities.setVisible(false);
+        authoritiesCalledMessage.setText("The alert has been canceled.");
+        callingAuthoritiesLabel.setVisible(false);
     }
 }

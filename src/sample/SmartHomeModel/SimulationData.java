@@ -86,7 +86,7 @@ public class SimulationData {
         if(userList.size() == 0){
             UserModel defaultParent = new UserModel("Bob", 0,"Parent", "Kitchen");
             UserModel defaultChild = new UserModel("Daniel", 1, "Child", "Garage");
-            UserModel defaultGuest = new UserModel("Boris", 2,"Guest", "House");
+            UserModel defaultGuest = new UserModel("Boris", 2,"Guest", "Bedroom");
             UserModel defaultStranger = new UserModel("Tony", 3, "Stranger", "Backyard");
 
             rooms.get("Kitchen").incrementNbPeople();

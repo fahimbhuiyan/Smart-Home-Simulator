@@ -1,1 +1,1 @@
-Person,0,Parent,House
+Person,0,Parent,Bedroom
