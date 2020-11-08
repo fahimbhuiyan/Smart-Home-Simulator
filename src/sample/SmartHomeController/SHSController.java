@@ -74,17 +74,17 @@ public class SHSController {
      * @param houseModel       the house model
      * @param id               the id
      * @param userList         the user list
-     * @param consoleTextField the console text field
+     * @param printConsole     the console used for printing
      * @return the object [ ]
      */
-    Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, TextArea consoleTextField, String currentTime) {
+    Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, MainViewController.PrintConsole printConsole) {
         boolean userExist = false;
         Object[] userInfo = new Object[2];
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId() == (id)) {
                 houseModel.setLoggedUserName(userList.get(i).getName());
-                consoleTextField.setText("[" + currentTime + "]" + "You're logged in as " + userList.get(i).getName() + ".\n" + consoleTextField.getText());
+                printConsole.setText("You're logged in as " + userList.get(i).getName() + ".");
                 userExist = true;
                 userInfo[1] = userList.get(i);
                 loggedUserID = userList.get(i).getId();
@@ -92,7 +92,7 @@ public class SHSController {
         }
 
         if (!userExist) {
-            consoleTextField.setText("Try again. No user with ID " + id + " exists in the database.\n" + consoleTextField.getText());
+            printConsole.setText("Try again. No user with ID " + id + " exists in the database.");
         }
 
         userInfo[0] = userExist;
@@ -106,26 +106,25 @@ public class SHSController {
      *
      * @param userList         the user list
      * @param id               the id
-     * @param consoleTextField the console text field
-     * @param houseModel       the house model
+     * @param printConsole     the console object used for printing
      */
-    void deleteUserProfile(ArrayList<UserModel> userList, int id, TextArea consoleTextField, HouseModel houseModel) {
+    void deleteUserProfile(ArrayList<UserModel> userList, int id, MainViewController.PrintConsole printConsole) {
         boolean userExist = false;
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getId() == (id)) {
                 if (userList.get(i).getId() != loggedUserID) {
-                    consoleTextField.setText("You removed " + userList.get(i).getName() + ".\n" + consoleTextField.getText());
+                    printConsole.setText("You removed " + userList.get(i).getName() + ".");
                     userList.remove(i);
                 } else {
-                    consoleTextField.setText("You cannot remove yourself. First, make sure the simulation is stopped and then log out if you want to remove the user you're currently logged in as.\n" + consoleTextField.getText());
+                    printConsole.setText("You cannot remove yourself. First, make sure the simulation is stopped and then log out if you want to remove the user you're currently logged in as.");
                 }
                 userExist = true;
             }
         }
 
         if (!userExist) {
-            consoleTextField.setText("Try again. You cannot remove someone that doesn't exist in the database.\n" + consoleTextField.getText());
+            printConsole.setText("Try again. You cannot remove someone that doesn't exist in the database.");
         }
     }
 
@@ -136,19 +135,19 @@ public class SHSController {
      * @param roomName         the room name
      * @param consoleTextField the console text field
      */
-    void addObjectToWindow(Map<String, RoomModel> rooms, String roomName, TextArea consoleTextField) {
+    void addObjectToWindow(Map<String, RoomModel> rooms, String roomName, MainViewController.PrintConsole consoleTextField) {
         rooms.forEach((name, room) -> {
             if (name.equals(roomName)) {
                 if (room.getWindow().isOpen()) {
                     if (!room.getWindow().HasObject()) {
                         room.getWindow().setHasObject(true);
-                        consoleTextField.setText("Adding object to block the window of the " + room.getName() + ".\n" + consoleTextField.getText());
+                        consoleTextField.setText("Adding object to block the window of the " + room.getName() + ".");
                     } else {
                         room.getWindow().setHasObject(false);
-                        consoleTextField.setText("Removing blocking object from the window of the " + room.getName() + ".\n" + consoleTextField.getText());
+                        consoleTextField.setText("Removing blocking object from the window of the " + room.getName() + ".");
                     }
                 } else {
-                    consoleTextField.setText("You cannot add an object to this window. The window is closed.\n" + consoleTextField.getText());
+                    consoleTextField.setText("You cannot add an object to this window. The window is closed.\n" + ".");
                 }
             }
         });
@@ -162,10 +161,10 @@ public class SHSController {
      * @param name             the name
      * @param userType         the user type
      * @param location         the location
-     * @param consoleTextField the console text field
+     * @param printConsole     the console used to print
      * @return the object [ ]
      */
-    Object[] addModifyUser(ArrayList<UserModel> userList, Map<String, RoomModel> rooms, int id, String name, String userType, String location, TextArea consoleTextField) {
+    Object[] addModifyUser(ArrayList<UserModel> userList, Map<String, RoomModel> rooms, int id, String name, String userType, String location, MainViewController.PrintConsole printConsole) {
         boolean userExist = false;
         Object[] userInfo = new Object[2];
         String previousLocation = "";
@@ -195,24 +194,24 @@ public class SHSController {
 
                     }
                     else if((rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == true)){
-                        consoleTextField.setText("Cannot move this user in " + location+ ". The door is locked.\n" + consoleTextField.getText());
+                        printConsole.setText("Cannot move this user in " + location+ ". The door is locked.");
                     }
                 }
                 else if (userList.get(i).getCurrentLocation().equals(location)){
-                    consoleTextField.setText("User is already in " + location+ ".\n" + consoleTextField.getText());
+                    printConsole.setText("User is already in " + location+ ".");
                 }
 
 
                 userInfo[1] = userList.get(i);
 
-                consoleTextField.setText("Modifying information for user with ID " + userList.get(i).getId() + ".\n" + consoleTextField.getText());
+                printConsole.setText("Modifying information for user with ID " + userList.get(i).getId() + ".");
             }
         }
 
         if (!userExist) {
             UserModel user = new UserModel(name, id, userType, location);
             userList.add(user);
-            consoleTextField.setText("Creating new user " + name + ".\n" + consoleTextField.getText());
+            printConsole.setText("Creating new user " + name + ".");
         }
 
         userInfo[0] = userExist;
@@ -220,7 +219,7 @@ public class SHSController {
         return userInfo;
     }
 
-    void saveUserProfiles(ArrayList<UserModel> userList, TextArea consoleTextField){
+    void saveUserProfiles(ArrayList<UserModel> userList, MainViewController.PrintConsole printConsole){
         try{
 
             printWriter = new PrintWriter("Profiles.txt", "UTF-8");
@@ -228,7 +227,7 @@ public class SHSController {
             for(UserModel userModel : userList){
                 printWriter.println(userModel.getName() + "," + userModel.getId() + "," + userModel.getUser_type() + "," + userModel.getCurrentLocation());
             }
-            consoleTextField.setText("Saving user profiles.\n" + consoleTextField.getText());
+            printConsole.setText("Saving user profiles.");
 
             printWriter.flush();
             printWriter.close();

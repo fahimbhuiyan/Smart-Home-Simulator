@@ -14,7 +14,7 @@ public class SHCController {
         this.autoMode = false;
     }
 
-    void openOrCloseLights(String areaName, boolean manualControl, String action, HouseModel houseModel, TextArea consoleTextField) {
+    void openOrCloseLights(String areaName, boolean manualControl, String action, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
 
         if(manualControl || autoMode){
 
@@ -23,12 +23,12 @@ public class SHCController {
             if(action.equals("close")){
                 System.out.println("Light to close: " + houseModel.getLights().get(areaName).getName());
                 houseModel.getLights().get(areaName).setOpen(false);
-                consoleTextField.setText("Closing the lights in " + areaName + ".\n" + consoleTextField.getText());
+                printConsole.setText("Closing the lights in " + areaName + ".");
             }
             else if(action.equals("open")){
                 System.out.println("Light to open: " + houseModel.getLights().get(areaName).getName());
                 houseModel.getLights().get(areaName).setOpen(true);
-                consoleTextField.setText("Opening the lights in " + areaName + ".\n" + consoleTextField.getText());
+                printConsole.setText("Opening the lights in " + areaName + ".");
             }
         }
         else {
@@ -36,39 +36,39 @@ public class SHCController {
         }
     }
 
-    void openDoor(String roomName, HouseModel houseModel, TextArea consoleTextField) {
+    void openDoor(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
 
         if(houseModel.getDoors().get(roomName).isLocked() && houseModel.getDoors().get(roomName).isOpen() == false){
-            consoleTextField.setText("Cannot open the door in " + roomName + ".\n" + consoleTextField.getText());
+            printConsole.setText("Cannot open the door in " + roomName + ".");
         }
         else{
             houseModel.getDoors().get(roomName).setOpen(true);
-            consoleTextField.setText("Opening the door in " + roomName + ".\n" + consoleTextField.getText());
+            printConsole.setText("Opening the door in " + roomName + ".");
         }
     }
-    void closeDoor(String roomName, HouseModel houseModel, TextArea consoleTextField) {
+    void closeDoor(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getDoors().get(roomName).setOpen(false);
-        consoleTextField.setText("Closing the door in " + roomName + ".\n" + consoleTextField.getText());
+        printConsole.setText("Closing the door in " + roomName + ".");
     }
-    void lockDoor(String roomName, HouseModel houseModel, TextArea consoleTextField) {
+    void lockDoor(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getDoors().get(roomName).setLocked(true);
-        consoleTextField.setText("Locking the door in " + roomName + ".\n" + consoleTextField.getText());
+        printConsole.setText("Locking the door in " + roomName + ".");
     }
-    void unLock(String roomName, HouseModel houseModel, TextArea consoleTextField) {
+    void unLock(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getDoors().get(roomName).setLocked(false);
-        consoleTextField.setText("Unlocking the door in " + roomName + ".\n" + consoleTextField.getText());
+        printConsole.setText("Unlocking the door in " + roomName + ".");
     }
-    void openWindow(String roomName, HouseModel houseModel, TextArea consoleTextField) {
+    void openWindow(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getWindows().get(roomName).setOpen(true);
-        consoleTextField.setText("Opening the window in " + roomName + ".\n" + consoleTextField.getText());
+        printConsole.setText("Opening the window in " + roomName + ".");
     }
-    void closeWindow(String roomName, HouseModel houseModel, TextArea consoleTextField) {
+    void closeWindow(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         if(houseModel.getWindows().get(roomName).HasObject()){
-            consoleTextField.setText("There is an object, cannot close the window in " + roomName + ".\n " + consoleTextField.getText());
+            printConsole.setText("There is an object, cannot close the window in " + roomName + ".");
         }
         if(!houseModel.getWindows().get(roomName).HasObject()){
             houseModel.getWindows().get(roomName).setOpen(false);
-            consoleTextField.setText("Closing the window in " + roomName + ".\n" + consoleTextField.getText());
+            printConsole.setText("Closing the window in " + roomName + ".");
         }
     }
 

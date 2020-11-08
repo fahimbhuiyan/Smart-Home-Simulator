@@ -25,6 +25,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -422,6 +423,55 @@ public class MainViewController {
      */
     private UserModel loggedInUser = null;
 
+    private AtomicBoolean running = new AtomicBoolean(true);
+
+    private LocalTime chosenTime;
+
+    private PrintConsole printConsole;
+
+    private static volatile int speed = 1000; //Waiting time in ms
+
+    private class Clock extends Thread{
+        @Override
+        public void run() {
+            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+
+            while (running.get()) {
+                Platform.runLater(() -> {
+                    local.getAndSet(local.get().plusSeconds(1));
+                    int h = local.get().getHour();
+                    int m = local.get().getMinute();
+                    int s = local.get().getSecond();
+                    leftPanelTime.setText(
+                            String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                    );
+                    if (h == 0 && m == 0 && s == 0)
+                        leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
+                });
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+            }
+            chosenTime = local.get();
+        }
+    }
+
+    class PrintConsole {
+        void setText (String message) {
+
+            int h = chosenTime.getHour();
+            int m = chosenTime.getMinute();
+            int s = chosenTime.getSecond();
+
+            String time = String.format("%s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"");
+
+            consoleTextField.setText("[" + time + "] " + message + "\n" + consoleTextField.getText());
+        }
+    }
+
     /**
      * Instantiate a new Main view controller.
      */
@@ -456,7 +506,6 @@ public class MainViewController {
         gridSHC.setDisable(true);
         gridSHH.setDisable(true);
         gridSHP.setDisable(true);
-
     }
 
     /**
@@ -515,37 +564,9 @@ public class MainViewController {
     @FXML
     public void addObjectToWindow(ActionEvent event) {
         String value = blockWinLocComboBoxSHS.getValue();
-        shsController.addObjectToWindow(rooms, value, consoleTextField);
+        shsController.addObjectToWindow(rooms, value, printConsole);
         drawLayout();
         saveSimulationConditions(event);
-    }
-
-    boolean check = false;
-    LocalTime chosenTime = null;
-    private class TimeShow extends Thread{
-        @Override
-        public void run() {
-            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
-            while (check) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.getMessage();
-                }
-                Platform.runLater(() -> {
-                    local.getAndSet(local.get().plusSeconds(1));
-                    int h = local.get().getHour();
-                    int m = local.get().getMinute();
-                    int s = local.get().getSecond();
-                    leftPanelTime.setText(
-                            String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
-                    );
-                    if (h == 0 && m == 0 && s == 0)
-                        leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
-                });
-            }
-            chosenTime = local.get();
-        }
     }
 
     /**
@@ -555,30 +576,44 @@ public class MainViewController {
     public void startOrStopSimulation() {
         if (turnOnOffSimulation.getText().equals("Start the simulation")) {
             turnOnOffSimulation.setText("Stop the simulation");
-            consoleTextField.setText("The simulation has been started!\n" + consoleTextField.getText());
+
             System.out.println("The simulation has been started!");
             saveDate.setDisable(true);
             saveTime.setDisable(true);
             saveOutsideTemp.setDisable(true);
             saveInsideTemp.setDisable(true);
             loginButton.setDisable(true);
-            check = true;
-            new TimeShow().start();
-        } else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
+
+            running.getAndSet(true);
+
+            try {
+                Thread.sleep(speed);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            printConsole.setText("The simulation has been started!");
+            (new Clock()).start();
+        }
+        else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
             turnOnOffSimulation.setText("Start the simulation");
-            consoleTextField.setText("The simulation has been stopped!\n" + consoleTextField.getText());
+
             System.out.println("The simulation has been stopped!");
             saveDate.setDisable(false);
             saveTime.setDisable(false);
             saveOutsideTemp.setDisable(false);
             saveInsideTemp.setDisable(false);
             loginButton.setDisable(false);
-            check = false;
+
+            running.getAndSet(false);
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(speed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            printConsole.setText("The simulation has been stopped!");
         }
     }
 
@@ -589,7 +624,7 @@ public class MainViewController {
     public void login() {
         int id = userIdToLogin.getValue();
 
-        userInfo = shsController.login(houseModel, id, userModelArrayList, consoleTextField, timeSHS.getValue().toString());
+        userInfo = shsController.login(houseModel, id, userModelArrayList, printConsole);
 
         turnOffSimulationWarning();
         processUserInfo("login");
@@ -603,7 +638,7 @@ public class MainViewController {
     public void deleteUserProfile() {
         int id = userIdToRemove.getValue();
 
-        shsController.deleteUserProfile(userModelArrayList, id, consoleTextField, houseModel);
+        shsController.deleteUserProfile(userModelArrayList, id, printConsole);
 
         data.clear();
         loadUsersInSHSTable();
@@ -623,7 +658,7 @@ public class MainViewController {
         String userType = addModifyRoleComboBoxSHS.getValue();
         String location = addModifyLocComboBoxSHS.getValue();
 
-        userInfo = shsController.addModifyUser(userModelArrayList, rooms, id, name, userType, location, consoleTextField);
+        userInfo = shsController.addModifyUser(userModelArrayList, rooms, id, name, userType, location, printConsole);
 
         //Catching exception, this method is only called when the autoMode is turned on
         try {
@@ -649,7 +684,7 @@ public class MainViewController {
 
     @FXML
     public void saveUserProfiles() {
-        shsController.saveUserProfiles(userModelArrayList, consoleTextField);
+        shsController.saveUserProfiles(userModelArrayList, printConsole);
     }
 
     /**
@@ -661,23 +696,24 @@ public class MainViewController {
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
         if (event.getSource().equals(saveDate)) {
-            consoleTextField.setText("[" + timeSHS.getValue().toString() + "] " + "The date has been changed to " + dateSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            printConsole.setText("The date has been changed to " + dateSHS.getValue().toString() + ".");
             leftPanelDate.setText("Date: " + dateSHS.getValue().toString());
         } else if (event.getSource().equals(saveTime)) {
-            consoleTextField.setText("[" + timeSHS.getValue() + "] " + "The time has been changed to " + timeSHS.getValue().toString() + ".\n" + consoleTextField.getText());
+            printConsole.setText("The time has been changed to " + timeSHS.getValue().toString() + ".");
             leftPanelTime.setText("Time: " + timeSHS.getValue().toString());
             chosenTime = timeSHS.getValue();
 
-            int h = LocalTime.now().getHour();
-            int m = LocalTime.now().getMinute();
-            int s = LocalTime.now().getSecond();
+            int h = timeSHS.getValue().getHour();
+            int m = timeSHS.getValue().getMinute();
+            int s = timeSHS.getValue().getSecond();
+
             leftPanelTime.setText(
                     String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
             );
         } else if (event.getSource().equals(saveOutsideTemp)) {
-            consoleTextField.setText("[" + timeSHS.getValue() + "] " +"The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
+            printConsole.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.");
         } else if (event.getSource().equals(saveInsideTemp)) {
-            consoleTextField.setText("[" + timeSHS.getValue() + "] " +"The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.\n" + consoleTextField.getText());
+            printConsole.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.");
         }
 
         turnOffSimulationWarning();
@@ -835,8 +871,11 @@ public class MainViewController {
 
         turnOnOffSimulation.setDisable(true);
 
-//        timeSHS.setValue(LocalTime.of(12, 0,0));
-        timeSHS.setValue(LocalTime.now());
+        timeSHS.setValue(LocalTime.of(12, 0,0));
+        chosenTime = LocalTime.of(12, 0,0);
+
+        printConsole = new PrintConsole();
+//        timeSHS.setValue(LocalTime.now());
     }
 
     // Fill ComboBox of actions (open/close)
@@ -915,42 +954,42 @@ public class MainViewController {
     @FXML
     public void openDoor() {
         String value = doorComboBoxSHC.getValue();
-        shcController.openDoor(value, houseModel, consoleTextField);
+        shcController.openDoor(value, houseModel, printConsole);
         drawLayout();
     }
 
     @FXML
     public void closeDoor() {
         String value = doorComboBoxSHC.getValue();
-        shcController.closeDoor(value, houseModel, consoleTextField);
+        shcController.closeDoor(value, houseModel, printConsole);
         drawLayout();
     }
 
     @FXML
     public void lockDoor() {
         String value = lockDoorComboBoxSHC.getValue();
-        shcController.lockDoor(value, houseModel, consoleTextField);
+        shcController.lockDoor(value, houseModel, printConsole);
         drawLayout();
     }
 
     @FXML
     public void unLock() {
         String value = lockDoorComboBoxSHC.getValue();
-        shcController.unLock(value, houseModel, consoleTextField);
+        shcController.unLock(value, houseModel, printConsole);
         drawLayout();
     }
 
     @FXML
     void openWindow() {
         String value = winComboBoxSHC.getValue();
-        shcController.openWindow(value, houseModel, consoleTextField);
+        shcController.openWindow(value, houseModel, printConsole);
         drawLayout();
     }
 
     @FXML
     void closeWindow() {
         String value = winComboBoxSHC.getValue();
-        shcController.closeWindow(value, houseModel, consoleTextField);
+        shcController.closeWindow(value, houseModel, printConsole);
         drawLayout();
     }
 
@@ -958,25 +997,26 @@ public class MainViewController {
     void openOrCloseLights(ActionEvent event) {
         String value = lightComboBoxSHC.getValue();
         if (event != null && event.getSource().equals(turnOnLight)) {
-            shcController.openOrCloseLights(value, true, "open", houseModel, consoleTextField);
+            shcController.openOrCloseLights(value, true, "open", houseModel, printConsole);
             turnOnOffAutomode.setText("Turn On AutoMode");
         } else if (event != null && event.getSource().equals(turnOffLight)) {
-            shcController.openOrCloseLights(value, true, "close", houseModel, consoleTextField);
+            shcController.openOrCloseLights(value, true, "close", houseModel, printConsole);
             turnOnOffAutomode.setText("Turn On AutoMode");
         } else {
             UserModel user = ((UserModel) userInfo[1]);
             if (rooms.containsKey(user.getCurrentLocation())) {
-                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, consoleTextField);
+                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, printConsole);
             }
 
             if (rooms.containsKey(user.getPreviousLocation()) && rooms.get(user.getPreviousLocation()).getNbPeople() == 0) {
-                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, consoleTextField);
+                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, printConsole);
             }
 
         }
 
         drawLayout();
     }
+
 
 
     public void saveHourMinute(ActionEvent event) {
