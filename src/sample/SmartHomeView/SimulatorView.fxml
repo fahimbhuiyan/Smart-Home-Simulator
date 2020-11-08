@@ -264,19 +264,33 @@
                 <Tab text="SHC">
                     <AnchorPane>
                         <GridPane fx:id="gridSHC">
-                            <Label text="Welcome to the Smart Home Core (SHC) module." GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
-                                   GridPane.halignment="LEFT"/>
                             <Label text="Manage general house items: Doors, Windows, Lights."
                                    style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
 
-                            <Label text="Door" style="-fx-font-weight: bold"
+                            <Label text="Open/Close Door" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Door"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="doorComboBoxSHC" promptText="Select a location"
+                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="openDoor" text="Open" onAction="#openDoor"
+                                    GridPane.rowIndex="2" GridPane.columnIndex="4"/>
+                            <Button fx:id="closeDoor" text="Close" onAction="#closeDoor"
+                                    GridPane.rowIndex="2" GridPane.columnIndex="5"/>
+
+                            <Label text="Lock/Unlock Door" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
@@ -286,68 +300,51 @@
                             <Label text="Select Door"
                                    GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <ComboBox fx:id="doorComboBoxSHC" promptText="Select a location"
+                            <ComboBox fx:id="lockDoorComboBoxSHC" promptText="Select a location"
                                       GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="openDoor" text="Open" onAction="#openDoor"
+                            <Button fx:id="lockDoor" text="Lock" onAction="#lockDoor"
                                     GridPane.rowIndex="4" GridPane.columnIndex="4"/>
-                            <Button fx:id="closeDoor" text="Close" onAction="#closeDoor"
+                            <Button fx:id="unlockDoor" text="Unlock" onAction="#unLock"
                                     GridPane.rowIndex="4" GridPane.columnIndex="5"/>
 
-                            <Label text="Lock Door" style="-fx-font-weight: bold"
+                            <Label text="Open/Close Windows" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="Select Door"
+                            <Label text="Select Window"
                                    GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <ComboBox fx:id="lockDoorComboBoxSHC" promptText="Select a location"
+                            <ComboBox fx:id="winComboBoxSHC" promptText="Select a location"
                                       GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="lockDoor" text="Lock" onAction="#lockDoor"
+                            <Button fx:id="openWindow" text="Open" onAction="#openWindow"
                                     GridPane.rowIndex="6" GridPane.columnIndex="4"/>
-                            <Button fx:id="unlockDoor" text="Unlock" onAction="#unLock"
+                            <Button fx:id="closeWindow" text="Close" onAction="#closeWindow"
                                     GridPane.rowIndex="6" GridPane.columnIndex="5"/>
 
-                            <Label text="Windows" style="-fx-font-weight: bold"
+
+                            <Label text="Turn On/Off Light" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="Select Window"
+                            <Label text="Select Light"
                                    GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <ComboBox fx:id="winComboBoxSHC" promptText="Select a location"
-                                      GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="openWindow" text="Open" onAction="#openWindow"
-                                    GridPane.rowIndex="8" GridPane.columnIndex="4"/>
-                            <Button fx:id="closeWindow" text="Close" onAction="#closeWindow"
-                                    GridPane.rowIndex="8" GridPane.columnIndex="5"/>
-
-
-                            <Label text="Lights" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
-                            </Label>
-                            <Label text="Select Lights"
-                                   GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="lightComboBoxSHC" promptText="Select a location"
-                                      GridPane.rowIndex="10" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                                      GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="turnOnLight" text="On" onAction="#openOrCloseLights"
-                                    GridPane.rowIndex="10" GridPane.columnIndex="4"/>
+                                    GridPane.rowIndex="8" GridPane.columnIndex="4"/>
                             <Button fx:id="turnOffLight" text="Off" onAction="#openOrCloseLights"
-                                    GridPane.rowIndex="10" GridPane.columnIndex="5"
+                                    GridPane.rowIndex="8" GridPane.columnIndex="5"
                             />
 
                             <Label text="Auto mode" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
@@ -356,7 +353,7 @@
 
                             <Button fx:id="turnOnOffAutomode" onAction="#setAutoMode"
                                     prefHeight="25.0" prefWidth="161.0" text="Turn On AutoMode"
-                                    GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="5"
+                                    GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT"/>
 
                             <columnConstraints>
@@ -376,14 +373,14 @@
                 <Tab text="SHP">
                     <AnchorPane>
                         <GridPane fx:id="gridSHP">
-                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
-                                   GridPane.halignment="LEFT"/>
-
-                            <Label text="Welcome to the Smart Home Security (SHP) module." GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
-                                   GridPane.halignment="LEFT"/>
-
+                            <Label text="Manage the security of the home (lights and procedures in case of break-ins)."
+                                   style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
                             <Label text="Lights" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
@@ -391,7 +388,7 @@
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="Select Lights Remain On"
+                            <Label text="Select Light To Remain On"
                                    GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="lightComboBoxSHP" promptText="Select a location"
@@ -400,43 +397,71 @@
                             <Label text="Duration"
                                    GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="1"
                                    GridPane.halignment="LEFT"/>
-                            <JFXTimePicker fx:id="timerHour" GridPane.rowIndex="3"
+                            <JFXTimePicker fx:id="timerFrom" GridPane.rowIndex="3"
                                            GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
-                            <JFXTimePicker fx:id="timerMinute" GridPane.rowIndex="3"
+                            <JFXTimePicker fx:id="timerTo" GridPane.rowIndex="3"
                                            GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveDuration" text="Save" onAction="#saveHourMinute"
                                     GridPane.rowIndex="3" GridPane.columnIndex="4"/>
 
-                            <Label text="Authorities" style="-fx-font-weight: bold"
+                            <Label text="Authorities (How Long Until They Are Called)" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="After How Long Authorities will respond. (hh, mm)"
+                            <Label text="Minutes, Seconds"
                                    GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="6"
                                    GridPane.halignment="LEFT"/>
 
-                            <Spinner fx:id="timerHourAuthority" initialValue="0" min="0" max="1000000"
-                                     GridPane.rowIndex="6"
-                                     GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <Spinner fx:id="timerMinuteAuthority" initialValue="0" min="0" max="1000000"
-                                     GridPane.rowIndex="6"
+                                     GridPane.rowIndex="5"
+                                     GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="timerSecondAuthority" initialValue="10" min="0" max="1000000"
+                                     GridPane.rowIndex="5"
                                      GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveDurationAuth" text="Save" onAction="#saveAuthority"
-                                    GridPane.rowIndex="6" GridPane.columnIndex="4"/>
+                            <Button fx:id="saveDurationAuth" text="Save" onAction="#saveCountdownAuthority"
+                                    GridPane.rowIndex="5" GridPane.columnIndex="4"/>
 
                             <Button text="Away" style="-fx-font-weight: bold"
-                                    fx:id="away" onAction="#awayButton"
+                                    fx:id="awayButton" onAction="#enterAwayMode"
                                     prefHeight="25.0" prefWidth="161.0"
-                                    GridPane.rowIndex="12" GridPane.columnIndex="2" GridPane.columnSpan="5"
+                                    GridPane.rowIndex="7" GridPane.columnIndex="2" GridPane.columnSpan="5"
                                     GridPane.halignment="CENTER">
                                 <GridPane.margin>
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Button>
 
+                            <Button text="Cancel Alert" style="-fx-font-weight: bold"
+                                    fx:id="cancelAlertButton" onAction="#cancelAlert"
+                                    prefHeight="25.0" prefWidth="161.0"
+                                    GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.columnSpan="5"
+                                    GridPane.halignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
+
+                            <Label text="Min:Sec"
+                                   textFill="red"
+                                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"
+                                   GridPane.rowIndex="9" GridPane.columnIndex="0"
+                                   GridPane.halignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label fx:id="countDownAuthorities"
+                                   textFill="red"
+                                   contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"
+                                   GridPane.rowIndex="9" GridPane.columnIndex="1"
+                                   GridPane.halignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
                         </GridPane>
                     </AnchorPane>
                 </Tab>

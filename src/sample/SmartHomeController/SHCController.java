@@ -1,12 +1,12 @@
 package sample.SmartHomeController;
 
-import javafx.scene.control.TextArea;
+import sample.Interfaces.Observer;
 import sample.SmartHomeModel.HouseModel;
 
 /**
  * Class for the SHC Controller.
  */
-public class SHCController {
+public class SHCController implements Observer {
 
     private boolean autoMode;
 
@@ -78,5 +78,10 @@ public class SHCController {
 
     public boolean isAutoMode(){
         return autoMode;
+    }
+
+    @Override
+    public void update(Object observable) {
+
     }
 }

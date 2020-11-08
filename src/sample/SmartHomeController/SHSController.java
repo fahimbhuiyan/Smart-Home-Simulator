@@ -1,8 +1,7 @@
 package sample.SmartHomeController;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-import javafx.scene.text.Text;
+import sample.Interfaces.Observer;
+import sample.Interfaces.Subject;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.SimulationData;
@@ -12,14 +11,14 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.sql.Struct;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Class for the SHS Controller.
  */
-public class SHSController {
+public class SHSController implements Subject {
 
     /**
      * The Simulation data.
@@ -36,7 +35,11 @@ public class SHSController {
      */
     private int loggedUserID = -1;
 
-    PrintWriter printWriter;
+    private PrintWriter printWriter;
+
+    private List<Observer> observerList;
+
+    private Object state;
 
 
     /**
@@ -44,6 +47,7 @@ public class SHSController {
      */
     public SHSController() {
         simulationData = new SimulationData();
+        observerList = new ArrayList<>();
     }
 
     /**
@@ -239,5 +243,24 @@ public class SHSController {
             System.out.println("UnsupportedEncoding Error");
         }
 
+    }
+
+    @Override
+    public void register(Observer observer) {
+        observerList.add(observer);
+    }
+
+    @Override
+    public void unregister(Observer observer) {
+        observerList.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        List<Observer> observerListLocal = new ArrayList<>(observerList);
+
+        for (Observer observer : observerListLocal) {
+            observer.update(state);
+        }
     }
 }
