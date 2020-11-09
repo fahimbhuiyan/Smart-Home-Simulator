@@ -11,6 +11,7 @@ public class SmartHomeMenu {
 
     /**
      * Create the Smart Home Menu.
+     *
      * @return the MenuBar
      */
     public MenuBar createSmartHomeMenu(){

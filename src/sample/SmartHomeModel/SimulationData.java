@@ -21,7 +21,7 @@ public class SimulationData {
      * Create the data for the rooms, doors, windows, and lights.
      *
      * @param fileName the name of the house layout file
-     * @throws FileNotFoundException exception if the file is not found.
+     * @throws IOException the io exception
      */
     public void createData(String fileName) throws IOException {
 

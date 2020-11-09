@@ -75,10 +75,10 @@ public class SHSController implements Subject {
     /**
      * Login object [ ].
      *
-     * @param houseModel       the house model
-     * @param id               the id
-     * @param userList         the user list
-     * @param printConsole     the console used for printing
+     * @param houseModel   the house model
+     * @param id           the id
+     * @param userList     the user list
+     * @param printConsole the console used for printing
      * @return the object [ ]
      */
     Object[] login(HouseModel houseModel, int id, ArrayList<UserModel> userList, MainViewController.PrintConsole printConsole) {
@@ -108,9 +108,10 @@ public class SHSController implements Subject {
     /**
      * Delete user profile (if user can be removed).
      *
-     * @param userList         the user list
-     * @param id               the id
-     * @param printConsole     the console object used for printing
+     * @param userList     the user list
+     * @param rooms        the rooms
+     * @param id           the id
+     * @param printConsole the console object used for printing
      */
     void deleteUserProfile(ArrayList<UserModel> userList, Map<String, RoomModel> rooms, int id, MainViewController.PrintConsole printConsole) {
         boolean userExist = false;
@@ -163,12 +164,13 @@ public class SHSController implements Subject {
     /**
      * Add/modify user object [ ].
      *
-     * @param userList         the user list
-     * @param id               the id
-     * @param name             the name
-     * @param userType         the user type
-     * @param location         the location
-     * @param printConsole     the console used to print
+     * @param userList     the user list
+     * @param rooms        the rooms
+     * @param id           the id
+     * @param name         the name
+     * @param userType     the user type
+     * @param location     the location
+     * @param printConsole the console used to print
      * @return the object [ ]
      */
     Object[] addModifyUser(ArrayList<UserModel> userList, Map<String, RoomModel> rooms, int id, String name, String userType, String location, MainViewController.PrintConsole printConsole) {
@@ -242,6 +244,12 @@ public class SHSController implements Subject {
         return userInfo;
     }
 
+    /**
+     * Save user profiles.
+     *
+     * @param userList     the user list
+     * @param printConsole the print console
+     */
     void saveUserProfiles(ArrayList<UserModel> userList, MainViewController.PrintConsole printConsole){
         try{
 
@@ -264,16 +272,23 @@ public class SHSController implements Subject {
 
     }
 
+    /**
+     * Observer for register.
+     */
     @Override
     public void register(Observer observer) {
         observerList.add(observer);
     }
-
+    /**
+     * Observer for unregister.
+     */
     @Override
     public void unregister(Observer observer) {
         observerList.remove(observer);
     }
-
+    /**
+     * notify register.
+     */
     @Override
     public void notifyObservers() {
         List<Observer> observerListLocal = new ArrayList<>(observerList);

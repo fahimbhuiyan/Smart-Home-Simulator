@@ -10,10 +10,23 @@ public class SHCController implements Observer {
 
     private boolean autoMode;
 
+    /**
+     * Instantiates a new Shc controller.
+     */
     public SHCController() {
         this.autoMode = false;
     }
 
+    /**
+     * Open or close lights.
+     *
+     * @param areaName      the area name
+     * @param manualControl the manual control
+     * @param action        the action
+     * @param houseModel    the house model
+     * @param printConsole  the print console
+     * @param isScheduled   the is scheduled
+     */
     void openOrCloseLights(String areaName, boolean manualControl, String action, HouseModel houseModel, MainViewController.PrintConsole printConsole, boolean isScheduled) {
 
         if(manualControl || autoMode){
@@ -38,6 +51,13 @@ public class SHCController implements Observer {
         }
     }
 
+    /**
+     * Open door.
+     *
+     * @param roomName     the room name
+     * @param houseModel   the house model
+     * @param printConsole the print console
+     */
     void openDoor(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
 
         if(houseModel.getDoors().get(roomName).isLocked() && houseModel.getDoors().get(roomName).isOpen() == false){
@@ -48,22 +68,62 @@ public class SHCController implements Observer {
             printConsole.setText("Opening the door in " + roomName + ".");
         }
     }
+
+    /**
+     * Close door.
+     *
+     * @param roomName     the room name
+     * @param houseModel   the house model
+     * @param printConsole the print console
+     */
     void closeDoor(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getDoors().get(roomName).setOpen(false);
         printConsole.setText("Closing the door in " + roomName + ".");
     }
+
+    /**
+     * Lock door.
+     *
+     * @param roomName     the room name
+     * @param houseModel   the house model
+     * @param printConsole the print console
+     */
     void lockDoor(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getDoors().get(roomName).setLocked(true);
         printConsole.setText("Locking the door in " + roomName + ".");
     }
+
+    /**
+     * Un lock.
+     *
+     * @param roomName     the room name
+     * @param houseModel   the house model
+     * @param printConsole the print console
+     */
     void unLock(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getDoors().get(roomName).setLocked(false);
         printConsole.setText("Unlocking the door in " + roomName + ".");
     }
+
+    /**
+     * Open window.
+     *
+     * @param roomName     the room name
+     * @param houseModel   the house model
+     * @param printConsole the print console
+     */
     void openWindow(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         houseModel.getWindows().get(roomName).setOpen(true);
         printConsole.setText("Opening the window in " + roomName + ".");
     }
+
+    /**
+     * Close window.
+     *
+     * @param roomName     the room name
+     * @param houseModel   the house model
+     * @param printConsole the print console
+     */
     void closeWindow(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
         if(houseModel.getWindows().get(roomName).HasObject()){
             printConsole.setText("There is an object, cannot close the window in " + roomName + ".");
@@ -74,10 +134,20 @@ public class SHCController implements Observer {
         }
     }
 
+    /**
+     * Set auto mode.
+     *
+     * @param setAutoMode the set auto mode
+     */
     public void setAutoMode(boolean setAutoMode){
         this.autoMode = setAutoMode;
     }
 
+    /**
+     * Is auto mode boolean.
+     *
+     * @return the boolean
+     */
     public boolean isAutoMode(){
         return autoMode;
     }

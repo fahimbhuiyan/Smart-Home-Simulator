@@ -33,6 +33,11 @@ public class MainView extends Application {
         primaryStage.show();
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }

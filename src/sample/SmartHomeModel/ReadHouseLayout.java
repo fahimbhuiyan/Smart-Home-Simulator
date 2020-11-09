@@ -49,6 +49,7 @@ public class ReadHouseLayout {
             e.printStackTrace();
         }
     }
+
     /**
      * Gets the house layout.
      *

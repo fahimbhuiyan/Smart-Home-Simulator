@@ -95,13 +95,13 @@ public class RoomModel {
 	 * Instantiates a new Room model.
 	 *
 	 * @param roomID the ID of the room.
-	 * @param name the name of the room.
-	 * @param width the width of the room.
+	 * @param name   the name of the room.
+	 * @param width  the width of the room.
 	 * @param height the height of the room.
-	 * @param xAxis the x-axis of the room.
-	 * @param yAxis the y-axis of the room.
-	 * @param door the door of the room.
-	 * @param light the light of the room.
+	 * @param xAxis  the x-axis of the room.
+	 * @param yAxis  the y-axis of the room.
+	 * @param door   the door of the room.
+	 * @param light  the light of the room.
 	 * @param window the window of the room.
 	 */
 	public RoomModel(String roomID, String name, int width, int height, int xAxis, int yAxis, DoorModel door, LightModel light, WindowModel window) {
@@ -181,14 +181,13 @@ public class RoomModel {
 
 	/**
 	 * Increment the number of people of the room.
-	 *
 	 */
 	public void incrementNbPeople(){
 		nbPeople++;
 	}
+
 	/**
 	 * Decrement the number of people of the room.
-	 *
 	 */
 	public void decrementNbPeople(){
 		nbPeople--;

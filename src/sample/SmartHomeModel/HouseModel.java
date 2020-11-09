@@ -22,8 +22,16 @@ public class HouseModel {
     /**
      * Instantiates a new House model.
      *
-     * @param outsideTemp      the outside temp
-     * @param loggedUserName   the logged user name
+     * @param outsideTemp    the outside temp
+     * @param loggedUserName the logged user name
+     * @param rooms          the rooms
+     * @param lights         the lights
+     * @param doors          the doors
+     * @param windows        the windows
+     * @param width          the width
+     * @param height         the height
+     * @param xAxis          the x axis
+     * @param yAxis          the y axis
      */
     public HouseModel(int outsideTemp, String loggedUserName, Map<String, RoomModel> rooms, Map<String, LightModel> lights, Map<String, DoorModel> doors, Map<String, WindowModel> windows, int width, int height, int xAxis, int yAxis) {
         this.outsideTemp = outsideTemp;
@@ -102,11 +110,31 @@ public class HouseModel {
      */
     public Map<String, RoomModel> getRooms() {return rooms;}
 
+    /**
+     * Gets height.
+     *
+     * @return the height
+     */
     public int getHeight() {return height;}
 
+    /**
+     * Gets width.
+     *
+     * @return the width
+     */
     public int getWidth() {return width;}
 
+    /**
+     * Gets axis.
+     *
+     * @return the axis
+     */
     public int getxAxis() {return xAxis;}
 
+    /**
+     * Gets axis.
+     *
+     * @return the axis
+     */
     public int getyAxis() {return yAxis;}
 }
