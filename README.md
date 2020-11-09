@@ -56,5 +56,20 @@ Dashboard when the user is logged in and has set the date, time, and inside and 
 Starting the simulation.
 ![alt text](https://imgur.com/4nnZK3M.png)
 
+### **Delivery 2**
+* [Report](https://docs.google.com/document/d/1oV5IvFuyUXYO06ezzAELe-kaWK6Zf-QB2UQqQCHRDwA/edit#)
+
+Dashboard with new time, time speed and console. 
+![alt text](https://imgur.com/fLP6Myh.png)
+
+After "Start the Simulator" is clicked, time starts.
+![alt text](https://imgur.com/hcZ8uOt.gif)
+
+New SHC Module
+![alt text](https://imgur.com/rsvxLnY.png)
+
+New SHP Module
+![alt text](https://imgur.com/Imqi05S.png)
+
 ## **Special Thanks**
 * [JFoenix](http://www.jfoenix.com/)
