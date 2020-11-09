@@ -1052,7 +1052,7 @@ public class MainViewController {
         chosenTime = LocalTime.of(12, 0, 0);
 
         timerFrom.setValue(LocalTime.of(12, 0, 0));
-        timerTo.setValue(LocalTime.of(12, 1, 10));
+        timerTo.setValue(LocalTime.of(12, 1, 0));
 
         printConsole = new PrintConsole();
     }
@@ -1229,6 +1229,7 @@ public class MainViewController {
     public void saveCountdownAuthority () {
         countdownMinutesLeft = timerMinuteAuthority.getValue();
         countdownSecondsLeft = timerSecondAuthority.getValue();
+        printConsole.setText("Setting the waiting time until the authorities are called at " + countdownMinutesLeft + " min and " + countdownSecondsLeft + " sec.");
     }
 
     @FXML
