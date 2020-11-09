@@ -5,7 +5,6 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTimePicker?>
-<?import javafx.scene.Group?>
 
 <BorderPane fx:controller="sample.SmartHomeController.MainViewController" xmlns:fx="http://javafx.com/fxml">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0"
@@ -14,7 +13,7 @@
             <Insets top="30" bottom="30"/>
         </padding>
 
-        <VBox layoutX="14.0" layoutY="16.0" prefHeight="481.0" prefWidth="160.0" style="-fx-border-color: gray;"
+        <VBox layoutX="14.0" layoutY="16.0" prefHeight="506.0" prefWidth="160.0" style="-fx-border-color: gray;"
               fx:id="locationsVBox" alignment="TOP_CENTER">
             <Label contentDisplay="CENTER" text="Simulation information&#10;and controls"
                    style="-fx-font-weight: bold" textAlignment="CENTER" alignment="CENTER">
@@ -393,7 +392,6 @@
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="lightComboBoxSHP" promptText="Select a location"
                                       GridPane.rowIndex="2" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
-
                             <Label text="Duration"
                                    GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="1"
                                    GridPane.halignment="LEFT"/>
@@ -401,7 +399,7 @@
                                            GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
                             <JFXTimePicker fx:id="timerTo" GridPane.rowIndex="3"
                                            GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveDuration" text="Save" onAction="#saveHourMinute"
+                            <Button fx:id="saveDuration" text="Save" onAction="#saveLightOpen"
                                     GridPane.rowIndex="3" GridPane.columnIndex="4"/>
 
                             <Label text="Authorities (How Long Until They Are Called)" style="-fx-font-weight: bold"
@@ -472,6 +470,14 @@
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
+                            <Label fx:id="selectLightMessage"
+                                   text="Lights" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="10"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
                         </GridPane>
                     </AnchorPane>
                 </Tab>
@@ -498,9 +504,9 @@
             </TabPane>
         </AnchorPane>
 
-        <AnchorPane prefHeight="370" prefWidth="357" layoutX="830" layoutY="16" style="-fx-border-color: gray;">
+        <AnchorPane prefHeight="370" prefWidth="357" layoutX="850" layoutY="16" style="-fx-border-color: gray;">
             <Label layoutX="150" layoutY="2" text="House layout" style="-fx-font-weight: bold"/>
-            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="459.0">
+            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="484.0">
                 <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
                 </BorderPane>
             </ScrollPane>

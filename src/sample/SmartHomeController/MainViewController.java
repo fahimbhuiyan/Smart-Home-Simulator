@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import sample.SmartHomeModel.*;
@@ -22,6 +23,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -435,6 +437,9 @@ public class MainViewController {
     @FXML
     Label callingAuthoritiesLabel;
 
+    @FXML
+    Label selectLightMessage;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -473,6 +478,8 @@ public class MainViewController {
 
     private boolean simulationParametersSet = false;
 
+    private Map<String, Pair<LocalTime, LocalTime>> keepLightsOn = new HashMap<>();
+
     private class Countdown extends Thread {
 
         @Override
@@ -490,6 +497,13 @@ public class MainViewController {
             }
 
             while (countdown.get() && running.get()) {
+
+                try {
+                    Thread.sleep(speed);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+
                 Platform.runLater(() -> {
                     if (seconds.get() != 0) {
                         seconds.getAndDecrement();
@@ -507,12 +521,6 @@ public class MainViewController {
                     );
                 });
 
-                try {
-                    Thread.sleep(speed);
-                } catch (InterruptedException e) {
-                    e.getMessage();
-                }
-
                 // Store the remaining sec and min
                 countdownSecondsLeft = seconds.get();
                 countdownMinutesLeft = minutes.get();
@@ -525,9 +533,28 @@ public class MainViewController {
         @Override
         public void run() {
             AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+            AtomicReference<Map<String, Pair<LocalTime, LocalTime>>> lightsToTurnOn = new AtomicReference<>(keepLightsOn);
 
             while (running.get()) {
+
+                try {
+                    Thread.sleep(speed);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+
                 Platform.runLater(() -> {
+
+                    for (String lightName : lightsToTurnOn.get().keySet()) {
+
+                        if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getKey()) == 0) {
+                            scheduleTurnOnOffLight(lightName, "open");
+                        }
+                        else if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getValue()) == 0) {
+                            scheduleTurnOnOffLight(lightName, "close");
+                        }
+                    }
+
                     local.getAndSet(local.get().plusSeconds(1));
                     int h = local.get().getHour();
                     int m = local.get().getMinute();
@@ -540,12 +567,6 @@ public class MainViewController {
 
                     chosenTime = local.get();
                 });
-
-                try {
-                    Thread.sleep(speed);
-                } catch (InterruptedException e) {
-                    e.getMessage();
-                }
             }
         }
     }
@@ -583,6 +604,8 @@ public class MainViewController {
         turnOnOffSimulation.setDisable(true);
         moduleTabs.setDisable(true);
         callingAuthoritiesLabel.setVisible(false);
+        selectLightMessage.setVisible(false);
+
         countDownAuthorities.setVisible(false);
 
         showUIElement(avatarImageView, false);
@@ -907,7 +930,6 @@ public class MainViewController {
             if (simulationParametersSet) {
                 processPermission(loggedInUser);
             }
-
         }
     }
 
@@ -1156,19 +1178,19 @@ public class MainViewController {
     void openOrCloseLights(ActionEvent event) {
         String value = lightComboBoxSHC.getValue();
         if (event != null && event.getSource().equals(turnOnLight)) {
-            shcController.openOrCloseLights(value, true, "open", houseModel, printConsole);
+            shcController.openOrCloseLights(value, true, "open", houseModel, printConsole, false);
             turnOnOffAutomode.setText("Turn On AutoMode");
         } else if (event != null && event.getSource().equals(turnOffLight)) {
-            shcController.openOrCloseLights(value, true, "close", houseModel, printConsole);
+            shcController.openOrCloseLights(value, true, "close", houseModel, printConsole, false);
             turnOnOffAutomode.setText("Turn On AutoMode");
         } else {
             UserModel user = ((UserModel) userInfo[1]);
             if (rooms.containsKey(user.getCurrentLocation())) {
-                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, printConsole);
+                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, printConsole, false);
             }
 
             if (rooms.containsKey(user.getPreviousLocation()) && rooms.get(user.getPreviousLocation()).getNbPeople() == 0) {
-                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, printConsole);
+                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, printConsole, false);
             }
 
         }
@@ -1186,16 +1208,31 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
-    public void saveHourMinute(ActionEvent event) {
+    @FXML
+    public void saveLightOpen() {
+        LocalTime to = timerTo.getValue();
+        LocalTime from = timerFrom.getValue();
+
+        if (to.compareTo(from) > 0) {
+            keepLightsOn.put(lightComboBoxSHP.getValue(), new Pair<>(from, to));
+            printConsole.setText("Scheduling for light in room " + lightComboBoxSHP.getValue() + " to be on between " + from + " and " + to + ".");
+        }
+        else {
+            selectLightMessage.setVisible(true);
+            selectLightMessage.setText("Lights: (The second time must be after the first one)");
+            selectLightMessage.setTextFill(Color.RED);
+            printConsole.setText("In order to schedule a light to remain on, the second time must be after the first one.");
+        }
     }
 
-    public void saveCountdownAuthority() {
+    @FXML
+    public void saveCountdownAuthority () {
         countdownMinutesLeft = timerMinuteAuthority.getValue();
         countdownSecondsLeft = timerSecondAuthority.getValue();
     }
 
     @FXML
-    public void enterAwayMode() {
+    public void enterAwayMode () {
 
         if (awayModeOn) {
             awayModeOn = false;
@@ -1204,11 +1241,9 @@ public class MainViewController {
             return;
         }
 
-
         awayButton.setText("Turn Off Away Mode");
         awayModeOn = true;
         printConsole.setText("Turning on Away Mode.");
-
 
         for (String windowName : houseModel.getWindows().keySet()) {
             shcController.closeWindow(windowName, houseModel, printConsole);
@@ -1221,7 +1256,13 @@ public class MainViewController {
         drawLayout();
     }
 
-    public void cancelAlert() {
+    public void cancelAlert () {
+
+        if (!alertTriggered) {
+            printConsole.setText("There is no alert to cancel.");
+            return;
+        }
+
         countdown.getAndSet(false);
         awayModeOn = false;
         alertTriggered = false;
@@ -1230,5 +1271,10 @@ public class MainViewController {
         countDownAuthorities.setVisible(false);
         authoritiesCalledMessage.setText("The alert has been canceled.");
         callingAuthoritiesLabel.setVisible(false);
+    }
+
+    private void scheduleTurnOnOffLight (String location, String action) {
+        shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
+        drawLayout();
     }
 }
