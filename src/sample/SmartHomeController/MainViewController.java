@@ -13,16 +13,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Pair;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import sample.SmartHomeModel.HouseModel;
-import sample.SmartHomeModel.RoomModel;
-import sample.SmartHomeModel.UserModel;
+import sample.SmartHomeModel.*;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,6 +54,11 @@ public class MainViewController {
      * A controller which handles the modification of the simulation data.
      */
     private SHCController shcController;
+
+    /**
+     * A controller which handles the security of the smart home (lights, intruders, away mode).
+     */
+    private SHPController shpController;
 
     /**
      * An array with all the rooms of the house.
@@ -396,10 +402,10 @@ public class MainViewController {
     ComboBox<String> lightComboBoxSHP;
 
     @FXML
-    JFXTimePicker timerHour;
+    JFXTimePicker timerFrom;
 
     @FXML
-    JFXTimePicker timerMinute;
+    JFXTimePicker timerTo;
 
     @FXML
     Button saveDuration;
@@ -411,13 +417,28 @@ public class MainViewController {
     Spinner<Integer> timerMinuteAuthority;
 
     @FXML
-    Spinner<Integer> timerHourAuthority;
+    Spinner<Integer> timerSecondAuthority;
 
     @FXML
     Button saveDurationAuth;
 
     @FXML
-    Button away;
+    Button awayButton;
+
+    @FXML
+    Button cancelAlertButton;
+
+    @FXML
+    Label countDownAuthorities;
+
+    @FXML
+    Label authoritiesCalledMessage;
+
+    @FXML
+    Label callingAuthoritiesLabel;
+
+    @FXML
+    Label selectLightMessage;
 
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
@@ -439,7 +460,8 @@ public class MainViewController {
      */
     private UserModel loggedInUser = null;
 
-    private AtomicBoolean running = new AtomicBoolean(true);
+    private AtomicBoolean running = new AtomicBoolean(false);
+    private AtomicBoolean countdown = new AtomicBoolean(false);
 
     private LocalTime chosenTime;
 
@@ -447,42 +469,116 @@ public class MainViewController {
 
     private static volatile int speed = 1000; //Waiting time in ms
 
-    private class Clock extends Thread{
+    private boolean awayModeOn = false;
+
+    private boolean alertTriggered = false;
+
+    private int countdownMinutesLeft = 0;
+    private int countdownSecondsLeft = 0;
+
+    private boolean simulationParametersSet = false;
+
+    private Map<String, Pair<LocalTime, LocalTime>> keepLightsOn = new HashMap<>();
+
+    private class Countdown extends Thread {
+
         @Override
         public void run() {
-            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+            AtomicInteger seconds = new AtomicInteger(countdownSecondsLeft);
+            AtomicInteger minutes = new AtomicInteger(countdownMinutesLeft);
+            AtomicReference<PrintConsole> console = new AtomicReference<>(printConsole);
 
-            while (running.get()) {
+            if (!running.get()) {
                 Platform.runLater(() -> {
-                    local.getAndSet(local.get().plusSeconds(1));
-                    int h = local.get().getHour();
-                    int m = local.get().getMinute();
-                    int s = local.get().getSecond();
-                    leftPanelTime.setText(
-                            String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                    countDownAuthorities.setText(
+                            String.format("%s:%s", minutes.get() < 10 ? "0" + minutes.get() : "" + minutes.get(), seconds.get() < 10 ? "0" + seconds.get() : seconds.get() + "")
                     );
-                    if (h == 0 && m == 0 && s == 0)
-                        leftPanelDate.setText("Date: "+ dateSHS.getValue().plusDays(1));
                 });
+            }
+
+            while (countdown.get() && running.get()) {
 
                 try {
                     Thread.sleep(speed);
                 } catch (InterruptedException e) {
                     e.getMessage();
                 }
+
+                Platform.runLater(() -> {
+                    if (seconds.get() != 0) {
+                        seconds.getAndDecrement();
+                    } else if (minutes.get() != 0) {
+                        minutes.getAndDecrement();
+                        seconds.getAndSet(60);
+                    } else if (seconds.get() == 0 && minutes.get() == 0) {
+                        countdown.getAndSet(false);
+                        authoritiesCalledMessage.setText("The authorities have been called!!!");
+                        console.get().setText("The authorities have been called!!!");
+                    }
+
+                    countDownAuthorities.setText(
+                            String.format("%s:%s", minutes.get() < 10 ? "0" + minutes.get() : "" + minutes.get(), seconds.get() < 10 ? "0" + seconds.get() : seconds.get() + "")
+                    );
+                });
+
+                // Store the remaining sec and min
+                countdownSecondsLeft = seconds.get();
+                countdownMinutesLeft = minutes.get();
             }
-            chosenTime = local.get();
+        }
+    }
+
+    private class Clock extends Thread {
+
+        @Override
+        public void run() {
+            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+            AtomicReference<Map<String, Pair<LocalTime, LocalTime>>> lightsToTurnOn = new AtomicReference<>(keepLightsOn);
+
+            while (running.get()) {
+
+                try {
+                    Thread.sleep(speed);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+
+                Platform.runLater(() -> {
+
+                    for (String lightName : lightsToTurnOn.get().keySet()) {
+
+                        if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getKey()) == 0) {
+                            scheduleTurnOnOffLight(lightName, "open");
+                        }
+                        else if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getValue()) == 0) {
+                            scheduleTurnOnOffLight(lightName, "close");
+                        }
+                    }
+
+                    local.getAndSet(local.get().plusSeconds(1));
+                    int h = local.get().getHour();
+                    int m = local.get().getMinute();
+                    int s = local.get().getSecond();
+                    leftPanelTime.setText(
+                            String.format("Time: %s:%s:%s", h < 10 ? "0" + h : "" + h, m < 10 ? "0" + m : "" + m, s < 10 ? "0" + s : s + "")
+                    );
+                    if (h == 0 && m == 0 && s == 0)
+                        leftPanelDate.setText("Date: " + dateSHS.getValue().plusDays(1));
+
+                    chosenTime = local.get();
+                });
+            }
         }
     }
 
     class PrintConsole {
-        void setText (String message) {
+        void setText(String message) {
 
             int h = chosenTime.getHour();
             int m = chosenTime.getMinute();
             int s = chosenTime.getSecond();
 
-            String time = String.format("%s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"");
+            String time = String.format("%s:%s:%s", h < 10 ? "0" + h : "" + h, m < 10 ? "0" + m : "" + m, s < 10 ? "0" + s : s + "");
 
             consoleTextField.setText("[" + time + "] " + message + "\n" + consoleTextField.getText());
         }
@@ -496,6 +592,7 @@ public class MainViewController {
         houseViewController = new HouseViewController();
         shsController = new SHSController();
         shcController = new SHCController();
+        shpController = new SHPController();
     }
 
     /**
@@ -506,6 +603,10 @@ public class MainViewController {
     public void initialize() {
         turnOnOffSimulation.setDisable(true);
         moduleTabs.setDisable(true);
+        callingAuthoritiesLabel.setVisible(false);
+        selectLightMessage.setVisible(false);
+
+        countDownAuthorities.setVisible(false);
 
         showUIElement(avatarImageView, false);
         showUIElement(userNameLabel, false);
@@ -523,6 +624,12 @@ public class MainViewController {
         gridSHC.setDisable(true);
         gridSHH.setDisable(true);
         gridSHP.setDisable(true);
+
+        shsController.register(shcController);
+        shsController.register(shpController);
+
+        countdownSecondsLeft = timerSecondAuthority.getValue();
+        countdownMinutesLeft = timerMinuteAuthority.getValue();
     }
 
     /**
@@ -612,8 +719,15 @@ public class MainViewController {
 
             printConsole.setText("The simulation has been started!");
             (new Clock()).start();
-        }
-        else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
+
+            if (alertTriggered) {
+
+                callingAuthoritiesLabel.setVisible(true);
+                countDownAuthorities.setVisible(true);
+
+                (new Countdown()).start();
+            }
+        } else if (turnOnOffSimulation.getText().equals("Stop the simulation")) {
             turnOnOffSimulation.setText("Start the simulation");
 
             System.out.println("The simulation has been stopped!");
@@ -645,9 +759,11 @@ public class MainViewController {
 
         userInfo = shsController.login(houseModel, id, userModelArrayList, printConsole);
 
-        turnOffSimulationWarning();
         processUserInfo("login");
-        processPermission((UserModel) userInfo[1]);
+
+        turnOffSimulationWarning();
+
+        checkIfIntrusion();
     }
 
     /**
@@ -657,11 +773,12 @@ public class MainViewController {
     public void deleteUserProfile() {
         int id = userIdToRemove.getValue();
 
-        shsController.deleteUserProfile(userModelArrayList, id, printConsole);
+        shsController.deleteUserProfile(userModelArrayList, rooms, id, printConsole);
 
         data.clear();
         loadUsersInSHSTable();
         userTable.setItems(data);
+
         drawLayout();
     }
 
@@ -687,17 +804,44 @@ public class MainViewController {
         }
 
         processUserInfo("add/modify");
-        try {
-            processPermission((UserModel) userInfo[1]);
-        } catch (Exception e) {
-            System.out.println("Creating new user");
-        }
-
 
         data.clear();
         loadUsersInSHSTable();
         userTable.setItems(data);
         drawLayout();
+
+        checkIfIntrusion();
+
+    }
+
+    private void checkIfIntrusion() {
+        // Check if you can enable away mode.
+        awayButton.setDisable(false);
+
+        System.out.println("\n\nCheck intrusion called");
+
+        for (String roomName : rooms.keySet()) {
+
+            System.out.println("Room name: " + roomName);
+            System.out.println("rooms.get(roomName).getNbPeople(): " + rooms.get(roomName).getNbPeople());
+
+            if (rooms.get(roomName).getNbPeople() > 0) {
+                awayButton.setDisable(true);
+
+                if (awayModeOn) {
+                    printConsole.setText("There is an intruder in the " + roomName + " area!!!");
+                    alertTriggered = true;
+                }
+            }
+        }
+
+        if (alertTriggered) {
+            saveDurationAuth.setDisable(true);
+            countdown.getAndSet(true);
+            callingAuthoritiesLabel.setVisible(true);
+            countDownAuthorities.setVisible(true);
+            (new Countdown()).start();
+        }
     }
 
     @FXML
@@ -726,7 +870,7 @@ public class MainViewController {
             int s = timeSHS.getValue().getSecond();
 
             leftPanelTime.setText(
-                    String.format("Time: %s:%s:%s", h<10?"0"+h:""+h, m<10?"0"+m:""+m, s<10?"0"+s:s+"")
+                    String.format("Time: %s:%s:%s", h < 10 ? "0" + h : "" + h, m < 10 ? "0" + m : "" + m, s < 10 ? "0" + s : s + "")
             );
 
         } else if (event.getSource().equals(saveTimeSpeed)) {
@@ -745,10 +889,15 @@ public class MainViewController {
      * been met.
      */
     private void turnOffSimulationWarning() {
-        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
+        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
             turnOnOffSimulation.setDisable(false);
-            warningLabelSimulation.setVisible(false);
-            warningLabelSimulation.setManaged(false);
+
+            warningLabelSimulation.setText("Welcome to the Best Smart\nHome Simulator Ever!\nYou are now Ready to\nStart the Simulation!");
+            warningLabelSimulation.setTextFill(Color.GREEN);
+
+            simulationParametersSet = true;
+
+            processPermission(loggedInUser);
         }
     }
 
@@ -777,6 +926,10 @@ public class MainViewController {
             userLocationLabel.setText("Location: " + loggedInUser.getCurrentLocation());
             isLoggedIn = true;
             turnOffSimulationWarning();
+
+            if (simulationParametersSet) {
+                processPermission(loggedInUser);
+            }
         }
     }
 
@@ -817,10 +970,13 @@ public class MainViewController {
             turnOnOffAutomode.setDisable(true);
 
             lightComboBoxSHC.getItems().clear();
+            lightComboBoxSHP.getItems().clear();
             winComboBoxSHC.getItems().clear();
             lightComboBoxSHC.getItems().add(user.getCurrentLocation());
+            lightComboBoxSHP.getItems().add(user.getCurrentLocation());
             winComboBoxSHC.getItems().add(user.getCurrentLocation());
             lightComboBoxSHC.getSelectionModel().selectFirst();
+            lightComboBoxSHP.getSelectionModel().selectFirst();
             winComboBoxSHC.getSelectionModel().selectFirst();
         }
     }
@@ -847,7 +1003,7 @@ public class MainViewController {
             return;
         }
 
-        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\nsimulation time speed,\ninside temperature, and\noutside temperature before\nstarting the simulation.");
+        warningLabelSimulation.setText("Please log in as a user as\nwell as set the date, time,\nsimulation time speed,\ninside temperature, and\noutside temperature before\nstarting the simulation\nand accessing the modules.");
         System.out.println("File found!");
         System.out.println("Textfield: " + houseLayoutFilePath.getText());
         System.out.println("Path: " + path);
@@ -892,11 +1048,13 @@ public class MainViewController {
 
         turnOnOffSimulation.setDisable(true);
 
-        timeSHS.setValue(LocalTime.of(12, 0,0));
-        chosenTime = LocalTime.of(12, 0,0);
+        timeSHS.setValue(LocalTime.of(12, 0, 0));
+        chosenTime = LocalTime.of(12, 0, 0);
+
+        timerFrom.setValue(LocalTime.of(12, 0, 0));
+        timerTo.setValue(LocalTime.of(12, 1, 0));
 
         printConsole = new PrintConsole();
-//        timeSHS.setValue(LocalTime.now());
     }
 
     // Fill ComboBox of actions (open/close)
@@ -904,21 +1062,22 @@ public class MainViewController {
 
         if (!setup) { // We are just reload certain ComboBoxes because the user who just logged in has higher permissions
             lightComboBoxSHC.getItems().clear();
+            lightComboBoxSHP.getItems().clear();
             winComboBoxSHC.getItems().clear();
 
             for (String roomName : roomNamesSet) {
                 winComboBoxSHC.getItems().add(roomName);
                 lightComboBoxSHC.getItems().add(roomName);
+                lightComboBoxSHP.getItems().add(roomName);
             }
 
-            lightComboBoxSHC.getItems().add("Backyard");
-            lightComboBoxSHC.getItems().add("Front yard");
+            lightComboBoxSHC.getItems().addAll("Backyard", "Front yard");
+            lightComboBoxSHP.getItems().addAll("Backyard", "Front yard");
 
             winComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHC.getSelectionModel().selectFirst();
+            lightComboBoxSHP.getSelectionModel().selectFirst();
         } else { // Initial setup
-
-            addModifyLocComboBoxSHS.getItems().add("House");
 
             for (String roomName : roomNamesSet) {
                 addModifyLocComboBoxSHS.getItems().add(roomName);
@@ -926,10 +1085,12 @@ public class MainViewController {
                 doorComboBoxSHC.getItems().add(roomName);
                 winComboBoxSHC.getItems().add(roomName);
                 lightComboBoxSHC.getItems().add(roomName);
+                lightComboBoxSHP.getItems().add(roomName);
                 lockDoorComboBoxSHC.getItems().add(roomName);
             }
 
             lightComboBoxSHC.getItems().addAll("Backyard", "Front yard");
+            lightComboBoxSHP.getItems().addAll("Backyard", "Front yard");
             doorComboBoxSHC.getItems().addAll("Backyard", "Front yard");
             lockDoorComboBoxSHC.getItems().addAll("Backyard", "\"Front yard\"");
             addModifyLocComboBoxSHS.getItems().addAll("Front yard", "Backyard");
@@ -944,6 +1105,7 @@ public class MainViewController {
             lockDoorComboBoxSHC.getSelectionModel().selectFirst();
             winComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHC.getSelectionModel().selectFirst();
+            lightComboBoxSHP.getSelectionModel().selectFirst();
             timeSpeedComboBoxSHS.getSelectionModel().select(3);
         }
     }
@@ -1016,19 +1178,19 @@ public class MainViewController {
     void openOrCloseLights(ActionEvent event) {
         String value = lightComboBoxSHC.getValue();
         if (event != null && event.getSource().equals(turnOnLight)) {
-            shcController.openOrCloseLights(value, true, "open", houseModel, printConsole);
+            shcController.openOrCloseLights(value, true, "open", houseModel, printConsole, false);
             turnOnOffAutomode.setText("Turn On AutoMode");
         } else if (event != null && event.getSource().equals(turnOffLight)) {
-            shcController.openOrCloseLights(value, true, "close", houseModel, printConsole);
+            shcController.openOrCloseLights(value, true, "close", houseModel, printConsole, false);
             turnOnOffAutomode.setText("Turn On AutoMode");
         } else {
             UserModel user = ((UserModel) userInfo[1]);
             if (rooms.containsKey(user.getCurrentLocation())) {
-                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, printConsole);
+                shcController.openOrCloseLights(user.getCurrentLocation(), false, "open", houseModel, printConsole, false);
             }
 
             if (rooms.containsKey(user.getPreviousLocation()) && rooms.get(user.getPreviousLocation()).getNbPeople() == 0) {
-                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, printConsole);
+                shcController.openOrCloseLights(user.getPreviousLocation(), false, "close", houseModel, printConsole, false);
             }
 
         }
@@ -1040,18 +1202,80 @@ public class MainViewController {
 
         leftPanelTimeSpeed.setText("Simulation time speed: " + timeSpeedComboBoxSHS.getValue() + "x");
 
-        AtomicInteger newSpeed = new AtomicInteger(((Double)(1000 / Double.parseDouble(timeSpeedComboBoxSHS.getValue()))).intValue());
+        AtomicInteger newSpeed = new AtomicInteger(((Double) (1000 / Double.parseDouble(timeSpeedComboBoxSHS.getValue()))).intValue());
         speed = newSpeed.get();
 
         saveSimulationConditions(event);
     }
 
-    public void saveHourMinute(ActionEvent event) {
+    @FXML
+    public void saveLightOpen() {
+        LocalTime to = timerTo.getValue();
+        LocalTime from = timerFrom.getValue();
+
+        if (to.compareTo(from) > 0) {
+            keepLightsOn.put(lightComboBoxSHP.getValue(), new Pair<>(from, to));
+            printConsole.setText("Scheduling for light in room " + lightComboBoxSHP.getValue() + " to be on between " + from + " and " + to + ".");
+        }
+        else {
+            selectLightMessage.setVisible(true);
+            selectLightMessage.setText("Lights: (The second time must be after the first one)");
+            selectLightMessage.setTextFill(Color.RED);
+            printConsole.setText("In order to schedule a light to remain on, the second time must be after the first one.");
+        }
     }
 
-    public void saveAuthority(ActionEvent event) {
+    @FXML
+    public void saveCountdownAuthority () {
+        countdownMinutesLeft = timerMinuteAuthority.getValue();
+        countdownSecondsLeft = timerSecondAuthority.getValue();
+        printConsole.setText("Setting the waiting time until the authorities are called at " + countdownMinutesLeft + " min and " + countdownSecondsLeft + " sec.");
     }
 
-    public void awayButton(ActionEvent event) {
+    @FXML
+    public void enterAwayMode () {
+
+        if (awayModeOn) {
+            awayModeOn = false;
+            awayButton.setText("Turn On Away Mode");
+            printConsole.setText("Turning off Away Mode.");
+            return;
+        }
+
+        awayButton.setText("Turn Off Away Mode");
+        awayModeOn = true;
+        printConsole.setText("Turning on Away Mode.");
+
+        for (String windowName : houseModel.getWindows().keySet()) {
+            shcController.closeWindow(windowName, houseModel, printConsole);
+        }
+
+        for (String doorName : houseModel.getDoors().keySet()) {
+            shcController.lockDoor(doorName, houseModel, printConsole);
+        }
+
+        drawLayout();
+    }
+
+    public void cancelAlert () {
+
+        if (!alertTriggered) {
+            printConsole.setText("There is no alert to cancel.");
+            return;
+        }
+
+        countdown.getAndSet(false);
+        awayModeOn = false;
+        alertTriggered = false;
+        saveDurationAuth.setDisable(false);
+        printConsole.setText("The alert has been canceled.");
+        countDownAuthorities.setVisible(false);
+        authoritiesCalledMessage.setText("The alert has been canceled.");
+        callingAuthoritiesLabel.setVisible(false);
+    }
+
+    private void scheduleTurnOnOffLight (String location, String action) {
+        shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
+        drawLayout();
     }
 }

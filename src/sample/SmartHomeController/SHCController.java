@@ -1,12 +1,12 @@
 package sample.SmartHomeController;
 
-import javafx.scene.control.TextArea;
+import sample.Interfaces.Observer;
 import sample.SmartHomeModel.HouseModel;
 
 /**
  * Class for the SHC Controller.
  */
-public class SHCController {
+public class SHCController implements Observer {
 
     private boolean autoMode;
 
@@ -14,21 +14,23 @@ public class SHCController {
         this.autoMode = false;
     }
 
-    void openOrCloseLights(String areaName, boolean manualControl, String action, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
+    void openOrCloseLights(String areaName, boolean manualControl, String action, HouseModel houseModel, MainViewController.PrintConsole printConsole, boolean isScheduled) {
 
         if(manualControl || autoMode){
 
             autoMode = !manualControl;
 
+            String extraInfo = isScheduled ? " as scheduled." : ".";
+
             if(action.equals("close")){
                 System.out.println("Light to close: " + houseModel.getLights().get(areaName).getName());
                 houseModel.getLights().get(areaName).setOpen(false);
-                printConsole.setText("Closing the lights in " + areaName + ".");
+                printConsole.setText("Closing the lights in " + areaName + extraInfo);
             }
             else if(action.equals("open")){
                 System.out.println("Light to open: " + houseModel.getLights().get(areaName).getName());
                 houseModel.getLights().get(areaName).setOpen(true);
-                printConsole.setText("Opening the lights in " + areaName + ".");
+                printConsole.setText("Opening the lights in " + areaName + extraInfo);
             }
         }
         else {
@@ -78,5 +80,10 @@ public class SHCController {
 
     public boolean isAutoMode(){
         return autoMode;
+    }
+
+    @Override
+    public void update(Object observable) {
+
     }
 }

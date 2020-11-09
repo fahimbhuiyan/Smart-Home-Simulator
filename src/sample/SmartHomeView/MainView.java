@@ -29,7 +29,7 @@ public class MainView extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("SimulatorView.fxml"));
         primaryStage.setTitle("Smart Home Simulator");
-        primaryStage.setScene(new Scene(root, 1200, 800));
+        primaryStage.setScene(new Scene(root, 1225, 800));
         primaryStage.show();
     }
 
