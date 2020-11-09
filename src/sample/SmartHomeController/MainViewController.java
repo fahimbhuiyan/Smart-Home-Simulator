@@ -1257,8 +1257,10 @@ public class MainViewController {
 
         if (shcController.isAutoMode()) {
             turnOnOffAutomode.setText("Turn Off AutoMode");
+            printConsole.setText("Turning on AutoMode.");
         } else {
             turnOnOffAutomode.setText("Turn On AutoMode");
+            printConsole.setText("Turning off AutoMode.");
         }
     }
 
