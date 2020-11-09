@@ -359,84 +359,165 @@ public class MainViewController {
     @FXML
     Label labelLeftPanelSimParam;
 
+    /**
+     * The Door combo box shc.
+     */
     @FXML
     ComboBox<String> doorComboBoxSHC;
 
+    /**
+     * The Open door.
+     */
     @FXML
     Button openDoor;
 
+    /**
+     * The Close door.
+     */
     @FXML
     Button closeDoor;
 
+    /**
+     * The Win combo box shc.
+     */
     @FXML
     ComboBox<String> winComboBoxSHC;
 
+    /**
+     * The Open window.
+     */
     @FXML
     Button openWindow;
 
+    /**
+     * The Close window.
+     */
     @FXML
     Button closeWindow;
 
+    /**
+     * The Light combo box shc.
+     */
     @FXML
     ComboBox<String> lightComboBoxSHC;
 
+    /**
+     * The Turn on light.
+     */
     @FXML
     Button turnOnLight;
 
+    /**
+     * The Turn off light.
+     */
     @FXML
     Button turnOffLight;
 
+    /**
+     * The Turn on off automode.
+     */
     @FXML
     Button turnOnOffAutomode;
 
+    /**
+     * The Lock door combo box shc.
+     */
     @FXML
     ComboBox<String> lockDoorComboBoxSHC;
 
+    /**
+     * The Lock door.
+     */
     @FXML
     Button lockDoor;
 
+    /**
+     * The Unlock door.
+     */
     @FXML
     Button unlockDoor;
 
+    /**
+     * The Light combo box shp.
+     */
     @FXML
     ComboBox<String> lightComboBoxSHP;
 
+    /**
+     * The Timer from.
+     */
     @FXML
     JFXTimePicker timerFrom;
 
+    /**
+     * The Timer to.
+     */
     @FXML
     JFXTimePicker timerTo;
 
+    /**
+     * The Save duration.
+     */
     @FXML
     Button saveDuration;
 
+    /**
+     * The Save time speed.
+     */
     @FXML
     Button saveTimeSpeed;
 
+    /**
+     * The Timer minute authority.
+     */
     @FXML
     Spinner<Integer> timerMinuteAuthority;
 
+    /**
+     * The Timer second authority.
+     */
     @FXML
     Spinner<Integer> timerSecondAuthority;
 
+    /**
+     * The Save duration auth.
+     */
     @FXML
     Button saveDurationAuth;
 
+    /**
+     * The Away button.
+     */
     @FXML
     Button awayButton;
 
+    /**
+     * The Cancel alert button.
+     */
     @FXML
     Button cancelAlertButton;
 
+    /**
+     * The Count down authorities.
+     */
     @FXML
     Label countDownAuthorities;
 
+    /**
+     * The Authorities called message.
+     */
     @FXML
     Label authoritiesCalledMessage;
 
+    /**
+     * The Calling authorities label.
+     */
     @FXML
     Label callingAuthoritiesLabel;
 
+    /**
+     * The Select light message.
+     */
     @FXML
     Label selectLightMessage;
 
@@ -459,27 +540,54 @@ public class MainViewController {
      * All the information on the user that is currently logged in.
      */
     private UserModel loggedInUser = null;
-
+    /**
+     * Time running.
+     */
     private AtomicBoolean running = new AtomicBoolean(false);
+    /**
+     * Time countdown.
+     */
     private AtomicBoolean countdown = new AtomicBoolean(false);
-
+    /**
+     * Time chosen.
+     */
     private LocalTime chosenTime;
-
+    /**
+     * Printing on console.
+     */
     private PrintConsole printConsole;
-
+    /**
+     * Time speed.
+     */
     private static volatile int speed = 1000; //Waiting time in ms
-
+    /**
+     * awayMood.
+     */
     private boolean awayModeOn = false;
-
+    /**
+     * When intrusion occurs and alert is triggered.
+     */
     private boolean alertTriggered = false;
-
+    /**
+     * Time countdown for minutes left.
+     */
     private int countdownMinutesLeft = 0;
+    /**
+     * Time countdown for minutes left.
+     */
     private int countdownSecondsLeft = 0;
-
+    /**
+     * Parameters for simualtion is set.
+     */
     private boolean simulationParametersSet = false;
-
+    /**
+     * HashMap for time.
+     */
     private Map<String, Pair<LocalTime, LocalTime>> keepLightsOn = new HashMap<>();
 
+    /**
+     * The thread for clock for simulation.
+     */
     private class Countdown extends Thread {
 
         @Override
@@ -528,6 +636,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Thread for clock
+     */
     private class Clock extends Thread {
 
         @Override
@@ -571,7 +682,15 @@ public class MainViewController {
         }
     }
 
+    /**
+     * The type Print console.
+     */
     class PrintConsole {
+        /**
+         * Sets text.
+         *
+         * @param message the message
+         */
         void setText(String message) {
 
             int h = chosenTime.getHour();
@@ -682,8 +801,7 @@ public class MainViewController {
     /**
      * Add object to window.
      *
-     * @param event the event which indicates that the user interacted with the button that saves the location in
-     *              which the window must be blocked by an object.
+     * @param event the event which indicates that the user interacted with the button that saves the location in              which the window must be blocked by an object.
      */
     @FXML
     public void addObjectToWindow(ActionEvent event) {
@@ -813,7 +931,9 @@ public class MainViewController {
         checkIfIntrusion();
 
     }
-
+    /**
+     * Check for Intrusion.
+     */
     private void checkIfIntrusion() {
         // Check if you can enable away mode.
         awayButton.setDisable(false);
@@ -844,6 +964,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Save user profiles.
+     */
     @FXML
     public void saveUserProfiles() {
         shsController.saveUserProfiles(userModelArrayList, printConsole);
@@ -852,8 +975,7 @@ public class MainViewController {
     /**
      * Save the simulation conditions (also prints on left panel and on House Layout).
      *
-     * @param event the event which specifies the button which the user interacted with in order to save a certain
-     *              simulation condition.
+     * @param event the event which specifies the button which the user interacted with in order to save a certain              simulation condition.
      */
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
@@ -1057,6 +1179,11 @@ public class MainViewController {
         printConsole = new PrintConsole();
     }
 
+
+    /**
+     * Open and close lights, windows, time, block/unblock windows
+     *  @param setup lights, windows, time, block/unlock windows.
+     */
     // Fill ComboBox of actions (open/close)
     private void fillDefaultComboBox(boolean setup) {
 
@@ -1121,6 +1248,9 @@ public class MainViewController {
         node.setManaged(bool);
     }
 
+    /**
+     * Sets auto mode.
+     */
     @FXML
     public void setAutoMode() {
         shcController.setAutoMode(!shcController.isAutoMode());
@@ -1132,6 +1262,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Open door.
+     */
     @FXML
     public void openDoor() {
         String value = doorComboBoxSHC.getValue();
@@ -1139,6 +1272,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Close door.
+     */
     @FXML
     public void closeDoor() {
         String value = doorComboBoxSHC.getValue();
@@ -1146,6 +1282,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Lock door.
+     */
     @FXML
     public void lockDoor() {
         String value = lockDoorComboBoxSHC.getValue();
@@ -1153,6 +1292,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Un lock.
+     */
     @FXML
     public void unLock() {
         String value = lockDoorComboBoxSHC.getValue();
@@ -1160,6 +1302,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Open window.
+     */
     @FXML
     void openWindow() {
         String value = winComboBoxSHC.getValue();
@@ -1167,6 +1312,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Close window.
+     */
     @FXML
     void closeWindow() {
         String value = winComboBoxSHC.getValue();
@@ -1174,6 +1322,11 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Open or close lights.
+     *
+     * @param event the event
+     */
     @FXML
     void openOrCloseLights(ActionEvent event) {
         String value = lightComboBoxSHC.getValue();
@@ -1198,6 +1351,11 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Save time speed.
+     *
+     * @param event the event
+     */
     public void saveTimeSpeed(ActionEvent event) {
 
         leftPanelTimeSpeed.setText("Simulation time speed: " + timeSpeedComboBoxSHS.getValue() + "x");
@@ -1208,6 +1366,9 @@ public class MainViewController {
         saveSimulationConditions(event);
     }
 
+    /**
+     * Save light open.
+     */
     @FXML
     public void saveLightOpen() {
         LocalTime to = timerTo.getValue();
@@ -1225,6 +1386,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Save countdown authority.
+     */
     @FXML
     public void saveCountdownAuthority () {
         countdownMinutesLeft = timerMinuteAuthority.getValue();
@@ -1232,6 +1396,9 @@ public class MainViewController {
         printConsole.setText("Setting the waiting time until the authorities are called at " + countdownMinutesLeft + " min and " + countdownSecondsLeft + " sec.");
     }
 
+    /**
+     * Enter away mode.
+     */
     @FXML
     public void enterAwayMode () {
 
@@ -1257,6 +1424,9 @@ public class MainViewController {
         drawLayout();
     }
 
+    /**
+     * Cancel alert.
+     */
     public void cancelAlert () {
 
         if (!alertTriggered) {

@@ -18,7 +18,8 @@ public class WindowModel {
 	/**
 	 * Instantiate a Window.
 	 *
-	 * @param id the id of the window.
+	 * @param id   the id of the window.
+	 * @param name the name
 	 */
 	public WindowModel(String id, String name) {
 		this.id = id;

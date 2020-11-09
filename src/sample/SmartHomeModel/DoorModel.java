@@ -16,8 +16,8 @@ public class DoorModel {
 	/**
 	 * Instantiates a new Door model.
 	 *
-	 * @param name	   the name of the door
-	 * @param id       the id of the door
+	 * @param id   the id of the door
+	 * @param name the name of the door
 	 */
 	public DoorModel(String id, String name) {
 		this.name = name;
@@ -25,6 +25,9 @@ public class DoorModel {
 		loadImage();
 	}
 
+	/**
+	 * Load image.
+	 */
 	public void loadImage() {
 
 		imageOpen = new Image(getClass().getResourceAsStream("/img/door_open.jpg"));
@@ -42,10 +45,20 @@ public class DoorModel {
 		return id;
 	}
 
+	/**
+	 * Gets image open.
+	 *
+	 * @return the image open
+	 */
 	public Image getImageOpen() {
 		return imageOpen;
 	}
 
+	/**
+	 * Gets image close.
+	 *
+	 * @return the image close
+	 */
 	public Image getImageClose() {
 		return imageClose;
 	}

@@ -16,7 +16,8 @@ public class LightModel {
 	/**
 	 * Instantiates a new Light model.
 	 *
-	 * @param id the id
+	 * @param id   the id
+	 * @param name the name
 	 */
 	public LightModel(String id, String name) {
 		this.id = id;

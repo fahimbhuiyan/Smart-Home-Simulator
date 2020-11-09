@@ -14,9 +14,9 @@ public class UserModel {
 	/**
 	 * Instantiate a user.
 	 *
-	 * @param name the name of the user.
-	 * @param id the id of the user.
-	 * @param user_type the type of the user.
+	 * @param name            the name of the user.
+	 * @param id              the id of the user.
+	 * @param user_type       the type of the user.
 	 * @param currentLocation the location of the user.
 	 */
 	public UserModel(String name, int id, String user_type, String currentLocation) {
