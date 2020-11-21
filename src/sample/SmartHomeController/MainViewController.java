@@ -521,6 +521,30 @@ public class MainViewController {
     @FXML
     Label selectLightMessage;
 
+    @FXML
+    ComboBox <String> zoneComboBoxSHH;
+
+    @FXML
+    ComboBox <String> locationComboBoxSHH;
+
+    @FXML
+    ComboBox <String> periodComboBoxSHH;
+
+    @FXML
+    ComboBox <String> temperatureComboBoxSHH;
+
+    @FXML
+    Button saveSHH;
+
+    @FXML
+    ComboBox <String> locationManComboBoxSHH;
+
+    @FXML
+    ComboBox <String> temperatureManComboBoxSHH;
+
+    @FXML
+    Button saveManSHH;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -1449,5 +1473,13 @@ public class MainViewController {
     private void scheduleTurnOnOffLight (String location, String action) {
         shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
         drawLayout();
+    }
+
+    public void saveSHHSetings(ActionEvent event) {
+
+    }
+
+    public void saveManSHHSetting(ActionEvent event) {
+
     }
 }

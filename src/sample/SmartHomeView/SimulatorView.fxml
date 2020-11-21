@@ -485,9 +485,119 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-                            <Label text="Welcome to the Smart Home Heating (SHH) module." GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
+
+                            <Label text="Manage Heating and Cooling Zones."
+                                   style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="Zone" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Zone"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="zoneComboBoxSHH" promptText="Select a Zone"
+                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+
+                            <Label text="Location" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Location"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="locationComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Period" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Period"
+                                   GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="periodComboBoxSHH" promptText="Select a Period"
+                                      GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Temperature" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Temperature(C)"
+                                   GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="temperatureComboBoxSHH" promptText="Select a Temperature(C)"
+                                      GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Button fx:id="saveSHH"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save" onAction="#saveSHHSetings"
+                                    GridPane.rowIndex="9" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
+
+                            <Label text="Manual Change." style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Location" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Location"
+                                   GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="locationManComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="12" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Temperature" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Temperature"
+                                   GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="temperatureManComboBoxSHH" promptText="Select a Temperature(C)"
+                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Button fx:id="saveManSHH"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save" onAction="#saveManSHHSetting"
+                                    GridPane.rowIndex="15" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
                         </GridPane>
                     </AnchorPane>
                 </Tab>
