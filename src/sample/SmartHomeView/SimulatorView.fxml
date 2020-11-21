@@ -594,7 +594,7 @@
                                     <Insets top="5"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="Select Temperature"
+                            <Label text="Select Temperature(C)"
                                    GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <Spinner fx:id="temperatureManSpinnerSHH" min="-1000000" max="1000000" initialValue="20"
