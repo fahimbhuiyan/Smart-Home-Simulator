@@ -13,7 +13,7 @@
             <Insets top="30" bottom="30"/>
         </padding>
 
-        <VBox layoutX="14.0" layoutY="16.0" prefHeight="506.0" prefWidth="160.0" style="-fx-border-color: gray;"
+        <VBox layoutX="14.0" layoutY="16.0" prefHeight="531.0" prefWidth="160.0" style="-fx-border-color: gray;"
               fx:id="locationsVBox" alignment="TOP_CENTER">
             <Label contentDisplay="CENTER" text="Simulation information&#10;and controls"
                    style="-fx-font-weight: bold" textAlignment="CENTER" alignment="CENTER">
@@ -245,6 +245,16 @@
                                       GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveWindowBlock" onAction="#addObjectToWindow" text="Save"
                                     GridPane.rowIndex="14" GridPane.columnIndex="3"/>
+
+                            <Label text="Months and Seasons"
+                                   GridPane.rowIndex="15" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="month" promptText="Select Month"
+                                      GridPane.rowIndex="15" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="season" promptText="Select Season"
+                                      GridPane.rowIndex="15" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveSeason" onAction="#saveMonthSeason" text="Save"
+                                    GridPane.rowIndex="15" GridPane.columnIndex="4"/>
 
                             <columnConstraints>
                                 <ColumnConstraints maxWidth="134"/>
@@ -485,9 +495,119 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-                            <Label text="Welcome to the Smart Home Heating (SHH) module." GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0" GridPane.columnSpan="5"
+
+                            <Label text="Manage Heating and Cooling Zones Inside the Home."
+                                   style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+
+                            <Label text="Zone" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Zone"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="zoneComboBoxSHH" promptText="Select a Zone"
+                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+
+                            <Label text="Location" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Location"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="locationComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Period" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Period"
+                                   GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="periodComboBoxSHH" promptText="Select a Period"
+                                      GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Temperature" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Temperature(C)"
+                                   GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="temperatureSpinnerSHH" min="-1000000" max="1000000" initialValue="20"
+                                      GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Button fx:id="saveSHH"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save" onAction="#saveSHHSetings"
+                                    GridPane.rowIndex="9" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
+
+                            <Label text="Manual Change." style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Location" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Location"
+                                   GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="locationManComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="12" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Temperature" style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Label>
+                            <Label text="Select Temperature(C)"
+                                   GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="temperatureManSpinnerSHH" min="-1000000" max="1000000" initialValue="20"
+                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Button fx:id="saveManSHH"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save" onAction="#saveManSHHSetting"
+                                    GridPane.rowIndex="15" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                                <GridPane.margin>
+                                    <Insets top="5"/>
+                                </GridPane.margin>
+                            </Button>
                         </GridPane>
                     </AnchorPane>
                 </Tab>
@@ -506,7 +626,7 @@
 
         <AnchorPane prefHeight="370" prefWidth="357" layoutX="850" layoutY="16" style="-fx-border-color: gray;">
             <Label layoutX="150" layoutY="2" text="House layout" style="-fx-font-weight: bold"/>
-            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="484.0">
+            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="509.0">
                 <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
                 </BorderPane>
             </ScrollPane>

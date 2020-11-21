@@ -521,6 +521,39 @@ public class MainViewController {
     @FXML
     Label selectLightMessage;
 
+    @FXML
+    ComboBox <String> zoneComboBoxSHH;
+
+    @FXML
+    ComboBox <String> locationComboBoxSHH;
+
+    @FXML
+    ComboBox <String> periodComboBoxSHH;
+
+    @FXML
+    Spinner <Integer> temperatureSpinnerSHH;
+
+    @FXML
+    Button saveSHH;
+
+    @FXML
+    ComboBox <String> locationManComboBoxSHH;
+
+    @FXML
+    Spinner <Integer> temperatureManSpinnerSHH;
+
+    @FXML
+    Button saveManSHH;
+
+    @FXML
+    ComboBox <String> month;
+
+    @FXML
+    ComboBox <String> season;
+
+    @FXML
+    Button saveSeason;
+
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
      */
@@ -1223,6 +1256,13 @@ public class MainViewController {
             addModifyLocComboBoxSHS.getItems().addAll("Front yard", "Backyard");
             addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
             timeSpeedComboBoxSHS.getItems().addAll("0.25", "0.5", "0.75", "1", "1.25", "1.5", "1.75", "2");
+            month.getItems().addAll("January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December");
+            season.getItems().addAll("Winter", "Summer");
+
+            zoneComboBoxSHH.getItems().addAll("Zone 1", "Zone 2", "Zone 3", "Zone 4");
+            locationComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
+            locationManComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
+            periodComboBoxSHH.getItems().addAll("00:00 - 08:00", "08:00 - 16:00", "16:00 - 24:00");
 
 
             addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
@@ -1450,4 +1490,17 @@ public class MainViewController {
         shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
         drawLayout();
     }
+
+    public void saveSHHSetings(ActionEvent event) {
+
+    }
+
+    public void saveManSHHSetting(ActionEvent event) {
+
+    }
+
+    public void saveMonthSeason(ActionEvent event) {
+
+    }
+
 }
