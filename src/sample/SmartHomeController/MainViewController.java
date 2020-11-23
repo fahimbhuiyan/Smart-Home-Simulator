@@ -59,6 +59,10 @@ public class MainViewController {
      * A controller which handles the security of the smart home (lights, intruders, away mode).
      */
     private SHPController shpController;
+    /**
+     * A controller which handles the security of the smart home (lights, intruders, away mode).
+     */
+    private SHHController shhController;
 
     /**
      * An array with all the rooms of the house.
@@ -522,37 +526,54 @@ public class MainViewController {
     Label selectLightMessage;
 
     @FXML
-    ComboBox <String> zoneComboBoxSHH;
-
-    @FXML
-    ComboBox <String> locationComboBoxSHH;
-
-    @FXML
-    ComboBox <String> periodComboBoxSHH;
-
-    @FXML
-    Spinner <Integer> temperatureSpinnerSHH;
-
-    @FXML
-    Button saveSHH;
-
-    @FXML
-    ComboBox <String> locationManComboBoxSHH;
-
-    @FXML
-    Spinner <Integer> temperatureManSpinnerSHH;
-
-    @FXML
-    Button saveManSHH;
-
-    @FXML
     ComboBox <String> month;
 
     @FXML
     ComboBox <String> season;
 
     @FXML
+    ComboBox <String> locationComboBoxSHH;
+
+    @FXML
+    ComboBox <String> locationManComboBoxSHH;
+
+    @FXML
+    ComboBox <String> zoneComboBoxSHH;
+
+    @FXML
+    ComboBox <String> zoneTemperatureComboBox;
+
+    @FXML
+    ComboBox <String> periodComboBoxSHH;
+
+    @FXML
+    ComboBox<String> seasonComboBoxSHH;
+
+    @FXML
+    Spinner <Double> temperatureSeasonSpinnerSHH;
+
+
+    @FXML
+    Spinner <Double> temperaturePeriodSpinnerSHH;
+
+    @FXML
+    Spinner <Double> temperatureManSpinnerSHH;
+
+    // In SHS
+    @FXML
     Button saveSeason;
+
+    @FXML
+    Button saveZone;
+
+    @FXML
+    Button savePeriodTemperature;
+
+    @FXML
+    Button saveSeasonTemperature;
+
+    @FXML
+    Button saveManSHH;
 
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
@@ -745,6 +766,7 @@ public class MainViewController {
         shsController = new SHSController();
         shcController = new SHCController();
         shpController = new SHPController();
+        shhController = new SHHController();
     }
 
     /**
@@ -1260,9 +1282,12 @@ public class MainViewController {
             season.getItems().addAll("Winter", "Summer");
 
             zoneComboBoxSHH.getItems().addAll("Zone 1", "Zone 2", "Zone 3", "Zone 4");
+            zoneTemperatureComboBox.getItems().addAll("Zone 1", "Zone 2", "Zone 3", "Zone 4");
             locationComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
             locationManComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
             periodComboBoxSHH.getItems().addAll("00:00 - 08:00", "08:00 - 16:00", "16:00 - 24:00");
+            seasonComboBoxSHH.getItems().addAll("Summer", "Winter");
+
 
 
             addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
@@ -1274,6 +1299,12 @@ public class MainViewController {
             lightComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHP.getSelectionModel().selectFirst();
             timeSpeedComboBoxSHS.getSelectionModel().select(3);
+            zoneComboBoxSHH.getSelectionModel().selectFirst();
+            zoneTemperatureComboBox.getSelectionModel().selectFirst();
+            locationComboBoxSHH.getSelectionModel().selectFirst();
+            locationManComboBoxSHH.getSelectionModel().selectFirst();
+            periodComboBoxSHH.getSelectionModel().selectFirst();
+            seasonComboBoxSHH.getSelectionModel().selectFirst();
         }
     }
 
@@ -1362,6 +1393,15 @@ public class MainViewController {
         String value = winComboBoxSHC.getValue();
         shcController.closeWindow(value, houseModel, printConsole);
         drawLayout();
+    }
+
+    @FXML
+    void changeRoomTemperature(){
+        String location = locationManComboBoxSHH.getValue();
+        String temperature = temperatureManSpinnerSHH.getValue().toString();
+        shhController.changeRoomTemperature(houseModel, printConsole, temperature,  location);
+        drawLayout();
+
     }
 
     /**
@@ -1492,10 +1532,6 @@ public class MainViewController {
     }
 
     public void saveSHHSetings(ActionEvent event) {
-
-    }
-
-    public void saveManSHHSetting(ActionEvent event) {
 
     }
 
