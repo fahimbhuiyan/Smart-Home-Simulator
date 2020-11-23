@@ -19,6 +19,7 @@ public class RoomModel {
 	private int xAxis = 0;
 	private int yAxis = 0;
 
+
 	/**
 	 * Getter for the width of the room.
 	 *
@@ -54,6 +55,7 @@ public class RoomModel {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+
 
 	/**
 	 * Getter for the x-axis of the room.
@@ -246,6 +248,7 @@ public class RoomModel {
 	public void setWindow(WindowModel window) {
 		this.window = window;
 	}
+
 
 
 }

@@ -218,7 +218,7 @@
                             <Button fx:id="saveTimeSpeed" onAction="#saveTimeSpeed" text="Save"
                                     GridPane.rowIndex="11" GridPane.columnIndex="3"/>
 
-                            <Label text="Outside Temperature (Celsius)"
+                            <Label text="Outside Temperature (°C)"
                                    GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <Spinner fx:id="outTempSHS" initialValue="15" min="-1000000" max="1000000"
@@ -228,7 +228,7 @@
                             <Button fx:id="saveOutsideTemp" onAction="#setOutsideTemperature" text="Save"
                                     GridPane.rowIndex="12" GridPane.columnIndex="3"/>
 
-                            <Label text="Inside Temperature (Celsius)"
+                            <Label text="Inside Temperature (°C)"
                                    GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <Spinner fx:id="inTempSHS" initialValue="15" min="-1000000" max="1000000"
@@ -495,118 +495,108 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-
-                            <Label text="Manage Heating and Cooling Zones Inside the Home."
+                            <Label text="Manage Heating and Cooling Zones Inside the Home"
                                    style="-fx-font-weight: bold"
                                    GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
                                     <Insets top="5"/>
+                                    <Insets bottom="2"/>
                                 </GridPane.margin>
                             </Label>
 
-                            <Label text="Zone" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="3"
+                            <Label text="Select Zone"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="zoneComboBoxSHH" promptText="Select a Zone"
+                                      GridPane.rowIndex="1" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Label text="Select Location"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="locationComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveZone"
+                                    prefHeight="25.0" prefWidth="161.0" text="Set Room in Zone"
+                                    GridPane.rowIndex="2" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                            </Button>
+
+                            <Label text="Set Temperature for a period in a zone"
+                                   style="-fx-font-weight: bold"
+                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
-                                    <Insets top="5"/>
+                                    <Insets top="25"/>
                                 </GridPane.margin>
                             </Label>
                             <Label text="Select Zone"
-                                   GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT"/>
-                            <ComboBox fx:id="zoneComboBoxSHH" promptText="Select a Zone"
-                                      GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-
-
-                            <Label text="Location" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
-                            </Label>
-                            <Label text="Select Location"
                                    GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <ComboBox fx:id="locationComboBoxSHH" promptText="Select a Location"
+                            <ComboBox fx:id="zoneTemperatureComboBox" promptText="Select a Zone"
                                       GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
-                            <Label text="Period" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
-                            </Label>
                             <Label text="Select Period"
-                                   GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="periodComboBoxSHH" promptText="Select a Period"
-                                      GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                                      GridPane.rowIndex="5" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Label text="Select Temperature (°C)"
+                                   GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="temperaturePeriodSpinnerSHH" min="-1000000" max="1000000" initialValue="20" amountToStepBy=".1"
+                                     GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
-                            <Label text="Temperature" style="-fx-font-weight: bold"
+                            <Button fx:id="savePeriodTemperature"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save Period Temperature" onAction="#saveSHHSetings"
+                                    GridPane.rowIndex="6" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                            </Button>
+                            <Label text="Set Season Temperature" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
-                                    <Insets top="5"/>
+                                    <Insets top="25"/>
                                 </GridPane.margin>
                             </Label>
-                            <Label text="Select Temperature(C)"
+                            <Label text="Select Season"
                                    GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="temperatureSpinnerSHH" min="-1000000" max="1000000" initialValue="20"
+                            <ComboBox fx:id="seasonComboBoxSHH" promptText="Select a Season"
                                       GridPane.rowIndex="8" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-
-                            <Button fx:id="saveSHH"
-                                    prefHeight="25.0" prefWidth="161.0" text="Save" onAction="#saveSHHSetings"
+                            <Label text="Select Temperature (°C)"
+                                   GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="temperatureSeasonSpinnerSHH" min="-1000000" max="1000000" initialValue="20" amountToStepBy=".1"
+                                     GridPane.rowIndex="9" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveSeasonTemperature"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save Season Temperature"
                                     GridPane.rowIndex="9" GridPane.columnIndex="4" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT" alignment="CENTER">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
                             </Button>
 
-                            <Label text="Manual Change." style="-fx-font-weight: bold"
+                            <Label text="Manual Change" style="-fx-font-weight: bold"
                                    GridPane.rowIndex="10" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT">
                                 <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
-                            </Label>
-                            <Label text="Location" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
+                                    <Insets top="25"/>
                                 </GridPane.margin>
                             </Label>
                             <Label text="Select Location"
-                                   GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.rowIndex="11" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="locationManComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="11" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+
+                            <Label text="Select Temperature (°C)"
+                                   GridPane.rowIndex="12" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Spinner fx:id="temperatureManSpinnerSHH" min="-1000000" max="1000000" initialValue="20" amountToStepBy=".1"
                                       GridPane.rowIndex="12" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
-                            <Label text="Temperature" style="-fx-font-weight: bold"
-                                   GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
-                            </Label>
-                            <Label text="Select Temperature(C)"
-                                   GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="temperatureManSpinnerSHH" min="-1000000" max="1000000" initialValue="20"
-                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-
                             <Button fx:id="saveManSHH"
-                                    prefHeight="25.0" prefWidth="161.0" text="Save" onAction="#saveManSHHSetting"
-                                    GridPane.rowIndex="15" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save Manual Temperature" onAction="#changeRoomTemperature"
+                                    GridPane.rowIndex="12" GridPane.columnIndex="4" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT" alignment="CENTER">
-                                <GridPane.margin>
-                                    <Insets top="5"/>
-                                </GridPane.margin>
                             </Button>
                         </GridPane>
                     </AnchorPane>
