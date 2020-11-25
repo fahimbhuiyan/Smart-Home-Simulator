@@ -1,5 +1,6 @@
 package sample.SmartHomeModel;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -18,6 +19,12 @@ public class HouseModel {
     private int height = 0;
     private int xAxis = 0;
     private int yAxis = 0;
+
+    private double winterTemperature = 0.0;
+    private double summerTemperature = 0.0;
+
+    ArrayList<String> summer;
+    ArrayList<String> winter;
 
     /**
      * Instantiates a new House model.
@@ -44,6 +51,42 @@ public class HouseModel {
         this.height = height;
         this.xAxis = xAxis;
         this.yAxis = yAxis;
+        this.winterTemperature = 0.0;
+        this.summerTemperature = 0.0;
+        summer = new ArrayList<>();
+        winter = new ArrayList<>();
+    }
+
+    public double getWinterTemperature() {
+        return winterTemperature;
+    }
+
+    public void setWinterTemperature(double winterTemperature) {
+        this.winterTemperature = winterTemperature;
+    }
+
+    public double getSummerTemperature() {
+        return summerTemperature;
+    }
+
+    public void setSummerTemperature(double summerTemperature) {
+        this.summerTemperature = summerTemperature;
+    }
+
+    public ArrayList<String> getSummerMonthList() {
+        return summer;
+    }
+
+    public void setSummer(ArrayList<String> summer) {
+        this.summer = summer;
+    }
+
+    public ArrayList<String> getWinterMonthList() {
+        return winter;
+    }
+
+    public void setWinter(ArrayList<String> winter) {
+        this.winter = winter;
     }
 
     /**

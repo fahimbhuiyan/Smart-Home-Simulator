@@ -531,6 +531,10 @@ public class MainViewController {
     @FXML
     ComboBox <String> season;
 
+    // In SHS
+    @FXML
+    Button saveSeason;
+
     @FXML
     ComboBox <String> locationComboBoxSHH;
 
@@ -547,7 +551,7 @@ public class MainViewController {
     ComboBox <String> periodComboBoxSHH;
 
     @FXML
-    ComboBox<String> seasonComboBoxSHH;
+    ComboBox <String> seasonComboBoxSHH;
 
     @FXML
     Spinner <Double> temperatureSeasonSpinnerSHH;
@@ -558,10 +562,6 @@ public class MainViewController {
 
     @FXML
     Spinner <Double> temperatureManSpinnerSHH;
-
-    // In SHS
-    @FXML
-    Button saveSeason;
 
     @FXML
     Button saveZone;
@@ -1059,6 +1059,7 @@ public class MainViewController {
         }
 
         turnOffSimulationWarning();
+        System.out.println(dateSHS.getValue().toString());
     }
 
     /**
@@ -1278,7 +1279,7 @@ public class MainViewController {
             addModifyLocComboBoxSHS.getItems().addAll("Front yard", "Backyard");
             addModifyRoleComboBoxSHS.getItems().addAll("Parent", "Child", "Guest", "Stranger");
             timeSpeedComboBoxSHS.getItems().addAll("0.25", "0.5", "0.75", "1", "1.25", "1.5", "1.75", "2");
-            month.getItems().addAll("January", "February", "March", "April", "June", "July", "August", "September", "October", "November", "December");
+            month.getItems().addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
             season.getItems().addAll("Winter", "Summer");
 
             zoneComboBoxSHH.getItems().addAll("Zone 1", "Zone 2", "Zone 3", "Zone 4");
@@ -1305,6 +1306,8 @@ public class MainViewController {
             locationManComboBoxSHH.getSelectionModel().selectFirst();
             periodComboBoxSHH.getSelectionModel().selectFirst();
             seasonComboBoxSHH.getSelectionModel().selectFirst();
+            season.getSelectionModel().selectFirst();
+            month.getSelectionModel().selectFirst();
         }
     }
 
@@ -1503,6 +1506,8 @@ public class MainViewController {
             shcController.lockDoor(doorName, houseModel, printConsole);
         }
 
+        shhController.changeZoneTemperatureToSeasonTemperature(leftPanelDate,houseModel, printConsole);
+
         drawLayout();
     }
 
@@ -1535,8 +1540,25 @@ public class MainViewController {
 
     }
 
-    public void saveMonthSeason(ActionEvent event) {
+    @FXML
+    public void setMonthToSeason(){
+        String monthSelected = month.getValue();
+        String seasonSelected = season.getValue();
+        shsController.setMonthToSeason(houseModel, monthSelected, seasonSelected, printConsole);
+    }
 
+    @FXML
+    public void setSeasonTemperature(){
+        String season = seasonComboBoxSHH.getValue();
+        Double temperature = temperatureSeasonSpinnerSHH.getValue();
+        shhController.setSeasonTemperature(houseModel, printConsole, temperature, season);
+    }
+
+    @FXML
+    public void setRoomInZone(){
+        String location = locationComboBoxSHH.getValue();
+        String zone = zoneComboBoxSHH.getValue();
+        shhController.setRoomInZone(houseModel, printConsole, zone, location);
     }
 
 }

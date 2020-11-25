@@ -253,7 +253,7 @@
                                       GridPane.rowIndex="15" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="season" promptText="Select Season"
                                       GridPane.rowIndex="15" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveSeason" onAction="#saveMonthSeason" text="Save"
+                            <Button fx:id="saveSeason" onAction="#setMonthToSeason" text="Save"
                                     GridPane.rowIndex="15" GridPane.columnIndex="4"/>
 
                             <columnConstraints>
@@ -516,7 +516,7 @@
                             <ComboBox fx:id="locationComboBoxSHH" promptText="Select a Location"
                                       GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveZone"
-                                    prefHeight="25.0" prefWidth="161.0" text="Set Room in Zone"
+                                    prefHeight="25.0" prefWidth="161.0" text="Set Room in Zone" onAction="#setRoomInZone"
                                     GridPane.rowIndex="2" GridPane.columnIndex="4" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT" alignment="CENTER">
                             </Button>
@@ -569,7 +569,7 @@
                             <Spinner fx:id="temperatureSeasonSpinnerSHH" min="-1000000" max="1000000" initialValue="20" amountToStepBy=".1"
                                      GridPane.rowIndex="9" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveSeasonTemperature"
-                                    prefHeight="25.0" prefWidth="161.0" text="Save Season Temperature"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save Season Temperature" onAction="#setSeasonTemperature"
                                     GridPane.rowIndex="9" GridPane.columnIndex="4" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT" alignment="CENTER">
                             </Button>

@@ -297,4 +297,44 @@ public class SHSController implements Subject {
             observer.update(state);
         }
     }
+
+    public void setMonthToSeason(HouseModel houseModel, String selectedMonth, String selectedSeason, MainViewController.PrintConsole printConsole){
+
+        String value = "";
+        switch (selectedMonth){
+            case "January": value = "01"; break;
+            case "February": value = "02"; break;
+            case "March": value = "03"; break;
+            case "April": value = "04"; break;
+            case "May": value = "05"; break;
+            case "June": value = "06"; break;
+            case "July": value = "07"; break;
+            case "August": value = "08"; break;
+            case "September": value = "09"; break;
+            case "October": value = "10"; break;
+            case "November": value = "11"; break;
+            case "December": value = "12"; break;
+            default:
+        }
+
+        //Removing the month from the season if it was already set before
+        if(houseModel.getWinterMonthList().contains(value) == true){
+            houseModel.getWinterMonthList().remove(value);
+        }
+        if(houseModel.getSummerMonthList().contains(value) == true){
+            houseModel.getSummerMonthList().remove(value);
+        }
+
+        //adding the month in the specific season
+        if(selectedSeason.equals("Summer")){
+            houseModel.getSummerMonthList().add(value);
+        }
+        if(selectedSeason.equals("Winter")){
+            houseModel.getWinterMonthList().add(value);
+        }
+
+        printConsole.setText("The month of " + selectedMonth + " was added to the " +selectedSeason+" season.");
+
+
+    }
 }
