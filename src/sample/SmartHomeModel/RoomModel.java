@@ -19,6 +19,7 @@ public class RoomModel {
 	private int xAxis = 0;
 	private int yAxis = 0;
 
+	private String zone;
 
 	/**
 	 * Getter for the width of the room.
@@ -116,6 +117,16 @@ public class RoomModel {
 		this.door = door;
 		this.light = light;
 		this.window = window;
+		this.zone = "None";
+
+	}
+
+	public String getZone() {
+		return zone;
+	}
+
+	public void setZone(String zone) {
+		this.zone = zone;
 	}
 
 	/**
