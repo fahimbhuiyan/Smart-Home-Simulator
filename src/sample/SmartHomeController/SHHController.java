@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.UserModel;
+import sample.SmartHomeModel.Zone;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -69,6 +70,23 @@ public class SHHController {
         }
         else{
             printConsole.setText("No changes in room temperature. This month is not linked to a season.");
+        }
+    }
+
+    //to do
+    public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, String temperature, MainViewController.PrintConsole printConsole){
+
+        if(period.equals("00:00 - 08:00")){
+            houseModel.getZoneList().get(zone).setNightTemp(temperature);
+            printConsole.setText(zone + " temperature is set to " + temperature + " °C for the 00:00 to 08:00 period.");
+        }
+        else if(period.equals("08:00 - 16:00")){
+            houseModel.getZoneList().get(zone).setDayTemp(temperature);
+            printConsole.setText(zone + " temperature is set to " + temperature + " °C for the 08:00 to 16:00 period.");
+        }
+        else if(period.equals("16:00 - 24:00")){
+            houseModel.getZoneList().get(zone).setEveningTemp(temperature);
+            printConsole.setText(zone + " temperature is set to " + temperature + " °C for the 16:00 to 24:00 period.");
         }
     }
 }
