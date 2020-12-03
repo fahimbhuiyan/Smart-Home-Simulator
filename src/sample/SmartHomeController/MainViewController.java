@@ -69,6 +69,8 @@ public class MainViewController {
      */
     private Map<String, RoomModel> rooms;
 
+    private Map<String, Zone> zoneList;
+
     /**
      * A instance of a HouseModel object which represents the house itself.
      */
@@ -697,6 +699,7 @@ public class MainViewController {
 
         @Override
         public void run() {
+
             AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
             AtomicReference<Map<String, Pair<LocalTime, LocalTime>>> lightsToTurnOn = new AtomicReference<>(keepLightsOn);
 
@@ -713,11 +716,58 @@ public class MainViewController {
                     for (String lightName : lightsToTurnOn.get().keySet()) {
 
                         if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getKey()) == 0) {
+                            System.out.println(lightsToTurnOn.get().get(lightName).getKey());
                             scheduleTurnOnOffLight(lightName, "open");
                         }
                         else if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getValue()) == 0) {
                             scheduleTurnOnOffLight(lightName, "close");
                         }
+                    }
+
+                    System.out.println(local.get());
+
+                    if(local.get().toString().equals("00:00")){
+                        for (Map.Entry<String, Zone> entryZone : houseModel.getZoneList().entrySet()) {
+                            for (Map.Entry<String, RoomModel> entryRoom : houseModel.getRooms().entrySet()) {
+                                if(entryRoom.getValue().getZone().equals(entryZone.getKey())){
+                                    if(!entryZone.getValue().getNightTemp().equals("empty")){
+                                        changeTempPeriod(entryZone.getValue().getNightTemp(),entryRoom.getValue().getName());
+                                    }
+                                    else if(entryZone.getValue().getNightTemp().equals("empty")){
+                                        changeTempPeriod(inTempSHS.getValue().toString(),entryRoom.getValue().getName());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(local.get().toString().equals("08:00")){
+                        for (Map.Entry<String, Zone> entryZone : houseModel.getZoneList().entrySet()) {
+                            for (Map.Entry<String, RoomModel> entryRoom : houseModel.getRooms().entrySet()) {
+                                if(entryRoom.getValue().getZone().equals(entryZone.getKey())){
+                                    if(!entryZone.getValue().getDayTemp().equals("empty")){
+                                        changeTempPeriod(entryZone.getValue().getDayTemp(),entryRoom.getValue().getName());
+                                    }
+                                    else if(entryZone.getValue().getDayTemp().equals("empty")){
+                                        changeTempPeriod(inTempSHS.getValue().toString(),entryRoom.getValue().getName());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(local.get().toString().equals("16:00")){
+                        for (Map.Entry<String, Zone> entryZone : houseModel.getZoneList().entrySet()) {
+                            for (Map.Entry<String, RoomModel> entryRoom : houseModel.getRooms().entrySet()) {
+                                if(entryRoom.getValue().getZone().equals(entryZone.getKey())){
+                                    if(!entryZone.getValue().getEveningTemp().equals("empty")){
+                                        changeTempPeriod(entryZone.getValue().getEveningTemp(),entryRoom.getValue().getName());
+                                    }
+                                    else if(entryZone.getValue().getEveningTemp().equals("empty")){
+                                        changeTempPeriod(inTempSHS.getValue().toString(),entryRoom.getValue().getName());
+                                    }
+                                }
+                            }
+                        }
+
                     }
 
                     local.getAndSet(local.get().plusSeconds(1));
@@ -1212,6 +1262,7 @@ public class MainViewController {
         rooms = houseModel.getRooms();
         roomNamesSet = houseModel.getRooms().keySet();
         userModelArrayList = simulationDataController.getUserArrayList();
+        zoneList = houseModel.getZoneList();
 
         loadUsersInSHSTable();
 
@@ -1536,8 +1587,10 @@ public class MainViewController {
         drawLayout();
     }
 
-    public void saveSHHSetings(ActionEvent event) {
 
+    private void changeTempPeriod(String temperature, String location){
+        shhController.changeRoomTemperature(houseModel,printConsole,temperature,location);
+        drawLayout();
     }
 
     @FXML
@@ -1561,4 +1614,11 @@ public class MainViewController {
         shhController.setRoomInZone(houseModel, printConsole, zone, location);
     }
 
+    @FXML
+    public void setTemperatureZonePeriod(){
+        String zone = zoneTemperatureComboBox.getValue();
+        String period = periodComboBoxSHH.getValue();
+        String temperature = temperaturePeriodSpinnerSHH.getValue().toString();
+        shhController.setTemperatureZonePeriod( houseModel,  zone,  period,  temperature, printConsole);
+    }
 }

@@ -1,6 +1,7 @@
 package sample.SmartHomeModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,6 +26,8 @@ public class HouseModel {
 
     ArrayList<String> summer;
     ArrayList<String> winter;
+    Map<String, Zone> zoneList;
+
 
     /**
      * Instantiates a new House model.
@@ -55,6 +58,25 @@ public class HouseModel {
         this.summerTemperature = 0.0;
         summer = new ArrayList<>();
         winter = new ArrayList<>();
+        zoneList = new HashMap<>();
+        createZone();
+    }
+
+    private void createZone(){
+        Zone zone1 = new Zone("Zone 1");
+        Zone zone2 = new Zone("Zone 2");
+        Zone zone3 = new Zone("Zone 3");
+        Zone zone4 = new Zone("Zone 4");
+
+        zoneList.put(zone1.getZoneName(), zone1);
+        zoneList.put(zone2.getZoneName(), zone2);
+        zoneList.put(zone3.getZoneName(), zone3);
+        zoneList.put(zone4.getZoneName(), zone4);
+
+    }
+
+    public Map<String, Zone> getZoneList(){
+        return zoneList;
     }
 
     public double getWinterTemperature() {

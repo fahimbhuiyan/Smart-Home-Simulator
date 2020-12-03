@@ -17,6 +17,7 @@ public class SimulationData {
     private HouseModel houseModel;
     private BufferedReader bufferedReader;
 
+
     /**
      * Create the data for the rooms, doors, windows, and lights.
      *
@@ -72,6 +73,7 @@ public class SimulationData {
         }
 
         createDefaultUsers();
+
 
         createHouse(Integer.parseInt(jsonObjectArray.get(0).get("width").toString()), Integer.parseInt(jsonObjectArray.get(0).get("height").toString()), Integer.parseInt(jsonObjectArray.get(0).get("x-axis").toString()), Integer.parseInt(jsonObjectArray.get(0).get("y-axis").toString()));
     }
@@ -171,6 +173,8 @@ public class SimulationData {
         System.out.println();
     }
 
+
+
     /**
      * Generate a randomized ID.
      *
@@ -197,4 +201,5 @@ public class SimulationData {
     public ArrayList<UserModel> getUserArrayList() {
         return userList;
     }
+
 }

@@ -495,7 +495,7 @@
                 <Tab text="SHH">
                     <AnchorPane>
                         <GridPane fx:id="gridSHH">
-                            <Label text="Manage Heating and Cooling Zones Inside the Home"
+                            <Label text="Set Room to Zone"
                                    style="-fx-font-weight: bold"
                                    GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4"
                                    GridPane.halignment="LEFT">
@@ -547,7 +547,7 @@
                                      GridPane.rowIndex="6" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
 
                             <Button fx:id="savePeriodTemperature"
-                                    prefHeight="25.0" prefWidth="161.0" text="Save Period Temperature" onAction="#saveSHHSetings"
+                                    prefHeight="25.0" prefWidth="161.0" text="Save Period Temperature" onAction="#setTemperatureZonePeriod"
                                     GridPane.rowIndex="6" GridPane.columnIndex="4" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT" alignment="CENTER">
                             </Button>
