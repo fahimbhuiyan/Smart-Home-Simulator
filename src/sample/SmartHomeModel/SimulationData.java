@@ -101,7 +101,10 @@ public class SimulationData {
             userList.add(defaultStranger);
         }
 
-
+        printDefaultUsers(userList);
+    }
+    //refactor extract method
+    private void printDefaultUsers(ArrayList<UserModel> userList){
         System.out.println("Default Users are created");
         for (UserModel userModel : userList) {
             System.out.println(userModel.getId());

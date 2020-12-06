@@ -849,7 +849,17 @@ public class MainViewController {
 
                                 // Case #3 If the house is in away mode and the HVAC is on and it's a summer month and the room is not in manual mode, change target temp of the room to season temp
                                 if (awayModeOn && !HVACS.get().get(room).getStateHVAC().equals("Manual")) {
-                                    if (house.get().getSummerMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !houseModel.isUnsetSummerTemp()) {
+                                    //refactoring Extract Variable, make condition more readable
+                                    final boolean monthIsASummerMonth = house.get().getSummerMonthList().contains(month);
+                                    final boolean monthIsAWinterMonth = house.get().getWinterMonthList().contains(month);
+                                    final boolean isRoomInZone = room.getZone() != null;
+                                    final boolean isSummerTemperatureSet = !houseModel.isUnsetSummerTemp();
+                                    final boolean isAwayModeSummer = !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer");
+                                    final boolean isAwayModeWinter = !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter");
+                                    final boolean isWinterTemperatureSet = !houseModel.isUnsetWinterTemp();
+
+                                    if(monthIsASummerMonth && isRoomInZone && isAwayModeSummer && isSummerTemperatureSet){
+
                                         // Set state to away mode summer
                                         HVACS.get().get(room).setTargetTemperature(house.get().getSummerTemperature());
                                         HVACS.get().get(room).setRate(0.1);
@@ -857,8 +867,10 @@ public class MainViewController {
                                         HVACS.get().get(room).setStateHVAC("Away Mode Summer");
                                         console.get().setText("Starting default heating/cooling for the summer in the " + room.getName() + ". Target temperature: " + house.get().getSummerTemperature() + " C. [Away Mode]");
 
-                                    } else if (house.get().getWinterMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter") && !houseModel.isUnsetWinterTemp()) {
+                                    } else if(monthIsAWinterMonth && isRoomInZone && isAwayModeWinter && isWinterTemperatureSet) {
+
                                         // Set state to away mode winter
+
                                         HVACS.get().get(room).setTargetTemperature(house.get().getWinterTemperature());
                                         HVACS.get().get(room).setRate(0.1);
                                         HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));

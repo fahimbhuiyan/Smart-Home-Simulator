@@ -72,13 +72,7 @@ public class HouseViewController {
             temperature.setY(houseModel.getRooms().get(roomName).getyAxis() + 30);
             temperature.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
 
-            if (manualOverride.containsKey(roomName) && manualOverride.get(roomName)) {
-                override = new Text("Manual override");
-                override.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
-                override.setY(houseModel.getRooms().get(roomName).getyAxis() + 45);
-                override.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
-                override.setFill(Color.RED);
-            }
+            override = manualOverride(houseModel, manualOverride, roomName, override);
 
             ImageView windowImageView = new ImageView();
 
@@ -290,5 +284,16 @@ public class HouseViewController {
                 bp.getChildren().add(userName);
             }
         }
+    }
+    //refactor extract method
+    private Text manualOverride(HouseModel houseModel, Map<String, Boolean> manualOverride, String roomName, Text override) {
+        if (manualOverride.containsKey(roomName) && manualOverride.get(roomName)) {
+            override = new Text("Manual override");
+            override.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
+            override.setY(houseModel.getRooms().get(roomName).getyAxis() + 45);
+            override.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
+            override.setFill(Color.RED);
+        }
+        return override;
     }
 }
