@@ -719,6 +719,7 @@ public class MainViewController {
         AtomicReference<PrintConsole> console = new AtomicReference<>(printConsole);
         AtomicReference<HouseModel> house = new AtomicReference<>(houseModel);
         Map<RoomModel, Boolean> pipeBurstMessageSent = new HashMap<>();
+        Map<RoomModel, Boolean> continuousBlockingMessageSent = new HashMap<>();
         AtomicReference<Map<RoomModel, HVAC>> HVACS = new AtomicReference<>(roomHVACS);
         AtomicReference<Map<RoomModel, Double>> HVACSRequests = new AtomicReference<>(requestsForHVACS);
         AtomicReference<Map<String, Boolean>> isRoomManual = new AtomicReference<>(isroomHVACManual);
@@ -732,17 +733,9 @@ public class MainViewController {
                 HVAC hvac = new HVAC(new AtomicReference<>(room), 0.1, room.getTemperature(), new DecimalFormat("#.#"));
                 HVACS.get().put(room, hvac);
                 pipeBurstMessageSent.put(room, false);
+                continuousBlockingMessageSent.put(room, false);
                 isRoomManual.get().put(room.getName(), false);
                 hvac.start();
-            }
-
-            // Activating all the manual temperature changes.
-            for (RoomModel room : HVACSRequests.get().keySet()) {
-                HVACS.get().get(room).setTargetTemperature(HVACSRequests.get().get(room));
-                HVACS.get().get(room).setRate(0.1);
-                HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
-                HVACS.get().get(room).setStateHVAC("Manual");
-                console.get().setText("Starting to cool/heat the " + room.getName() + " to a temperature of " + HVACSRequests.get().get(room) + " C.");
             }
 
             while (running.get()) {
@@ -780,6 +773,22 @@ public class MainViewController {
                             month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase(); // Capitalize first letter
 
                             if (isHVACOn.get()) {
+
+                                // Activating all the manual temperature changes.
+                                if (HVACSRequests.get().containsKey(room) && !HVACS.get().get(room).getStateHVAC().equals("Manual")) {
+                                    HVACS.get().get(room).setTargetTemperature(HVACSRequests.get().get(room));
+                                    HVACS.get().get(room).setRate(0.1);
+                                    HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                    HVACS.get().get(room).setStateHVAC("Manual");
+                                    console.get().setText("Starting to cool/heat the " + room.getName() + " to a temperature of " + HVACSRequests.get().get(room) + " C.");
+                                }
+
+                                // Case #-2 If you had the HVAC off and now you turned it back on, your state will still be off and so we have to make it idle.
+                                if (HVACS.get().get(room).getStateHVAC().equals("Off")) {
+                                    HVACS.get().get(room).setStateHVAC("Idle");
+                                    HVACS.get().get(room).setTargetTemperature(room.getTemperature());
+                                }
+
                                 // Case #-1 If you are in away mode and you are not in state Idle, Manual, Away Mode Summer or Away Mode Winter, then your state will change to Idle. /////////// add to this if? || HVACS.get().get(room).getStateHVAC().equals("Summer Cooling")
                                 if (awayModeOn && !HVACS.get().get(room).getStateHVAC().equals("Idle") && !HVACS.get().get(room).getStateHVAC().equals("Manual") && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter")) {
                                     HVACS.get().get(room).setStateHVAC("Idle");
@@ -817,12 +826,14 @@ public class MainViewController {
                                 }
 
                                 // Case #2 when in summer month, away mode is off, it's not manual mode, window of a specific room is not blocked, HVAC is on, and room temp > outside temp: set target temp for the
-                                // specific room to the outside temp and make the room temp go down by 0.1 C/S
+                                // specific room to the outside temp and make the room temp go down by 0.05 C/S
                                 // Check if any room temp is above outside temp if the we're in a summer month and the window of the room is not blocked.
                                 if (!awayModeOn && house.get().getSummerMonthList().contains(month) && (house.get().getOutsideTemp() < room.getTemperature()) && !HVACS.get().get(room).getStateHVAC().equals("Summer Cooling") && !HVACS.get().get(room).getStateHVAC().equals("Manual") && !HVACS.get().get(room).getStateHVAC().equals("Night Schedule") && !HVACS.get().get(room).getStateHVAC().equals("Day Schedule") && !HVACS.get().get(room).getStateHVAC().equals("Evening Schedule")) {
-                                    if (!room.getWindow().isOpen() && room.getWindow().hasObject().get()) {
+                                    if (!room.getWindow().isOpen() && room.getWindow().hasObject().get() && !continuousBlockingMessageSent.get(room)) {
+                                        continuousBlockingMessageSent.put(room, true);
                                         console.get().setText("Cannot cool " + room.getName() + " to outside temperature because the windows cannot be opened (there is an object blocking them)!");
-                                    } else {
+                                    } else if (room.getWindow().isOpen() || (!room.getWindow().isOpen() && !room.getWindow().hasObject().get())) {
+                                        continuousBlockingMessageSent.put(room, false);
                                         shcControllerAtomicReference.get().openWindow(room.getName(), house.get(), console.get());
                                         HVACS.get().get(room).setTargetTemperature(house.get().getOutsideTemp());
                                         HVACS.get().get(room).setRate(0.05);
@@ -838,7 +849,7 @@ public class MainViewController {
 
                                 // Case #3 If the house is in away mode and the HVAC is on and it's a summer month and the room is not in manual mode, change target temp of the room to season temp
                                 if (awayModeOn && !HVACS.get().get(room).getStateHVAC().equals("Manual")) {
-                                    if (house.get().getSummerMonthList().contains(month) && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer")) {
+                                    if (house.get().getSummerMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !houseModel.isUnsetSummerTemp()) {
                                         // Set state to away mode summer
                                         HVACS.get().get(room).setTargetTemperature(house.get().getSummerTemperature());
                                         HVACS.get().get(room).setRate(0.1);
@@ -846,7 +857,7 @@ public class MainViewController {
                                         HVACS.get().get(room).setStateHVAC("Away Mode Summer");
                                         console.get().setText("Starting default heating/cooling for the summer in the " + room.getName() + ". Target temperature: " + house.get().getSummerTemperature() + " C. [Away Mode]");
 
-                                    } else if (house.get().getWinterMonthList().contains(month) && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter")) {
+                                    } else if (house.get().getWinterMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter") && !houseModel.isUnsetWinterTemp()) {
                                         // Set state to away mode winter
                                         HVACS.get().get(room).setTargetTemperature(house.get().getWinterTemperature());
                                         HVACS.get().get(room).setRate(0.1);
@@ -863,8 +874,6 @@ public class MainViewController {
                                 HVACS.get().get(room).setRate(0.05);
                                 HVACS.get().get(room).setRounding(new DecimalFormat("#.##"));
                                 HVACS.get().get(room).setStateHVAC("Off");
-
-                                console.get().setText("The temperature in the " + room.getName() + " is below zero! There might be a burst pipe in there!");
                             }
 
                             if (room.getTemperature() > 0 && pipeBurstMessageSent.get(room)) {
@@ -922,8 +931,19 @@ public class MainViewController {
                     e.getMessage();
                 }
 
+                if (room.get().getZone() != null) {
+                    if (stateHVAC.equals("Night Schedule")) {
+                        targetTemperature = room.get().getZone().getNightTemp();
+                    } else if (stateHVAC.equals("Day Schedule")) {
+                        targetTemperature = room.get().getZone().getDayTemp();
+                    } else if (stateHVAC.equals("Evening Schedule")) {
+                        targetTemperature = room.get().getZone().getEveningTemp();
+                    }
+                }
+
                 Platform.runLater(() -> {
 
+                    // Logs
                     if (room.get().getName().equals("Bedroom")) {
                         System.out.println("Room: " + room.get().getName());
                         System.out.println("Rate: " + rate);
@@ -1815,8 +1835,7 @@ public class MainViewController {
             if (season.equals("Summer") && hvac.getStateHVAC().equals("Away Mode Summer")) {
                 hvac.setTargetTemperature(temperature);
                 printConsole.setText("Any current and future heating/cooling to the default summer temperature will now heat/cool to this temperature.");
-            }
-            else if (season.equals("Winter") && hvac.getStateHVAC().equals("Away Mode Winter")) {
+            } else if (season.equals("Winter") && hvac.getStateHVAC().equals("Away Mode Winter")) {
                 hvac.setTargetTemperature(temperature);
                 printConsole.setText("Any current and future heating/cooling to the default winter temperature will now heat/cool to this temperature.");
             }
@@ -1844,7 +1863,7 @@ public class MainViewController {
 
         if (saveHVAC.getText().equals("Turn Off HVAC")) {
             saveHVAC.setText("Turn On HVAC");
-            printConsole.setText("The HVAC has been turned OFF!");
+            printConsole.setText("The HVAC has been turned OFF! All heating/cooling has been stopped!");
         } else {
             saveHVAC.setText("Turn Off HVAC");
             printConsole.setText("The HVAC has been turned ON!");

@@ -30,11 +30,21 @@ public class SHHController {
     }
 
     public void setRoomInZone(HouseModel houseModel, MainViewController.PrintConsole printConsole, String zone, String location){
-        houseModel.getRooms().get(location).setZone(zone);
+        houseModel.getRooms().get(location).setZone(houseModel.getZoneList().get(zone));
 
-        houseModel.getZoneList().get(zone).addRomeToList(houseModel.getRooms().get(location));
+        houseModel.getZoneList().forEach((zoneName, zoneItem) -> {
 
-        printConsole.setText("Adding " + location + " to " +zone);
+            if (zoneItem.getRooms().contains(houseModel.getRooms().get(location))) {
+                zoneItem.getRooms().remove(houseModel.getRooms().get(location));
+                printConsole.setText("Removing " + location + " from " + zoneName);
+            }
+
+            if (zone.equals(zoneName)) {
+                zoneItem.addRomeToList(houseModel.getRooms().get(location));
+            }
+        });
+
+        printConsole.setText("Adding " + location + " to " + zone);
     }
 
     public void changeZoneTemperatureToSeasonTemperature(Label date, HouseModel houseModel, MainViewController.PrintConsole printConsole){
@@ -75,9 +85,7 @@ public class SHHController {
         }
     }
 
-    //to do
     public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, double temperature, MainViewController.PrintConsole printConsole){
-
         if(period.equals("00:00 - 08:00")){
             houseModel.getZoneList().get(zone).setNightTemp(temperature);
             printConsole.setText(zone + " temperature is set to " + temperature + " °C for the 00:00 to 08:00 period.");

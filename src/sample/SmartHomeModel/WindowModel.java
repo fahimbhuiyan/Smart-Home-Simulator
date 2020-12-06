@@ -10,7 +10,7 @@ public class WindowModel {
 	
 	private String id;
 	private String name;
-	private boolean isOpen = true;
+	private boolean isOpen = false;
 	private AtomicBoolean hasObject = new AtomicBoolean(false);
 	private Image imageOpen;
 	private Image imageClose;
