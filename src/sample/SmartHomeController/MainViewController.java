@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import sample.Exception.UserDoesNotExistException;
 import sample.SmartHomeModel.*;
 
 import java.io.*;
@@ -1233,8 +1234,9 @@ public class MainViewController {
         //Catching exception, this method is only called when the autoMode is turned on
         try {
             openOrCloseLights(null);
-        } catch (Exception e) {
-            System.out.println("Creating new user");
+            throw new UserDoesNotExistException();
+        } catch (UserDoesNotExistException e) {
+            System.out.println(e.getMessage());
         }
 
         processUserInfo("add/modify");
