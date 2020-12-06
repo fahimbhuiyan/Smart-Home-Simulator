@@ -14,9 +14,8 @@ import java.util.Map;
  */
 public class SHHController {
 
-    public void changeRoomTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, String temperature, String location){
-        houseModel.getRooms().get(location).setTemperature(Double.parseDouble(temperature));
-        printConsole.setText("Updating the temperature for the " + location + ".");
+    public void changeRoomTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, double temperature, String location){
+        houseModel.getRooms().get(location).setTemperature(temperature);
     }
 
     public void setSeasonTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, Double temperature, String season){
@@ -31,8 +30,21 @@ public class SHHController {
     }
 
     public void setRoomInZone(HouseModel houseModel, MainViewController.PrintConsole printConsole, String zone, String location){
-        houseModel.getRooms().get(location).setZone(zone);
-        printConsole.setText("Adding " + location + " to " +zone);
+        houseModel.getRooms().get(location).setZone(houseModel.getZoneList().get(zone));
+
+        houseModel.getZoneList().forEach((zoneName, zoneItem) -> {
+
+            if (zoneItem.getRooms().contains(houseModel.getRooms().get(location))) {
+                zoneItem.getRooms().remove(houseModel.getRooms().get(location));
+                printConsole.setText("Removing " + location + " from " + zoneName);
+            }
+
+            if (zone.equals(zoneName)) {
+                zoneItem.addRomeToList(houseModel.getRooms().get(location));
+            }
+        });
+
+        printConsole.setText("Adding " + location + " to " + zone);
     }
 
     public void changeZoneTemperatureToSeasonTemperature(Label date, HouseModel houseModel, MainViewController.PrintConsole printConsole){
@@ -73,9 +85,7 @@ public class SHHController {
         }
     }
 
-    //to do
-    public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, String temperature, MainViewController.PrintConsole printConsole){
-
+    public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, double temperature, MainViewController.PrintConsole printConsole){
         if(period.equals("00:00 - 08:00")){
             houseModel.getZoneList().get(zone).setNightTemp(temperature);
             printConsole.setText(zone + " temperature is set to " + temperature + " °C for the 00:00 to 08:00 period.");

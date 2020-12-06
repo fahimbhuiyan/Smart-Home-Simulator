@@ -7,7 +7,6 @@ import sample.SmartHomeModel.RoomModel;
 import sample.SmartHomeModel.SimulationData;
 import sample.SmartHomeModel.UserModel;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -146,16 +145,12 @@ public class SHSController implements Subject {
     void addObjectToWindow(Map<String, RoomModel> rooms, String roomName, MainViewController.PrintConsole consoleTextField) {
         rooms.forEach((name, room) -> {
             if (name.equals(roomName)) {
-                if (room.getWindow().isOpen()) {
-                    if (!room.getWindow().HasObject()) {
-                        room.getWindow().setHasObject(true);
-                        consoleTextField.setText("Adding object to block the window of the " + room.getName() + ".");
-                    } else {
-                        room.getWindow().setHasObject(false);
-                        consoleTextField.setText("Removing blocking object from the window of the " + room.getName() + ".");
-                    }
+                if (!room.getWindow().hasObject().get()) {
+                    room.getWindow().hasObject().set(true);
+                    consoleTextField.setText("Adding object to block the window of the " + room.getName() + ".");
                 } else {
-                    consoleTextField.setText("You cannot add an object to this window. The window is closed.\n" + ".");
+                    room.getWindow().hasObject().set(false);
+                    consoleTextField.setText("Removing blocking object from the window of the " + room.getName() + ".");
                 }
             }
         });
@@ -183,13 +178,13 @@ public class SHSController implements Subject {
                 userList.get(i).setName(name);
                 userList.get(i).setUser_type(userType);
 
-                if(!userList.get(i).getCurrentLocation().equals(location)){
+                if (!userList.get(i).getCurrentLocation().equals(location)) {
 
                     System.out.println("userList.get(i).getCurrentLocation(): " + userList.get(i).getCurrentLocation());
                     System.out.println("location: " + location);
 
-                    if(( (location.equals("House"))|| (location.equals("Backyard")) || (location.equals("Front yard")) || (rooms.get(location).getDoor().isOpen() == true) ||
-                            (rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == false))){
+                    if (((location.equals("House")) || (location.equals("Backyard")) || (location.equals("Front yard")) || (rooms.get(location).getDoor().isOpen() == true) ||
+                            (rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == false))) {
 
                         System.out.println("Door is either open or closed and unlocked.");
 
@@ -208,13 +203,11 @@ public class SHSController implements Subject {
                         userList.get(i).setCurrentLocation(location);
                         userList.get(i).setPreviousLocation(previousLocation);
 
+                    } else if ((rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == true)) {
+                        printConsole.setText("Cannot move this user in " + location + ". The door is locked.");
                     }
-                    else if((rooms.get(location).getDoor().isOpen() == false && rooms.get(location).getDoor().isLocked() == true)){
-                        printConsole.setText("Cannot move this user in " + location+ ". The door is locked.");
-                    }
-                }
-                else if (userList.get(i).getCurrentLocation().equals(location)){
-                    printConsole.setText("User is already in " + location+ ".");
+                } else if (userList.get(i).getCurrentLocation().equals(location)) {
+                    printConsole.setText("User is already in " + location + ".");
                 }
 
 
@@ -250,12 +243,12 @@ public class SHSController implements Subject {
      * @param userList     the user list
      * @param printConsole the print console
      */
-    void saveUserProfiles(ArrayList<UserModel> userList, MainViewController.PrintConsole printConsole){
-        try{
+    void saveUserProfiles(ArrayList<UserModel> userList, MainViewController.PrintConsole printConsole) {
+        try {
 
             printWriter = new PrintWriter("Profiles.txt", "UTF-8");
 
-            for(UserModel userModel : userList){
+            for (UserModel userModel : userList) {
                 printWriter.println(userModel.getName() + "," + userModel.getId() + "," + userModel.getUser_type() + "," + userModel.getCurrentLocation());
             }
             printConsole.setText("Saving user profiles.");
@@ -263,10 +256,9 @@ public class SHSController implements Subject {
             printWriter.flush();
             printWriter.close();
 
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File does not exists.");
-        }
-        catch (UnsupportedEncodingException e){
+        } catch (UnsupportedEncodingException e) {
             System.out.println("UnsupportedEncoding Error");
         }
 
@@ -279,6 +271,7 @@ public class SHSController implements Subject {
     public void register(Observer observer) {
         observerList.add(observer);
     }
+
     /**
      * Observer for unregister.
      */
@@ -286,6 +279,7 @@ public class SHSController implements Subject {
     public void unregister(Observer observer) {
         observerList.remove(observer);
     }
+
     /**
      * notify register.
      */
@@ -298,43 +292,24 @@ public class SHSController implements Subject {
         }
     }
 
-    public void setMonthToSeason(HouseModel houseModel, String selectedMonth, String selectedSeason, MainViewController.PrintConsole printConsole){
-
-        String value = "";
-        switch (selectedMonth){
-            case "January": value = "01"; break;
-            case "February": value = "02"; break;
-            case "March": value = "03"; break;
-            case "April": value = "04"; break;
-            case "May": value = "05"; break;
-            case "June": value = "06"; break;
-            case "July": value = "07"; break;
-            case "August": value = "08"; break;
-            case "September": value = "09"; break;
-            case "October": value = "10"; break;
-            case "November": value = "11"; break;
-            case "December": value = "12"; break;
-            default:
-        }
+    public void setMonthToSeason(HouseModel houseModel, String selectedMonth, String selectedSeason, MainViewController.PrintConsole printConsole) {
 
         //Removing the month from the season if it was already set before
-        if(houseModel.getWinterMonthList().contains(value) == true){
-            houseModel.getWinterMonthList().remove(value);
+        if (houseModel.getWinterMonthList().contains(selectedMonth)) {
+            houseModel.getWinterMonthList().remove(selectedMonth);
         }
-        if(houseModel.getSummerMonthList().contains(value) == true){
-            houseModel.getSummerMonthList().remove(value);
+        if (houseModel.getSummerMonthList().contains(selectedMonth)) {
+            houseModel.getSummerMonthList().remove(selectedMonth);
         }
 
         //adding the month in the specific season
-        if(selectedSeason.equals("Summer")){
-            houseModel.getSummerMonthList().add(value);
+        if (selectedSeason.equals("Summer")) {
+            houseModel.getSummerMonthList().add(selectedMonth);
         }
-        if(selectedSeason.equals("Winter")){
-            houseModel.getWinterMonthList().add(value);
+        if (selectedSeason.equals("Winter")) {
+            houseModel.getWinterMonthList().add(selectedMonth);
         }
 
-        printConsole.setText("The month of " + selectedMonth + " was added to the " +selectedSeason+" season.");
-
-
+        printConsole.setText("The month of " + selectedMonth + " was added to the " + selectedSeason + " season.");
     }
 }

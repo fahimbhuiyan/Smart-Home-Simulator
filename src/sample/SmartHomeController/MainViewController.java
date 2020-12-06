@@ -20,12 +20,10 @@ import org.json.simple.parser.ParseException;
 import sample.SmartHomeModel.*;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -528,42 +526,42 @@ public class MainViewController {
     Label selectLightMessage;
 
     @FXML
-    ComboBox <String> month;
+    ComboBox<String> month;
 
     @FXML
-    ComboBox <String> season;
+    ComboBox<String> season;
 
     // In SHS
     @FXML
     Button saveSeason;
 
     @FXML
-    ComboBox <String> locationComboBoxSHH;
+    ComboBox<String> locationComboBoxSHH;
 
     @FXML
-    ComboBox <String> locationManComboBoxSHH;
+    ComboBox<String> locationManComboBoxSHH;
 
     @FXML
-    ComboBox <String> zoneComboBoxSHH;
+    ComboBox<String> zoneComboBoxSHH;
 
     @FXML
-    ComboBox <String> zoneTemperatureComboBox;
+    ComboBox<String> zoneTemperatureComboBox;
 
     @FXML
-    ComboBox <String> periodComboBoxSHH;
+    ComboBox<String> periodComboBoxSHH;
 
     @FXML
-    ComboBox <String> seasonComboBoxSHH;
+    ComboBox<String> seasonComboBoxSHH;
 
     @FXML
-    Spinner <Double> temperatureSeasonSpinnerSHH;
+    Spinner<Double> temperatureSeasonSpinnerSHH;
 
 
     @FXML
-    Spinner <Double> temperaturePeriodSpinnerSHH;
+    Spinner<Double> temperaturePeriodSpinnerSHH;
 
     @FXML
-    Spinner <Double> temperatureManSpinnerSHH;
+    Spinner<Double> temperatureManSpinnerSHH;
 
     @FXML
     Button saveZone;
@@ -576,6 +574,15 @@ public class MainViewController {
 
     @FXML
     Button saveManSHH;
+
+    @FXML
+    Button saveHVAC;
+
+    @FXML
+    ComboBox<String> locationOverrideComboBoxSHH;
+
+    @FXML
+    Button saveOffOverride;
 
     /**
      * A boolean indicating whether a user is logged into the simulation or not.
@@ -608,10 +615,11 @@ public class MainViewController {
      * Time chosen.
      */
     private LocalTime chosenTime;
+
     /**
      * Printing on console.
      */
-    private PrintConsole printConsole;
+    private volatile PrintConsole printConsole;
     /**
      * Time speed.
      */
@@ -640,6 +648,14 @@ public class MainViewController {
      * HashMap for time.
      */
     private Map<String, Pair<LocalTime, LocalTime>> keepLightsOn = new HashMap<>();
+
+    private AtomicBoolean isHVACOn = new AtomicBoolean();
+
+    private volatile Map<RoomModel, HVAC> roomHVACS = new HashMap<>();
+
+    private volatile Map<RoomModel, Double> requestsForHVACS = new HashMap<>();
+
+    private volatile Map<String, Boolean> isroomHVACManual = new HashMap<>();
 
     /**
      * The thread for clock for simulation.
@@ -697,14 +713,32 @@ public class MainViewController {
      */
     private class Clock extends Thread {
 
+        AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+        AtomicReference<Map<String, Pair<LocalTime, LocalTime>>> lightsToTurnOn = new AtomicReference<>(keepLightsOn);
+        AtomicReference<JFXDatePicker> date = new AtomicReference<>(dateSHS);
+        AtomicReference<PrintConsole> console = new AtomicReference<>(printConsole);
+        AtomicReference<HouseModel> house = new AtomicReference<>(houseModel);
+        Map<RoomModel, Boolean> pipeBurstMessageSent = new HashMap<>();
+        Map<RoomModel, Boolean> continuousBlockingMessageSent = new HashMap<>();
+        AtomicReference<Map<RoomModel, HVAC>> HVACS = new AtomicReference<>(roomHVACS);
+        AtomicReference<Map<RoomModel, Double>> HVACSRequests = new AtomicReference<>(requestsForHVACS);
+        AtomicReference<Map<String, Boolean>> isRoomManual = new AtomicReference<>(isroomHVACManual);
+        AtomicReference<SHCController> shcControllerAtomicReference = new AtomicReference<>(shcController);
+
         @Override
         public void run() {
 
-            AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
-            AtomicReference<Map<String, Pair<LocalTime, LocalTime>>> lightsToTurnOn = new AtomicReference<>(keepLightsOn);
+            // Start an HVAC thread for every room. Every HVAC starts with the default target temp as the outside.
+            for (RoomModel room : house.get().getRooms().values()) {
+                HVAC hvac = new HVAC(new AtomicReference<>(room), 0.1, room.getTemperature(), new DecimalFormat("#.#"));
+                HVACS.get().put(room, hvac);
+                pipeBurstMessageSent.put(room, false);
+                continuousBlockingMessageSent.put(room, false);
+                isRoomManual.get().put(room.getName(), false);
+                hvac.start();
+            }
 
             while (running.get()) {
-
                 try {
                     Thread.sleep(speed);
                 } catch (InterruptedException e) {
@@ -713,61 +747,144 @@ public class MainViewController {
 
                 Platform.runLater(() -> {
 
+                    // Lights scheduling
                     for (String lightName : lightsToTurnOn.get().keySet()) {
 
                         if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getKey()) == 0) {
                             System.out.println(lightsToTurnOn.get().get(lightName).getKey());
                             scheduleTurnOnOffLight(lightName, "open");
-                        }
-                        else if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getValue()) == 0) {
+                        } else if (local.get().compareTo(lightsToTurnOn.get().get(lightName).getValue()) == 0) {
                             scheduleTurnOnOffLight(lightName, "close");
                         }
                     }
 
                     System.out.println(local.get());
 
-                    if(local.get().toString().equals("00:00")){
-                        for (Map.Entry<String, Zone> entryZone : houseModel.getZoneList().entrySet()) {
-                            for (Map.Entry<String, RoomModel> entryRoom : houseModel.getRooms().entrySet()) {
-                                if(entryRoom.getValue().getZone().equals(entryZone.getKey())){
-                                    if(!entryZone.getValue().getNightTemp().equals("empty")){
-                                        changeTempPeriod(entryZone.getValue().getNightTemp(),entryRoom.getValue().getName());
-                                    }
-                                    else if(entryZone.getValue().getNightTemp().equals("empty")){
-                                        changeTempPeriod(inTempSHS.getValue().toString(),entryRoom.getValue().getName());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if(local.get().toString().equals("08:00")){
-                        for (Map.Entry<String, Zone> entryZone : houseModel.getZoneList().entrySet()) {
-                            for (Map.Entry<String, RoomModel> entryRoom : houseModel.getRooms().entrySet()) {
-                                if(entryRoom.getValue().getZone().equals(entryZone.getKey())){
-                                    if(!entryZone.getValue().getDayTemp().equals("empty")){
-                                        changeTempPeriod(entryZone.getValue().getDayTemp(),entryRoom.getValue().getName());
-                                    }
-                                    else if(entryZone.getValue().getDayTemp().equals("empty")){
-                                        changeTempPeriod(inTempSHS.getValue().toString(),entryRoom.getValue().getName());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if(local.get().toString().equals("16:00")){
-                        for (Map.Entry<String, Zone> entryZone : houseModel.getZoneList().entrySet()) {
-                            for (Map.Entry<String, RoomModel> entryRoom : houseModel.getRooms().entrySet()) {
-                                if(entryRoom.getValue().getZone().equals(entryZone.getKey())){
-                                    if(!entryZone.getValue().getEveningTemp().equals("empty")){
-                                        changeTempPeriod(entryZone.getValue().getEveningTemp(),entryRoom.getValue().getName());
-                                    }
-                                    else if(entryZone.getValue().getEveningTemp().equals("empty")){
-                                        changeTempPeriod(inTempSHS.getValue().toString(),entryRoom.getValue().getName());
-                                    }
-                                }
-                            }
-                        }
+                    // When entering these two for loops, a HVAC can be in four states:
+                    // 1. Idle and not away mode
+                    // 2. Idle and away mode
+                    // 3. Manual and not away mode
+                    // 4. Manual and away mode
 
+                    for (RoomModel room : house.get().getRooms().values()) {
+                        for (Zone zone : house.get().getZoneList().values()) {
+
+                            String month = date.get().getValue().getMonth().toString();
+                            month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase(); // Capitalize first letter
+
+                            if (isHVACOn.get()) {
+
+                                // Activating all the manual temperature changes.
+                                if (HVACSRequests.get().containsKey(room) && !HVACS.get().get(room).getStateHVAC().equals("Manual")) {
+                                    HVACS.get().get(room).setTargetTemperature(HVACSRequests.get().get(room));
+                                    HVACS.get().get(room).setRate(0.1);
+                                    HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                    HVACS.get().get(room).setStateHVAC("Manual");
+                                    console.get().setText("Starting to cool/heat the " + room.getName() + " to a temperature of " + HVACSRequests.get().get(room) + " C.");
+                                }
+
+                                // Case #-2 If you had the HVAC off and now you turned it back on, your state will still be off and so we have to make it idle.
+                                if (HVACS.get().get(room).getStateHVAC().equals("Off")) {
+                                    HVACS.get().get(room).setStateHVAC("Idle");
+                                    HVACS.get().get(room).setTargetTemperature(room.getTemperature());
+                                }
+
+                                // Case #-1 If you are in away mode and you are not in state Idle, Manual, Away Mode Summer or Away Mode Winter, then your state will change to Idle. /////////// add to this if? || HVACS.get().get(room).getStateHVAC().equals("Summer Cooling")
+                                if (awayModeOn && !HVACS.get().get(room).getStateHVAC().equals("Idle") && !HVACS.get().get(room).getStateHVAC().equals("Manual") && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter")) {
+                                    HVACS.get().get(room).setStateHVAC("Idle");
+                                    HVACS.get().get(room).setTargetTemperature(room.getTemperature());
+                                }
+
+                                // Case #0 If you were in away mode and in either the state Away Mode Summer or the state Away Mode Winter AND you just turned off away mode, then your state is now set to idle.
+                                if (!awayModeOn && (HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") || HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter"))) {
+                                    HVACS.get().get(room).setStateHVAC("Idle");
+                                    HVACS.get().get(room).setTargetTemperature(room.getTemperature());
+                                }
+
+                                // Case #1
+                                if (!awayModeOn && zone.getRooms().contains(room) && !HVACS.get().get(room).getStateHVAC().equals("Manual") && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter")) {
+                                    // Check if it's 00:00, 08:00, 16:00 and change target temp according to the zone's corresponding period temp
+                                    if (local.get().compareTo(LocalTime.of(0, 0)) >= 0 && local.get().compareTo(LocalTime.of(8, 0)) < 0 && !HVACS.get().get(room).getStateHVAC().equals("Night Schedule") && !zone.isUnsetNightTemp()) {
+                                        HVACS.get().get(room).setStateHVAC("Night Schedule");
+                                        HVACS.get().get(room).setTargetTemperature(zone.getNightTemp());
+                                        HVACS.get().get(room).setRate(0.1);
+                                        HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                        console.get().setText("Starting scheduling heating/cooling for the night in the " + room.getName() + " (" + zone.getZoneName() + "). Target temperature: " + zone.getNightTemp() + " C.");
+                                    } else if (local.get().compareTo(LocalTime.of(8, 0)) >= 0 && local.get().compareTo(LocalTime.of(16, 0)) < 0 && !HVACS.get().get(room).getStateHVAC().equals("Day Schedule") && !zone.isUnsetDayTemp()) {
+                                        HVACS.get().get(room).setStateHVAC("Day Schedule");
+                                        HVACS.get().get(room).setTargetTemperature(zone.getDayTemp());
+                                        HVACS.get().get(room).setRate(0.1);
+                                        HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                        console.get().setText("Starting scheduling heating/cooling for the day in the " + room.getName() + " (" + zone.getZoneName() + "). Target temperature: " + zone.getDayTemp() + " C.");
+                                    } else if (local.get().compareTo(LocalTime.of(16, 0)) >= 0 && local.get().compareTo(LocalTime.of(23, 59, 59)) < 0 && !HVACS.get().get(room).getStateHVAC().equals("Evening Schedule") && !zone.isUnsetEveningTemp()) {
+                                        HVACS.get().get(room).setStateHVAC("Evening Schedule");
+                                        HVACS.get().get(room).setTargetTemperature(zone.getEveningTemp());
+                                        HVACS.get().get(room).setRate(0.1);
+                                        HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                        console.get().setText("Starting scheduling heating/cooling for the evening in the " + room.getName() + " (" + zone.getZoneName() + "). Target temperature: " + zone.getEveningTemp() + " C.");
+                                    }
+                                }
+
+                                // Case #2 when in summer month, away mode is off, it's not manual mode, window of a specific room is not blocked, HVAC is on, and room temp > outside temp: set target temp for the
+                                // specific room to the outside temp and make the room temp go down by 0.05 C/S
+                                // Check if any room temp is above outside temp if the we're in a summer month and the window of the room is not blocked.
+                                if (!awayModeOn && house.get().getSummerMonthList().contains(month) && (house.get().getOutsideTemp() < room.getTemperature()) && !HVACS.get().get(room).getStateHVAC().equals("Summer Cooling") && !HVACS.get().get(room).getStateHVAC().equals("Manual") && !HVACS.get().get(room).getStateHVAC().equals("Night Schedule") && !HVACS.get().get(room).getStateHVAC().equals("Day Schedule") && !HVACS.get().get(room).getStateHVAC().equals("Evening Schedule")) {
+                                    if (!room.getWindow().isOpen() && room.getWindow().hasObject().get() && !continuousBlockingMessageSent.get(room)) {
+                                        continuousBlockingMessageSent.put(room, true);
+                                        console.get().setText("Cannot cool " + room.getName() + " to outside temperature because the windows cannot be opened (there is an object blocking them)!");
+                                    } else if (room.getWindow().isOpen() || (!room.getWindow().isOpen() && !room.getWindow().hasObject().get())) {
+                                        continuousBlockingMessageSent.put(room, false);
+                                        shcControllerAtomicReference.get().openWindow(room.getName(), house.get(), console.get());
+                                        HVACS.get().get(room).setTargetTemperature(house.get().getOutsideTemp());
+                                        HVACS.get().get(room).setRate(0.05);
+                                        HVACS.get().get(room).setRounding(new DecimalFormat("#.##"));
+                                        HVACS.get().get(room).setStateHVAC("Summer Cooling");
+                                        console.get().setText("Canceling any current heating/cooling for the " + room.getName() + " in order to cool it to the outside temperature! [Continuous monitoring]");
+                                    }
+                                }
+
+                                /**
+                                 * TODO Make the thread check the summer cooling again and again (maybe the windows and now closed and blocked) (need to keep windows open) (careful not to send the message 100 times)
+                                 */
+
+                                // Case #3 If the house is in away mode and the HVAC is on and it's a summer month and the room is not in manual mode, change target temp of the room to season temp
+                                if (awayModeOn && !HVACS.get().get(room).getStateHVAC().equals("Manual")) {
+                                    if (house.get().getSummerMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !houseModel.isUnsetSummerTemp()) {
+                                        // Set state to away mode summer
+                                        HVACS.get().get(room).setTargetTemperature(house.get().getSummerTemperature());
+                                        HVACS.get().get(room).setRate(0.1);
+                                        HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                        HVACS.get().get(room).setStateHVAC("Away Mode Summer");
+                                        console.get().setText("Starting default heating/cooling for the summer in the " + room.getName() + ". Target temperature: " + house.get().getSummerTemperature() + " C. [Away Mode]");
+
+                                    } else if (house.get().getWinterMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter") && !houseModel.isUnsetWinterTemp()) {
+                                        // Set state to away mode winter
+                                        HVACS.get().get(room).setTargetTemperature(house.get().getWinterTemperature());
+                                        HVACS.get().get(room).setRate(0.1);
+                                        HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
+                                        HVACS.get().get(room).setStateHVAC("Away Mode Winter");
+                                        console.get().setText("Starting default heating/cooling for the summer in the " + room.getName() + ". Target temperature: " + house.get().getWinterTemperature() + " C. [Away Mode]");
+                                    }
+                                }
+                            }
+
+                            // Case #4 when the HVAC is off: set target temp for all rooms to the outside temp and make the room temp go down by 0.05 C/S
+                            if (!isHVACOn.get() && !HVACS.get().get(room).getStateHVAC().equals("Off")) {
+                                HVACS.get().get(room).setTargetTemperature(house.get().getOutsideTemp());
+                                HVACS.get().get(room).setRate(0.05);
+                                HVACS.get().get(room).setRounding(new DecimalFormat("#.##"));
+                                HVACS.get().get(room).setStateHVAC("Off");
+                            }
+
+                            if (room.getTemperature() > 0 && pipeBurstMessageSent.get(room)) {
+                                pipeBurstMessageSent.put(room, false);
+                            }
+
+                            if (room.getTemperature() < 0 && !pipeBurstMessageSent.get(room)) {
+                                pipeBurstMessageSent.put(room, true);
+                                console.get().setText("The temperature in the " + room.getName() + " is below zero! There might be a burst pipe in there!");
+                            }
+                        }
                     }
 
                     local.getAndSet(local.get().plusSeconds(1));
@@ -782,6 +899,93 @@ public class MainViewController {
 
                     chosenTime = local.get();
                 });
+            }
+        }
+    }
+
+    private class HVAC extends Thread {
+
+        AtomicReference<RoomModel> room;
+        volatile double rate;
+        volatile double targetTemperature;
+        DecimalFormat df;
+        String stateHVAC;
+        boolean isManual = false;
+        AtomicReference<Map<String, Boolean>> isRoomManual = new AtomicReference<>(isroomHVACManual);
+
+        HVAC(AtomicReference<RoomModel> room, double rate, double targetTemperature, DecimalFormat df) {
+            this.room = room;
+            this.rate = rate;
+            this.targetTemperature = targetTemperature;
+            this.df = df;
+            stateHVAC = "Idle";
+        }
+
+        @Override
+        public void run() {
+            while (running.get()) { //Runs on the same variable as the simulation's clock
+
+                try {
+                    Thread.sleep(speed);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
+
+                if (room.get().getZone() != null) {
+                    if (stateHVAC.equals("Night Schedule")) {
+                        targetTemperature = room.get().getZone().getNightTemp();
+                    } else if (stateHVAC.equals("Day Schedule")) {
+                        targetTemperature = room.get().getZone().getDayTemp();
+                    } else if (stateHVAC.equals("Evening Schedule")) {
+                        targetTemperature = room.get().getZone().getEveningTemp();
+                    }
+                }
+
+                Platform.runLater(() -> {
+
+                    // Logs
+                    if (room.get().getName().equals("Bedroom")) {
+                        System.out.println("Room: " + room.get().getName());
+                        System.out.println("Rate: " + rate);
+                        System.out.println("Target temp: " + targetTemperature);
+                        System.out.println("Room temp live: " + room.get().getTemperature());
+                        System.out.println("HVAC state: " + stateHVAC);
+                        System.out.println("isManual: " + isManual);
+                    }
+
+                    if (targetTemperature < room.get().getTemperature()) {
+                        changeTempPeriod(Double.parseDouble(df.format(room.get().getTemperature() - rate)), room.get().getName(), isManual);
+                    } else if (targetTemperature > room.get().getTemperature()) {
+                        changeTempPeriod(Double.parseDouble(df.format(room.get().getTemperature() + rate)), room.get().getName(), isManual);
+                    }
+                });
+            }
+        }
+
+        void setRate(double rate) {
+            this.rate = rate;
+        }
+
+        void setTargetTemperature(double targetTemperature) {
+            this.targetTemperature = targetTemperature;
+        }
+
+        void setRounding(DecimalFormat df) {
+            this.df = df;
+        }
+
+        String getStateHVAC() {
+            return stateHVAC;
+        }
+
+        void setStateHVAC(String state) {
+            this.stateHVAC = state;
+            isManual = state.equals("Manual");
+
+            if (isManual) {
+                isRoomManual.get().put(room.get().getName(), true);
+            } else {
+                isRoomManual.get().put(room.get().getName(), false);
             }
         }
     }
@@ -854,6 +1058,9 @@ public class MainViewController {
 
         countdownSecondsLeft = timerSecondAuthority.getValue();
         countdownMinutesLeft = timerMinuteAuthority.getValue();
+
+        // Check HVAC on or off.
+        isHVACOn.set(saveHVAC.getText().equals("Turn Off HVAC"));
     }
 
     /**
@@ -868,9 +1075,9 @@ public class MainViewController {
      * Draw the layout of the house.
      */
     @FXML
-    private void drawLayout() {
+    private synchronized void drawLayout() {
         System.out.println(bp.getChildren().isEmpty());
-        houseViewController.drawLayout(bp, houseModel, userModelArrayList);
+        houseViewController.drawLayout(bp, houseModel, userModelArrayList, isroomHVACManual);
     }
 
     /**
@@ -883,6 +1090,10 @@ public class MainViewController {
         double value = outTempSHS.getValue();
 
         shsController.setOutsideTemperature(houseModel, value);
+
+        // New lines
+        shsController.setInsideTemperature(rooms, value);
+
         drawLayout();
         leftPanelOutTemp.setText("Outside Temperature: " + outTempSHS.getValue().toString() + " C");
         saveSimulationConditions(event);
@@ -897,7 +1108,7 @@ public class MainViewController {
     public void setInsideTemperature(ActionEvent event) {
         double value = inTempSHS.getValue();
 
-        shsController.setInsideTemperature(rooms, value);
+        // shsController.setInsideTemperature(rooms, value);
         drawLayout();
         leftPanelInTemp.setText("Inside Temperature: " + inTempSHS.getValue().toString() + " C");
         saveSimulationConditions(event);
@@ -932,7 +1143,7 @@ public class MainViewController {
             loginButton.setDisable(true);
             saveTimeSpeed.setDisable(true);
 
-            running.getAndSet(true);
+            running.set(true);
 
             try {
                 Thread.sleep(speed);
@@ -940,7 +1151,7 @@ public class MainViewController {
                 e.printStackTrace();
             }
 
-            printConsole.setText("The simulation has been started!");
+            printConsole.setText("The simulation has been started! Starting the simulation clock and the scheduled heating/cooling.");
             (new Clock()).start();
 
             if (alertTriggered) {
@@ -961,7 +1172,7 @@ public class MainViewController {
             loginButton.setDisable(false);
             saveTimeSpeed.setDisable(false);
 
-            running.getAndSet(false);
+            running.set(false);
 
             try {
                 Thread.sleep(speed);
@@ -969,7 +1180,7 @@ public class MainViewController {
                 e.printStackTrace();
             }
 
-            printConsole.setText("The simulation has been stopped!");
+            printConsole.setText("The simulation has been stopped! Stopping the simulation clock and the scheduled heating/cooling.");
         }
     }
 
@@ -1036,6 +1247,7 @@ public class MainViewController {
         checkIfIntrusion();
 
     }
+
     /**
      * Check for Intrusion.
      */
@@ -1171,6 +1383,14 @@ public class MainViewController {
             gridSHH.setDisable(false);
             gridSHP.setDisable(false);
             turnOnOffAutomode.setDisable(false);
+            openDoor.setDisable(false);
+            closeDoor.setDisable(false);
+            unlockDoor.setDisable(false);
+            lockDoor.setDisable(false);
+            saveZone.setDisable(false);
+            savePeriodTemperature.setDisable(false);
+            saveSeasonTemperature.setDisable(false);
+            saveHVAC.setDisable(false);
             fillDefaultComboBox(false);
         }
         if (user.getUser_type().equals("Stranger")) {
@@ -1179,7 +1399,7 @@ public class MainViewController {
             gridSHP.setDisable(true);
         }
         //Permission revoke if child or guest are not in a room
-        if ((user.getUser_type().equals("Child") || user.getUser_type().equals("Guest")) && (user.getCurrentLocation().equals("Backyard") ||
+        if (user.getUser_type().equals("Guest") && (user.getCurrentLocation().equals("Backyard") ||
                 user.getCurrentLocation().equals("Front yard") || user.getCurrentLocation().equals("House"))) {
             gridSHC.setDisable(true);
             gridSHH.setDisable(true);
@@ -1198,14 +1418,33 @@ public class MainViewController {
             turnOnOffAutomode.setDisable(true);
 
             lightComboBoxSHC.getItems().clear();
-            lightComboBoxSHP.getItems().clear();
             winComboBoxSHC.getItems().clear();
+
             lightComboBoxSHC.getItems().add(user.getCurrentLocation());
-            lightComboBoxSHP.getItems().add(user.getCurrentLocation());
             winComboBoxSHC.getItems().add(user.getCurrentLocation());
+
             lightComboBoxSHC.getSelectionModel().selectFirst();
-            lightComboBoxSHP.getSelectionModel().selectFirst();
             winComboBoxSHC.getSelectionModel().selectFirst();
+
+            if (user.getUser_type().equals("Child")) {
+                gridSHP.setDisable(false);
+            }
+            else if (user.getUser_type().equals("Guest")) {
+                gridSHH.setDisable(false);
+                saveZone.setDisable(true);
+                savePeriodTemperature.setDisable(true);
+                saveSeasonTemperature.setDisable(true);
+                saveHVAC.setDisable(true);
+
+                locationManComboBoxSHH.getItems().clear();
+                locationOverrideComboBoxSHH.getItems().clear();
+
+                locationManComboBoxSHH.getItems().add(user.getCurrentLocation());
+                locationOverrideComboBoxSHH.getItems().add(user.getCurrentLocation());
+
+                locationManComboBoxSHH.getSelectionModel().selectFirst();
+                locationOverrideComboBoxSHH.getSelectionModel().selectFirst();
+            }
         }
     }
 
@@ -1266,7 +1505,7 @@ public class MainViewController {
 
         loadUsersInSHSTable();
 
-        houseViewController.drawLayout(bp, houseModel, userModelArrayList);
+        houseViewController.drawLayout(bp, houseModel, userModelArrayList, isroomHVACManual);
 
         fillDefaultComboBox(true);
 
@@ -1289,7 +1528,8 @@ public class MainViewController {
 
     /**
      * Open and close lights, windows, time, block/unblock windows
-     *  @param setup lights, windows, time, block/unlock windows.
+     *
+     * @param setup lights, windows, time, block/unlock windows.
      */
     // Fill ComboBox of actions (open/close)
     private void fillDefaultComboBox(boolean setup) {
@@ -1298,11 +1538,15 @@ public class MainViewController {
             lightComboBoxSHC.getItems().clear();
             lightComboBoxSHP.getItems().clear();
             winComboBoxSHC.getItems().clear();
+            locationManComboBoxSHH.getItems().clear();
+            locationOverrideComboBoxSHH.getItems().clear();
 
             for (String roomName : roomNamesSet) {
                 winComboBoxSHC.getItems().add(roomName);
                 lightComboBoxSHC.getItems().add(roomName);
                 lightComboBoxSHP.getItems().add(roomName);
+                locationManComboBoxSHH.getItems().add(roomName);
+                locationOverrideComboBoxSHH.getItems().add(roomName);
             }
 
             lightComboBoxSHC.getItems().addAll("Backyard", "Front yard");
@@ -1311,6 +1555,9 @@ public class MainViewController {
             winComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHP.getSelectionModel().selectFirst();
+            locationManComboBoxSHH.getSelectionModel().selectFirst();
+            locationOverrideComboBoxSHH.getSelectionModel().selectFirst();
+
         } else { // Initial setup
 
             for (String roomName : roomNamesSet) {
@@ -1337,9 +1584,9 @@ public class MainViewController {
             zoneTemperatureComboBox.getItems().addAll("Zone 1", "Zone 2", "Zone 3", "Zone 4");
             locationComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
             locationManComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
+            locationOverrideComboBoxSHH.getItems().addAll("Garage", "Kitchen", "Bedroom", "Living Room", "Children's Room");
             periodComboBoxSHH.getItems().addAll("00:00 - 08:00", "08:00 - 16:00", "16:00 - 24:00");
             seasonComboBoxSHH.getItems().addAll("Summer", "Winter");
-
 
 
             addModifyLocComboBoxSHS.getSelectionModel().selectFirst();
@@ -1355,6 +1602,7 @@ public class MainViewController {
             zoneTemperatureComboBox.getSelectionModel().selectFirst();
             locationComboBoxSHH.getSelectionModel().selectFirst();
             locationManComboBoxSHH.getSelectionModel().selectFirst();
+            locationOverrideComboBoxSHH.getSelectionModel().selectFirst();
             periodComboBoxSHH.getSelectionModel().selectFirst();
             seasonComboBoxSHH.getSelectionModel().selectFirst();
             season.getSelectionModel().selectFirst();
@@ -1450,12 +1698,24 @@ public class MainViewController {
     }
 
     @FXML
-    void changeRoomTemperature(){
+    void changeRoomTemperature() {
         String location = locationManComboBoxSHH.getValue();
-        String temperature = temperatureManSpinnerSHH.getValue().toString();
-        shhController.changeRoomTemperature(houseModel, printConsole, temperature,  location);
-        drawLayout();
+        double temperature = temperatureManSpinnerSHH.getValue().doubleValue();
+        RoomModel room = houseModel.getRooms().get(location);
 
+        // If the simulation is running, update the HVAC target temperature manually live.
+        if (running.get()) {
+            roomHVACS.get(room).setTargetTemperature(temperature);
+            roomHVACS.get(room).setRate(0.1);
+            roomHVACS.get(room).setRounding(new DecimalFormat("#.#"));
+            roomHVACS.get(room).setStateHVAC("Manual");
+            printConsole.setText("Starting to cool/heat the " + room.getName() + " to a temperature of " + temperature + " C.");
+        } else {
+            printConsole.setText("Will start to cool/heat the " + room.getName() + " to a temperature of " + temperature + " C once the simulation restarts.");
+        }
+
+        // Regardless of whether or not the simulation is running, store the manual update which will be processed each time the simulation goes live (until the override is removed).
+        requestsForHVACS.put(room, temperature);
     }
 
     /**
@@ -1513,8 +1773,7 @@ public class MainViewController {
         if (to.compareTo(from) > 0) {
             keepLightsOn.put(lightComboBoxSHP.getValue(), new Pair<>(from, to));
             printConsole.setText("Scheduling for light in room " + lightComboBoxSHP.getValue() + " to be on between " + from + " and " + to + ".");
-        }
-        else {
+        } else {
             selectLightMessage.setVisible(true);
             selectLightMessage.setText("Lights: (The second time must be after the first one)");
             selectLightMessage.setTextFill(Color.RED);
@@ -1526,7 +1785,7 @@ public class MainViewController {
      * Save countdown authority.
      */
     @FXML
-    public void saveCountdownAuthority () {
+    public void saveCountdownAuthority() {
         countdownMinutesLeft = timerMinuteAuthority.getValue();
         countdownSecondsLeft = timerSecondAuthority.getValue();
         printConsole.setText("Setting the waiting time until the authorities are called at " + countdownMinutesLeft + " min and " + countdownSecondsLeft + " sec.");
@@ -1536,7 +1795,7 @@ public class MainViewController {
      * Enter away mode.
      */
     @FXML
-    public void enterAwayMode () {
+    public void enterAwayMode() {
 
         if (awayModeOn) {
             awayModeOn = false;
@@ -1557,7 +1816,7 @@ public class MainViewController {
             shcController.lockDoor(doorName, houseModel, printConsole);
         }
 
-        shhController.changeZoneTemperatureToSeasonTemperature(leftPanelDate,houseModel, printConsole);
+        //shhController.changeZoneTemperatureToSeasonTemperature(leftPanelDate, houseModel, printConsole);
 
         drawLayout();
     }
@@ -1565,7 +1824,7 @@ public class MainViewController {
     /**
      * Cancel alert.
      */
-    public void cancelAlert () {
+    public void cancelAlert() {
 
         if (!alertTriggered) {
             printConsole.setText("There is no alert to cancel.");
@@ -1582,43 +1841,90 @@ public class MainViewController {
         callingAuthoritiesLabel.setVisible(false);
     }
 
-    private void scheduleTurnOnOffLight (String location, String action) {
+    private synchronized void scheduleTurnOnOffLight(String location, String action) {
         shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
         drawLayout();
     }
 
 
-    private void changeTempPeriod(String temperature, String location){
-        shhController.changeRoomTemperature(houseModel,printConsole,temperature,location);
+    private synchronized void changeTempPeriod(double temperature, String location, boolean isManual) {
+        shhController.changeRoomTemperature(houseModel, printConsole, temperature, location);
         drawLayout();
     }
 
     @FXML
-    public void setMonthToSeason(){
+    public void setMonthToSeason() {
         String monthSelected = month.getValue();
         String seasonSelected = season.getValue();
         shsController.setMonthToSeason(houseModel, monthSelected, seasonSelected, printConsole);
     }
 
     @FXML
-    public void setSeasonTemperature(){
+    public void setSeasonTemperature() {
         String season = seasonComboBoxSHH.getValue();
         Double temperature = temperatureSeasonSpinnerSHH.getValue();
         shhController.setSeasonTemperature(houseModel, printConsole, temperature, season);
+
+        for (HVAC hvac : roomHVACS.values()) {
+            if (season.equals("Summer") && hvac.getStateHVAC().equals("Away Mode Summer")) {
+                hvac.setTargetTemperature(temperature);
+                printConsole.setText("Any current and future heating/cooling to the default summer temperature will now heat/cool to this temperature.");
+            } else if (season.equals("Winter") && hvac.getStateHVAC().equals("Away Mode Winter")) {
+                hvac.setTargetTemperature(temperature);
+                printConsole.setText("Any current and future heating/cooling to the default winter temperature will now heat/cool to this temperature.");
+            }
+        }
     }
 
     @FXML
-    public void setRoomInZone(){
+    public void setRoomInZone() {
         String location = locationComboBoxSHH.getValue();
         String zone = zoneComboBoxSHH.getValue();
         shhController.setRoomInZone(houseModel, printConsole, zone, location);
     }
 
     @FXML
-    public void setTemperatureZonePeriod(){
+    public void setTemperatureZonePeriod() {
         String zone = zoneTemperatureComboBox.getValue();
         String period = periodComboBoxSHH.getValue();
-        String temperature = temperaturePeriodSpinnerSHH.getValue().toString();
-        shhController.setTemperatureZonePeriod( houseModel,  zone,  period,  temperature, printConsole);
+        double temperature = temperaturePeriodSpinnerSHH.getValue().doubleValue();
+        shhController.setTemperatureZonePeriod(houseModel, zone, period, temperature, printConsole);
+    }
+
+    @FXML
+    public void turnOnOffHVAC() {
+        // Flip text to off (by default, HVAC is on)
+
+        if (saveHVAC.getText().equals("Turn Off HVAC")) {
+            saveHVAC.setText("Turn On HVAC");
+            printConsole.setText("The HVAC has been turned OFF! All heating/cooling has been stopped!");
+        } else {
+            saveHVAC.setText("Turn Off HVAC");
+            printConsole.setText("The HVAC has been turned ON!");
+        }
+
+        // Check HVAC on or off.
+        isHVACOn.set(saveHVAC.getText().equals("Turn Off HVAC"));
+    }
+
+    @FXML
+    public void turnOffOverride() {
+        String location = locationOverrideComboBoxSHH.getValue();
+
+        RoomModel room = houseModel.getRooms().get(location);
+
+        // If the simulation is running, update the HVAC target temperature manually live.
+        if (running.get() && roomHVACS.get(room).getStateHVAC().equals("Manual")) {
+            roomHVACS.get(room).setStateHVAC("Idle");
+            roomHVACS.get(room).setTargetTemperature(room.getTemperature());
+        }
+
+        if (requestsForHVACS.containsKey(room)) {
+            requestsForHVACS.remove(room);
+            printConsole.setText("Turning off manual override for the " + room.getName() + ". The HVAC in that room is now in idle mode.");
+            drawLayout();
+        } else {
+            printConsole.setText("The " + room.getName() + " is not currently in Manual Override Mode.");
+        }
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import sample.SmartHomeModel.HouseModel;
 import sample.SmartHomeModel.UserModel;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -25,7 +26,7 @@ public class HouseViewController {
      * @param houseModel the house model
      * @param userList   the user list
      */
-    public void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList) {
+    public void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList, Map<String, Boolean> manualOverride) {
 
         bp.getChildren().clear();
 
@@ -66,9 +67,18 @@ public class HouseViewController {
             r1.setY(houseModel.getRooms().get(roomName).getyAxis());
 
             Text temperature = new Text(Double.toString(houseModel.getRooms().get(roomName).getTemperature()) + "°C");
+            Text override = new Text();
             temperature.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
             temperature.setY(houseModel.getRooms().get(roomName).getyAxis() + 30);
             temperature.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
+
+            if (manualOverride.containsKey(roomName) && manualOverride.get(roomName)) {
+                override = new Text("Manual override");
+                override.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
+                override.setY(houseModel.getRooms().get(roomName).getyAxis() + 45);
+                override.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
+                override.setFill(Color.RED);
+            }
 
             ImageView windowImageView = new ImageView();
 
@@ -79,7 +89,7 @@ public class HouseViewController {
             }
 
             Text hasObjectText;
-            if (!houseModel.getRooms().get(roomName).getWindow().HasObject()) {
+            if (!houseModel.getRooms().get(roomName).getWindow().hasObject().get()) {
                 hasObjectText = new Text("No Object");
             } else {
                 hasObjectText = new Text("Has Object");
@@ -129,7 +139,7 @@ public class HouseViewController {
             windowImageView.setX(houseModel.getRooms().get(roomName).getxAxis() + houseModel.getRooms().get(roomName).getWidth() - 50);
             windowImageView.setY(houseModel.getRooms().get(roomName).getyAxis());
 
-            bp.getChildren().addAll(doorIsLock,hasObjectText,temperature,doorImageView,windowImageView,lightImageView);
+            bp.getChildren().addAll(doorIsLock,hasObjectText,temperature,override,doorImageView,windowImageView,lightImageView);
 
             //adding people in room
             for (UserModel userModel : userList) {
