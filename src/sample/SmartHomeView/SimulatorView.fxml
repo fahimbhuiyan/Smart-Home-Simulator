@@ -624,15 +624,6 @@
                     </AnchorPane>
                 </Tab>
 
-                <Tab text="+">
-                    <AnchorPane>
-                        <GridPane fx:id="gridAddModule">
-                            <Label text="Want to add a new module?" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                                   GridPane.columnSpan="4"
-                                   GridPane.halignment="LEFT"/>
-                        </GridPane>
-                    </AnchorPane>
-                </Tab>
             </TabPane>
         </AnchorPane>
 

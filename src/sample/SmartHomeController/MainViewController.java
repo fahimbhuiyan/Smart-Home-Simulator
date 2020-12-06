@@ -115,12 +115,6 @@ public class MainViewController {
     GridPane gridSHH;
 
     /**
-     * The GridPane where the user can add a new module.
-     */
-    @FXML
-    GridPane gridAddModule;
-
-    /**
      * The Button used to start/stop the simulation.
      */
     @FXML
