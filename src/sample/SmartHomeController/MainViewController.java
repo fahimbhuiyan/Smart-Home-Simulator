@@ -1383,6 +1383,14 @@ public class MainViewController {
             gridSHH.setDisable(false);
             gridSHP.setDisable(false);
             turnOnOffAutomode.setDisable(false);
+            openDoor.setDisable(false);
+            closeDoor.setDisable(false);
+            unlockDoor.setDisable(false);
+            lockDoor.setDisable(false);
+            saveZone.setDisable(false);
+            savePeriodTemperature.setDisable(false);
+            saveSeasonTemperature.setDisable(false);
+            saveHVAC.setDisable(false);
             fillDefaultComboBox(false);
         }
         if (user.getUser_type().equals("Stranger")) {
@@ -1391,7 +1399,7 @@ public class MainViewController {
             gridSHP.setDisable(true);
         }
         //Permission revoke if child or guest are not in a room
-        if ((user.getUser_type().equals("Child") || user.getUser_type().equals("Guest")) && (user.getCurrentLocation().equals("Backyard") ||
+        if (user.getUser_type().equals("Guest") && (user.getCurrentLocation().equals("Backyard") ||
                 user.getCurrentLocation().equals("Front yard") || user.getCurrentLocation().equals("House"))) {
             gridSHC.setDisable(true);
             gridSHH.setDisable(true);
@@ -1410,14 +1418,33 @@ public class MainViewController {
             turnOnOffAutomode.setDisable(true);
 
             lightComboBoxSHC.getItems().clear();
-            lightComboBoxSHP.getItems().clear();
             winComboBoxSHC.getItems().clear();
+
             lightComboBoxSHC.getItems().add(user.getCurrentLocation());
-            lightComboBoxSHP.getItems().add(user.getCurrentLocation());
             winComboBoxSHC.getItems().add(user.getCurrentLocation());
+
             lightComboBoxSHC.getSelectionModel().selectFirst();
-            lightComboBoxSHP.getSelectionModel().selectFirst();
             winComboBoxSHC.getSelectionModel().selectFirst();
+
+            if (user.getUser_type().equals("Child")) {
+                gridSHP.setDisable(false);
+            }
+            else if (user.getUser_type().equals("Guest")) {
+                gridSHH.setDisable(false);
+                saveZone.setDisable(true);
+                savePeriodTemperature.setDisable(true);
+                saveSeasonTemperature.setDisable(true);
+                saveHVAC.setDisable(true);
+
+                locationManComboBoxSHH.getItems().clear();
+                locationOverrideComboBoxSHH.getItems().clear();
+
+                locationManComboBoxSHH.getItems().add(user.getCurrentLocation());
+                locationOverrideComboBoxSHH.getItems().add(user.getCurrentLocation());
+
+                locationManComboBoxSHH.getSelectionModel().selectFirst();
+                locationOverrideComboBoxSHH.getSelectionModel().selectFirst();
+            }
         }
     }
 
@@ -1511,11 +1538,15 @@ public class MainViewController {
             lightComboBoxSHC.getItems().clear();
             lightComboBoxSHP.getItems().clear();
             winComboBoxSHC.getItems().clear();
+            locationManComboBoxSHH.getItems().clear();
+            locationOverrideComboBoxSHH.getItems().clear();
 
             for (String roomName : roomNamesSet) {
                 winComboBoxSHC.getItems().add(roomName);
                 lightComboBoxSHC.getItems().add(roomName);
                 lightComboBoxSHP.getItems().add(roomName);
+                locationManComboBoxSHH.getItems().add(roomName);
+                locationOverrideComboBoxSHH.getItems().add(roomName);
             }
 
             lightComboBoxSHC.getItems().addAll("Backyard", "Front yard");
@@ -1524,6 +1555,9 @@ public class MainViewController {
             winComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHC.getSelectionModel().selectFirst();
             lightComboBoxSHP.getSelectionModel().selectFirst();
+            locationManComboBoxSHH.getSelectionModel().selectFirst();
+            locationOverrideComboBoxSHH.getSelectionModel().selectFirst();
+
         } else { // Initial setup
 
             for (String roomName : roomNamesSet) {
