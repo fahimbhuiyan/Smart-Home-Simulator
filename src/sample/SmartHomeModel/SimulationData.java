@@ -68,7 +68,7 @@ public class SimulationData {
 
             System.out.println("Room Window ID: "+room.getWindow().getId());
             System.out.println("Room Window is open: "+room.getWindow().isOpen());
-            System.out.println("Room Window has object: "+room.getWindow().HasObject());
+            System.out.println("Room Window has object: "+room.getWindow().hasObject());
             System.out.println();
         }
 

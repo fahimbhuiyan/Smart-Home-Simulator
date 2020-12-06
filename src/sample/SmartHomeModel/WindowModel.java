@@ -1,7 +1,7 @@
 package sample.SmartHomeModel;
 
 import javafx.scene.image.Image;
-import java.io.FileNotFoundException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class for the Window Model.
@@ -11,7 +11,7 @@ public class WindowModel {
 	private String id;
 	private String name;
 	private boolean isOpen = true;
-	private boolean hasObject = false;
+	private AtomicBoolean hasObject = new AtomicBoolean(false);
 	private Image imageOpen;
 	private Image imageClose;
 
@@ -77,17 +77,8 @@ public class WindowModel {
 	 *
 	 * @return the boolean hasObject
 	 */
-	public boolean HasObject() {
+	public AtomicBoolean hasObject() {
 		return hasObject;
-	}
-
-	/**
-	 * Setter for the window having an object in front of it.
-	 *
-	 * @param hasObject boolean for whether a window has an object in front of it.
-	 */
-	public void setHasObject(boolean hasObject) {
-		this.hasObject = hasObject;
 	}
 
 	/**

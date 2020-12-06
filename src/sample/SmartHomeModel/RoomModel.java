@@ -260,6 +260,4 @@ public class RoomModel {
 		this.window = window;
 	}
 
-
-
 }

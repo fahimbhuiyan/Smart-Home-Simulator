@@ -113,8 +113,13 @@ public class SHCController implements Observer {
      * @param printConsole the print console
      */
     void openWindow(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
-        houseModel.getWindows().get(roomName).setOpen(true);
-        printConsole.setText("Opening the window in " + roomName + ".");
+        if(houseModel.getWindows().get(roomName).hasObject().get()){
+            printConsole.setText("Cannot open the windows in " + roomName + " since there is an object blocking them.");
+        }
+        if(!houseModel.getWindows().get(roomName).hasObject().get()){
+            houseModel.getWindows().get(roomName).setOpen(true);
+            printConsole.setText("Opening the window in " + roomName + ".");
+        }
     }
 
     /**
@@ -125,10 +130,10 @@ public class SHCController implements Observer {
      * @param printConsole the print console
      */
     void closeWindow(String roomName, HouseModel houseModel, MainViewController.PrintConsole printConsole) {
-        if(houseModel.getWindows().get(roomName).HasObject()){
-            printConsole.setText("There is an object, cannot close the window in " + roomName + ".");
+        if(houseModel.getWindows().get(roomName).hasObject().get()){
+            printConsole.setText("Cannot close the windows in " + roomName + " since there is an object blocking them.");
         }
-        if(!houseModel.getWindows().get(roomName).HasObject()){
+        if(!houseModel.getWindows().get(roomName).hasObject().get()){
             houseModel.getWindows().get(roomName).setOpen(false);
             printConsole.setText("Closing the window in " + roomName + ".");
         }

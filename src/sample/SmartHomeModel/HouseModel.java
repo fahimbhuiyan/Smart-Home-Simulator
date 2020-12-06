@@ -63,10 +63,10 @@ public class HouseModel {
     }
 
     private void createZone(){
-        Zone zone1 = new Zone("Zone 1");
-        Zone zone2 = new Zone("Zone 2");
-        Zone zone3 = new Zone("Zone 3");
-        Zone zone4 = new Zone("Zone 4");
+        Zone zone1 = new Zone("Zone 1", outsideTemp);
+        Zone zone2 = new Zone("Zone 2", outsideTemp);
+        Zone zone3 = new Zone("Zone 3", outsideTemp);
+        Zone zone4 = new Zone("Zone 4", outsideTemp);
 
         zoneList.put(zone1.getZoneName(), zone1);
         zoneList.put(zone2.getZoneName(), zone2);

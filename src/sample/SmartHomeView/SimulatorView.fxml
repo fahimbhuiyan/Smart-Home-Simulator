@@ -598,6 +598,28 @@
                                     GridPane.rowIndex="12" GridPane.columnIndex="4" GridPane.columnSpan="5"
                                     GridPane.halignment="LEFT" alignment="CENTER">
                             </Button>
+
+                            <Label text="Turn On/Off HVAC"
+                                   GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveHVAC"
+                                    prefHeight="25.0" prefWidth="161.0" text="Turn Off HVAC" onAction="#turnOnOffHVAC"
+                                    GridPane.rowIndex="13" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                            </Button>
+
+                            <Label text="Turn Off Manual Override"
+                                   GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                                   GridPane.halignment="LEFT"/>
+                            <ComboBox fx:id="locationOverrideComboBoxSHH" promptText="Select a Location"
+                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveOffOverride"
+                                    prefHeight="25.0" prefWidth="161.0" text="Turn Off Manual Override" onAction="#turnOffOverride"
+                                    GridPane.rowIndex="14" GridPane.columnIndex="4" GridPane.columnSpan="5"
+                                    GridPane.halignment="LEFT" alignment="CENTER">
+                            </Button>
+
+
                         </GridPane>
                     </AnchorPane>
                 </Tab>
@@ -622,13 +644,9 @@
             </ScrollPane>
         </AnchorPane>
 
-        <AnchorPane layoutX="189.0" layoutY="550" prefHeight="145.0" prefWidth="820" style="-fx-border-color: gray;">
+        <AnchorPane layoutX="189.0" layoutY="550" prefHeight="140.0" prefWidth="820" style="-fx-border-color: gray;">
             <Label layoutX="380" layoutY="5" text="Console output" style="-fx-font-weight: bold"/>
-            <ScrollPane layoutX="5" layoutY="30" prefHeight="105.0" prefWidth="810.0">
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="105.0" prefWidth="810.0">
-                    <TextArea prefHeight="105.0" prefWidth="810.0" fx:id="consoleTextField"/>
-                </AnchorPane>
-            </ScrollPane>
+                <TextArea layoutX="5" layoutY="5" prefHeight="130.0" prefWidth="810.0" fx:id="consoleTextField"/>
         </AnchorPane>
     </AnchorPane>
 </BorderPane>

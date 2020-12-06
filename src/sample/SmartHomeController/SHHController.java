@@ -14,9 +14,8 @@ import java.util.Map;
  */
 public class SHHController {
 
-    public void changeRoomTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, String temperature, String location){
-        houseModel.getRooms().get(location).setTemperature(Double.parseDouble(temperature));
-        printConsole.setText("Updating the temperature for the " + location + ".");
+    public void changeRoomTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, double temperature, String location){
+        houseModel.getRooms().get(location).setTemperature(temperature);
     }
 
     public void setSeasonTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, Double temperature, String season){
@@ -32,6 +31,9 @@ public class SHHController {
 
     public void setRoomInZone(HouseModel houseModel, MainViewController.PrintConsole printConsole, String zone, String location){
         houseModel.getRooms().get(location).setZone(zone);
+
+        houseModel.getZoneList().get(zone).addRomeToList(houseModel.getRooms().get(location));
+
         printConsole.setText("Adding " + location + " to " +zone);
     }
 
@@ -74,7 +76,7 @@ public class SHHController {
     }
 
     //to do
-    public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, String temperature, MainViewController.PrintConsole printConsole){
+    public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, double temperature, MainViewController.PrintConsole printConsole){
 
         if(period.equals("00:00 - 08:00")){
             houseModel.getZoneList().get(zone).setNightTemp(temperature);
