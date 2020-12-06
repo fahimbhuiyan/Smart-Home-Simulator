@@ -1221,7 +1221,7 @@ public class MainViewController {
      * Add/modify user based on the information provided.
      */
     @FXML
-    public void addModifyUser() {
+    public void addModifyUser() throws UserDoesNotExistException{
 
         int id = addModifyUserID.getValue();
 
@@ -1234,9 +1234,9 @@ public class MainViewController {
         //Catching exception, this method is only called when the autoMode is turned on
         try {
             openOrCloseLights(null);
+
+        } catch (Exception e) {
             throw new UserDoesNotExistException();
-        } catch (UserDoesNotExistException e) {
-            System.out.println(e.getMessage());
         }
 
         processUserInfo("add/modify");
