@@ -37,39 +37,54 @@ The project runs best with JDK 8 or JDK 9. If JDK 11 or later is used, then the 
 9. Head over to SOEN343\src\sample\SmartHomeView\MainView, build the project (click on the green hammer icon on the top menu bar), and then run the main method of the class MainView.
 10. The application will ask to upload a house file. In the SOEN343 directory, there should a json file called `HouseInfo`. On the text field, type the location of the file. (Ex: D:\Documents\GitHub\SOEN343\HouseInfo.json)
 
+## Demos
+* [Demo](https://drive.google.com/drive/folders/16CrYnJGdsAuoF2VUsbmufQlWBV_mXJtQ)
+
 ## **System In Operation**
 ### **Delivery 1**
 * [Report](https://docs.google.com/document/d/1CJXxn7XZUxPXvwjpcWOrYFK7pl63NPytqWtMBpBK6ZA/edit#)
 
-Dashboard as soon as the application is running. 
+* Dashboard as soon as the application is running. 
 ![alt text](https://imgur.com/gHF1wsm.png)
 
-Enter file location on text field.
+* Enter file location on text field.
 ![alt text](https://imgur.com/TpUimvS.png)
 
-Dashboard after file upload. 
+* Dashboard after file upload. 
 ![alt text](https://imgur.com/Tpmhajq.png)
 
-Dashboard when the user is logged in and has set the date, time, and inside and outside temperatures.
+* Dashboard when the user is logged in and has set the date, time, and inside and outside temperatures.
 ![alt text](https://imgur.com/ADMWrdF.png)
 
-Starting the simulation.
+* Starting the simulation.
 ![alt text](https://imgur.com/4nnZK3M.png)
 
 ### **Delivery 2**
 * [Report](https://docs.google.com/document/d/1oV5IvFuyUXYO06ezzAELe-kaWK6Zf-QB2UQqQCHRDwA/edit#)
 
-Dashboard with new time, time speed and console. 
+* Dashboard with new time, time speed and console. 
 ![alt text](https://imgur.com/fLP6Myh.png)
 
-After "Start the Simulator" is clicked, time starts.
+* After "Start the Simulator" is clicked, time starts.
 ![alt text](https://imgur.com/hcZ8uOt.gif)
 
-New SHC Module
+* New SHC Module
 ![alt text](https://imgur.com/rsvxLnY.png)
 
-New SHP Module
+* New SHP Module
 ![alt text](https://imgur.com/Imqi05S.png)
+
+### **Delivery 3**
+* [Report](https://docs.google.com/document/d/1omRo3dG1Ut5IABt2uROHuwaqBqhnCnYXSNb-MZ5fDoM/edit#)
+
+* New SHS Module (Updated)
+![alt text](https://imgur.com/y1QIU8H.png)
+
+* New SHH Module
+![alt text](https://imgur.com/GwYdIIC.png)
+
+* Manual Change
+![alt text](https://imgur.com/CEzCV0I.gif)
 
 ## **Special Thanks**
 * [JFoenix](http://www.jfoenix.com/)
