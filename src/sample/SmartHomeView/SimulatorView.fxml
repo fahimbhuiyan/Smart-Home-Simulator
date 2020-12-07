@@ -13,7 +13,7 @@
             <Insets top="30" bottom="30"/>
         </padding>
 
-        <VBox layoutX="14.0" layoutY="16.0" prefHeight="531.0" prefWidth="160.0" style="-fx-border-color: gray;"
+        <VBox layoutX="14.0" layoutY="16.0" prefHeight="506.0" prefWidth="160.0" style="-fx-border-color: gray;"
               fx:id="locationsVBox" alignment="TOP_CENTER">
             <Label contentDisplay="CENTER" text="Simulation information&#10;and controls"
                    style="-fx-font-weight: bold" textAlignment="CENTER" alignment="CENTER">
@@ -66,8 +66,6 @@
             <Label fx:id="leftPanelTime" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
             <Label fx:id="leftPanelTimeSpeed" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
             <Label fx:id="leftPanelOutTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-            <Label fx:id="leftPanelInTemp" contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER"/>
-
 
             <Label fx:id="labelHouseLayoutFile" text="Upload a house file" style="-fx-font-weight: bold"
                    contentDisplay="CENTER" alignment="CENTER" textAlignment="CENTER">
@@ -228,33 +226,23 @@
                             <Button fx:id="saveOutsideTemp" onAction="#setOutsideTemperature" text="Save"
                                     GridPane.rowIndex="12" GridPane.columnIndex="3"/>
 
-                            <Label text="Inside Temperature (°C)"
+                            <Label text="Block\Unblock a room's window with an object"
                                    GridPane.rowIndex="13" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <Spinner fx:id="inTempSHS" initialValue="15" min="-1000000" max="1000000"
-                                     amountToStepBy=".1"
-                                     GridPane.rowIndex="13"
-                                     GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveInsideTemp" onAction="#setInsideTemperature" text="Save"
+                            <ComboBox fx:id="blockWinLocComboBoxSHS" promptText="Select a location"
+                                      GridPane.rowIndex="13" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                            <Button fx:id="saveWindowBlock" onAction="#addObjectToWindow" text="Save"
                                     GridPane.rowIndex="13" GridPane.columnIndex="3"/>
 
-                            <Label text="Block\Unblock a room's window with an object"
+                            <Label text="Months and Seasons"
                                    GridPane.rowIndex="14" GridPane.columnIndex="0" GridPane.columnSpan="2"
                                    GridPane.halignment="LEFT"/>
-                            <ComboBox fx:id="blockWinLocComboBoxSHS" promptText="Select a location"
-                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
-                            <Button fx:id="saveWindowBlock" onAction="#addObjectToWindow" text="Save"
-                                    GridPane.rowIndex="14" GridPane.columnIndex="3"/>
-
-                            <Label text="Months and Seasons"
-                                   GridPane.rowIndex="15" GridPane.columnIndex="0" GridPane.columnSpan="2"
-                                   GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="month" promptText="Select Month"
-                                      GridPane.rowIndex="15" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
+                                      GridPane.rowIndex="14" GridPane.columnIndex="2" GridPane.halignment="LEFT"/>
                             <ComboBox fx:id="season" promptText="Select Season"
-                                      GridPane.rowIndex="15" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
+                                      GridPane.rowIndex="14" GridPane.columnIndex="3" GridPane.halignment="LEFT"/>
                             <Button fx:id="saveSeason" onAction="#setMonthToSeason" text="Save"
-                                    GridPane.rowIndex="15" GridPane.columnIndex="4"/>
+                                    GridPane.rowIndex="14" GridPane.columnIndex="4"/>
 
                             <columnConstraints>
                                 <ColumnConstraints maxWidth="134"/>
@@ -629,7 +617,7 @@
 
         <AnchorPane prefHeight="370" prefWidth="357" layoutX="850" layoutY="16" style="-fx-border-color: gray;">
             <Label layoutX="150" layoutY="2" text="House layout" style="-fx-font-weight: bold"/>
-            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="509.0">
+            <ScrollPane layoutX="3" layoutY="20" prefHeight="350" prefWidth="350" minHeight="484.0">
                 <BorderPane fx:id="bp" prefHeight="1000" prefWidth="1000">
                 </BorderPane>
             </ScrollPane>

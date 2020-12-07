@@ -292,6 +292,14 @@ public class SHSController implements Subject {
         }
     }
 
+    /**
+     * Sets month to season.
+     *
+     * @param houseModel     the house model
+     * @param selectedMonth  the selected month
+     * @param selectedSeason the selected season
+     * @param printConsole   the print console
+     */
     public void setMonthToSeason(HouseModel houseModel, String selectedMonth, String selectedSeason, MainViewController.PrintConsole printConsole) {
 
         //Removing the month from the season if it was already set before
