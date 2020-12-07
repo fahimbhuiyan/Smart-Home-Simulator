@@ -1342,6 +1342,7 @@ public class MainViewController {
 
     /**
      * Add/modify user based on the information provided.
+     * @throws UserDoesNotExistException user does not exist exception
      */
     @FXML
     public void addModifyUser() throws UserDoesNotExistException{
