@@ -15,24 +15,25 @@ import java.util.Map;
 public class SHHController {
 
     /**
-     * Change room temperature.
+     * Change the room temperature
      *
-     * @param houseModel   the house model
-     * @param printConsole the print console
-     * @param temperature  the temperature
-     * @param location     the location
+     * @param houseModel the house model
+     * @param printConsole print to console
+     * @param temperature the temperature
+     * @param location the location
      */
     public void changeRoomTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, double temperature, String location){
         houseModel.getRooms().get(location).setTemperature(temperature);
     }
 
     /**
-     * Set season temperature.
+     * Set the temperature of a season
      *
-     * @param houseModel   the house model
-     * @param printConsole the print console
-     * @param temperature  the temperature
-     * @param season       the season
+     * @param houseModel the house model
+     * @param printConsole print to console
+     * @param temperature the temperature
+     * @param season the season
+
      */
     public void setSeasonTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, Double temperature, String season){
         if(season.equals("Summer")){
@@ -46,12 +47,13 @@ public class SHHController {
     }
 
     /**
-     * Set room in zone.
+     * Set the room in a zone
      *
-     * @param houseModel   the house model
-     * @param printConsole the print console
-     * @param zone         the zone
-     * @param location     the location
+     * @param houseModel the house model
+     * @param printConsole print to console
+     * @param zone the zone
+     * @param location the location
+
      */
     public void setRoomInZone(HouseModel houseModel, MainViewController.PrintConsole printConsole, String zone, String location){
         houseModel.getRooms().get(location).setZone(houseModel.getZoneList().get(zone));
@@ -71,15 +73,14 @@ public class SHHController {
         printConsole.setText("Adding " + location + " to " + zone);
     }
 
-
     /**
-     * Set temperature zone period.
+     * Set the temperature for a zone for a period
      *
-     * @param houseModel   the house model
-     * @param zone         the zone
-     * @param period       the period
-     * @param temperature  the temperature
-     * @param printConsole the print console
+     * @param houseModel the house model
+     * @param zone the zone
+     * @param period the period
+     * @param temperature the temperature
+     * @param printConsole print to console
      */
     public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, double temperature, MainViewController.PrintConsole printConsole){
         if(period.equals("00:00 - 08:00")){

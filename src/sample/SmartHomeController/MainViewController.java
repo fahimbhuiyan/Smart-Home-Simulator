@@ -508,118 +508,119 @@ public class MainViewController {
     @FXML
     Label selectLightMessage;
 
+
     /**
-     * The Month.
+     * Select the month
      */
     @FXML
     ComboBox<String> month;
 
     /**
-     * The Season.
+     * Select the season
      */
     @FXML
     ComboBox<String> season;
 
+
+    // In SHS
     /**
-     * The Save season.
+     * Save the selected season
      */
-// In SHS
     @FXML
     Button saveSeason;
 
     /**
-     * The Location combo box shh.
+     * Select the location
      */
     @FXML
     ComboBox<String> locationComboBoxSHH;
 
     /**
-     * The Location man combo box shh.
+     * Select the location
      */
     @FXML
     ComboBox<String> locationManComboBoxSHH;
 
     /**
-     * The Zone combo box shh.
+     * Select the zone
      */
     @FXML
     ComboBox<String> zoneComboBoxSHH;
 
     /**
-     * The Zone temperature combo box.
+     * Select the zone temperature
      */
     @FXML
     ComboBox<String> zoneTemperatureComboBox;
 
     /**
-     * The Period combo box shh.
+     * Select the time period
      */
     @FXML
     ComboBox<String> periodComboBoxSHH;
 
     /**
-     * The Season combo box shh.
+     * Select the season
      */
     @FXML
     ComboBox<String> seasonComboBoxSHH;
 
     /**
-     * The Temperature season spinner shh.
+     * Spinner for the season temperature
      */
     @FXML
     Spinner<Double> temperatureSeasonSpinnerSHH;
 
-
     /**
-     * The Temperature period spinner shh.
+     * Spinner for the time period of the temperature
      */
     @FXML
     Spinner<Double> temperaturePeriodSpinnerSHH;
 
     /**
-     * The Temperature man spinner shh.
+     * Spinner for the temperatureMan
      */
     @FXML
     Spinner<Double> temperatureManSpinnerSHH;
 
     /**
-     * The Save zone.
+     * Save the zone
      */
     @FXML
     Button saveZone;
 
     /**
-     * The Save period temperature.
+     * Save the temperature for the time period
      */
     @FXML
     Button savePeriodTemperature;
 
     /**
-     * The Save season temperature.
+     * Save the temperature of the season
      */
     @FXML
     Button saveSeasonTemperature;
 
     /**
-     * The Save man shh.
+     * Save the ManSHH
      */
     @FXML
     Button saveManSHH;
 
     /**
-     * The Save hvac.
+     * Save the HVAC
      */
     @FXML
     Button saveHVAC;
 
     /**
-     * The Location override combo box shh.
+     * Select the location to override
      */
     @FXML
     ComboBox<String> locationOverrideComboBoxSHH;
 
     /**
-     * The Save off override.
+     * Save off override
      */
     @FXML
     Button saveOffOverride;
@@ -703,6 +704,9 @@ public class MainViewController {
     private class Countdown extends Thread {
 
         @Override
+        /**
+         * Run the countdown
+         */
         public void run() {
             AtomicInteger seconds = new AtomicInteger(countdownSecondsLeft);
             AtomicInteger minutes = new AtomicInteger(countdownMinutesLeft);
@@ -799,6 +803,9 @@ public class MainViewController {
         AtomicReference<SHCController> shcControllerAtomicReference = new AtomicReference<>(shcController);
 
         @Override
+        /**
+         * Run the clock
+         */
         public void run() {
 
             // Start an HVAC thread for every room. Every HVAC starts with the default target temp as the outside.
@@ -830,8 +837,6 @@ public class MainViewController {
                             scheduleTurnOnOffLight(lightName, "close");
                         }
                     }
-
-                    System.out.println(local.get());
 
                     // When entering these two for loops, a HVAC can be in four states:
                     // 1. Idle and not away mode
@@ -984,6 +989,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Class for HVAC
+     */
     private class HVAC extends Thread {
 
         /**
@@ -1032,6 +1040,9 @@ public class MainViewController {
         }
 
         @Override
+        /**
+         * Run the HVAC
+         */
         public void run() {
             while (running.get()) { //Runs on the same variable as the simulation's clock
 
@@ -1052,17 +1063,6 @@ public class MainViewController {
                 }
 
                 Platform.runLater(() -> {
-
-                    // Logs
-                    if (room.get().getName().equals("Bedroom")) {
-                        System.out.println("Room: " + room.get().getName());
-                        System.out.println("Rate: " + rate);
-                        System.out.println("Target temp: " + targetTemperature);
-                        System.out.println("Room temp live: " + room.get().getTemperature());
-                        System.out.println("HVAC state: " + stateHVAC);
-                        System.out.println("isManual: " + isManual);
-                    }
-
                     if (targetTemperature < room.get().getTemperature()) {
                         changeTempPeriod(Double.parseDouble(df.format(room.get().getTemperature() - rate)), room.get().getName(), isManual);
                     } else if (targetTemperature > room.get().getTemperature()) {
@@ -1073,27 +1073,24 @@ public class MainViewController {
         }
 
         /**
-         * Sets rate.
-         *
-         * @param rate the rate
+         * Set the rate
+         * @param rate
          */
         void setRate(double rate) {
             this.rate = rate;
         }
 
         /**
-         * Sets target temperature.
-         *
-         * @param targetTemperature the target temperature
+         * Set the target temperature
+         * @param targetTemperature
          */
         void setTargetTemperature(double targetTemperature) {
             this.targetTemperature = targetTemperature;
         }
 
         /**
-         * Sets rounding.
-         *
-         * @param df the df
+         * Round a decimal
+         * @param df decimal format
          */
         void setRounding(DecimalFormat df) {
             this.df = df;
@@ -1109,8 +1106,7 @@ public class MainViewController {
         }
 
         /**
-         * Sets state hvac.
-         *
+         * Set the state of the HVAC
          * @param state the state
          */
         void setStateHVAC(String state) {
@@ -1821,8 +1817,9 @@ public class MainViewController {
         drawLayout();
     }
 
+
     /**
-     * Change room temperature.
+     * Change the temperature of the room
      */
     @FXML
     void changeRoomTemperature() {
@@ -1968,19 +1965,31 @@ public class MainViewController {
         callingAuthoritiesLabel.setVisible(false);
     }
 
+    /**
+     * Turn off the lights on a schedule
+     *
+     * @param location
+     * @param action
+     */
     private synchronized void scheduleTurnOnOffLight(String location, String action) {
         shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
         drawLayout();
     }
 
-
+    /**
+     * Change the temperature of a room
+     *
+     * @param temperature
+     * @param location
+     * @param isManual
+     */
     private synchronized void changeTempPeriod(double temperature, String location, boolean isManual) {
         shhController.changeRoomTemperature(houseModel, printConsole, temperature, location);
         drawLayout();
     }
 
     /**
-     * Sets month to season.
+     * Set the season based on the month
      */
     @FXML
     public void setMonthToSeason() {
@@ -1990,7 +1999,7 @@ public class MainViewController {
     }
 
     /**
-     * Sets season temperature.
+     * Set the temperature of a season
      */
     @FXML
     public void setSeasonTemperature() {
@@ -2010,7 +2019,7 @@ public class MainViewController {
     }
 
     /**
-     * Sets room in zone.
+     * Set the room for a zone
      */
     @FXML
     public void setRoomInZone() {
@@ -2020,7 +2029,7 @@ public class MainViewController {
     }
 
     /**
-     * Sets temperature zone period.
+     * Set the temperature of a zone for a period
      */
     @FXML
     public void setTemperatureZonePeriod() {
@@ -2031,7 +2040,7 @@ public class MainViewController {
     }
 
     /**
-     * Turn on off hvac.
+     * Turn the HVAC on or off
      */
     @FXML
     public void turnOnOffHVAC() {
@@ -2050,7 +2059,7 @@ public class MainViewController {
     }
 
     /**
-     * Turn off override.
+     * Turn off the override
      */
     @FXML
     public void turnOffOverride() {

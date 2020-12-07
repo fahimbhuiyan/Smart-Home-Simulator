@@ -22,9 +22,9 @@ public class HouseViewController {
     /**
      * Draw layout of the house.
      *
-     * @param bp             the bp
-     * @param houseModel     the house model
-     * @param userList       the user list
+     * @param bp         the bp
+     * @param houseModel the house model
+     * @param userList   the user list
      * @param manualOverride the manual override
      */
     public void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList, Map<String, Boolean> manualOverride) {
@@ -304,6 +304,15 @@ public class HouseViewController {
     }
 
 
+    /**
+     * Manual override
+     *
+     * @param houseModel the house model
+     * @param manualOverride the manual override
+     * @param roomName the name of the room
+     * @param override the override
+     * @return Text
+     */
     private Text manualOverride(HouseModel houseModel, Map<String, Boolean> manualOverride, String roomName, Text override) {
         if (manualOverride.containsKey(roomName) && manualOverride.get(roomName)) {
             override = new Text("Manual override");

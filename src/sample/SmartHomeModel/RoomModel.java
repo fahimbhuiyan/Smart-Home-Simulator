@@ -120,10 +120,20 @@ public class RoomModel {
 		this.zone = null;
 	}
 
+	/**
+	 * Get the zone
+	 *
+	 * @return the zone
+	 */
 	public Zone getZone() {
 		return zone;
 	}
 
+	/**
+	 * Set the zone
+	 *
+	 * @param zone the zone
+	 */
 	public void setZone(Zone zone) {
 		this.zone = zone;
 	}
