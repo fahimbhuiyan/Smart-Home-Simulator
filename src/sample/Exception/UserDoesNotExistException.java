@@ -9,6 +9,10 @@ public class UserDoesNotExistException extends Exception{
         super("The user does not exist. Creating a new user");
     }
 
+    /**
+     * User does not exist exception
+     * @param e error message
+     */
     public UserDoesNotExistException(String e){
         super(e);
     }
