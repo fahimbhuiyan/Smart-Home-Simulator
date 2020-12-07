@@ -157,6 +157,11 @@ public class SHCController implements Observer {
         return autoMode;
     }
 
+    /**
+     * Update
+     *
+     * @param observable Object
+     */
     @Override
     public void update(Object observable) {
 

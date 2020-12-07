@@ -116,12 +116,6 @@ public class MainViewController {
     GridPane gridSHH;
 
     /**
-     * The GridPane where the user can add a new module.
-     */
-    @FXML
-    GridPane gridAddModule;
-
-    /**
      * The Button used to start/stop the simulation.
      */
     @FXML
@@ -211,11 +205,6 @@ public class MainViewController {
     @FXML
     Spinner<Double> outTempSHS;
 
-    /**
-     * Spinner used to specify the inside temperature of the simulation.
-     */
-    @FXML
-    Spinner<Double> inTempSHS;
 
     /**
      * Button used to save the date of the simulation.
@@ -241,11 +230,11 @@ public class MainViewController {
     @FXML
     Button saveOutsideTemp;
 
-    /**
-     * Button used to save the inside temperature of the simulation.
-     */
-    @FXML
-    Button saveInsideTemp;
+//    /**
+//     * Button used to save the inside temperature of the simulation.
+//     */
+//    @FXML
+//    Button saveInsideTemp;
 
     /**
      * Button used to save the location in which the window must be blocked by an object.
@@ -277,12 +266,6 @@ public class MainViewController {
      */
     @FXML
     Label leftPanelTimeSpeed;
-
-    /**
-     * The Label displaying the inside temperature of the simulation in the left-side panel.
-     */
-    @FXML
-    Label leftPanelInTemp;
 
     /**
      * The Label displaying the outside temperature of the simulation in the left-side panel.
@@ -526,62 +509,120 @@ public class MainViewController {
     @FXML
     Label selectLightMessage;
 
+
+    /**
+     * Select the month
+     */
     @FXML
     ComboBox<String> month;
 
+    /**
+     * Select the season
+     */
     @FXML
     ComboBox<String> season;
 
+
     // In SHS
+    /**
+     * Save the selected season
+     */
     @FXML
     Button saveSeason;
 
+    /**
+     * Select the location
+     */
     @FXML
     ComboBox<String> locationComboBoxSHH;
 
+    /**
+     * Select the location
+     */
     @FXML
     ComboBox<String> locationManComboBoxSHH;
 
+    /**
+     * Select the zone
+     */
     @FXML
     ComboBox<String> zoneComboBoxSHH;
 
+    /**
+     * Select the zone temperature
+     */
     @FXML
     ComboBox<String> zoneTemperatureComboBox;
 
+    /**
+     * Select the time period
+     */
     @FXML
     ComboBox<String> periodComboBoxSHH;
 
+    /**
+     * Select the season
+     */
     @FXML
     ComboBox<String> seasonComboBoxSHH;
 
+    /**
+     * Spinner for the season temperature
+     */
     @FXML
     Spinner<Double> temperatureSeasonSpinnerSHH;
 
-
+    /**
+     * Spinner for the time period of the temperature
+     */
     @FXML
     Spinner<Double> temperaturePeriodSpinnerSHH;
 
+    /**
+     * Spinner for the temperatureMan
+     */
     @FXML
     Spinner<Double> temperatureManSpinnerSHH;
 
+    /**
+     * Save the zone
+     */
     @FXML
     Button saveZone;
 
+    /**
+     * Save the temperature for the time period
+     */
     @FXML
     Button savePeriodTemperature;
 
+    /**
+     * Save the temperature of the season
+     */
     @FXML
     Button saveSeasonTemperature;
 
+    /**
+     * Save the ManSHH
+     */
     @FXML
     Button saveManSHH;
 
+    /**
+     * Save the HVAC
+     */
     @FXML
     Button saveHVAC;
 
+    /**
+     * Select the location to override
+     */
     @FXML
     ComboBox<String> locationOverrideComboBoxSHH;
 
+    /**
+     * Save off override
+     */
     @FXML
     Button saveOffOverride;
 
@@ -664,6 +705,9 @@ public class MainViewController {
     private class Countdown extends Thread {
 
         @Override
+        /**
+         * Run the countdown
+         */
         public void run() {
             AtomicInteger seconds = new AtomicInteger(countdownSecondsLeft);
             AtomicInteger minutes = new AtomicInteger(countdownMinutesLeft);
@@ -714,19 +758,55 @@ public class MainViewController {
      */
     private class Clock extends Thread {
 
+        /**
+         * The Local.
+         */
         AtomicReference<LocalTime> local = new AtomicReference<>(chosenTime);
+        /**
+         * The Lights to turn on.
+         */
         AtomicReference<Map<String, Pair<LocalTime, LocalTime>>> lightsToTurnOn = new AtomicReference<>(keepLightsOn);
+        /**
+         * The Date.
+         */
         AtomicReference<JFXDatePicker> date = new AtomicReference<>(dateSHS);
+        /**
+         * The Console.
+         */
         AtomicReference<PrintConsole> console = new AtomicReference<>(printConsole);
+        /**
+         * The House.
+         */
         AtomicReference<HouseModel> house = new AtomicReference<>(houseModel);
+        /**
+         * The Pipe burst message sent.
+         */
         Map<RoomModel, Boolean> pipeBurstMessageSent = new HashMap<>();
+        /**
+         * The Continuous blocking message sent.
+         */
         Map<RoomModel, Boolean> continuousBlockingMessageSent = new HashMap<>();
+        /**
+         * The Hvacs.
+         */
         AtomicReference<Map<RoomModel, HVAC>> HVACS = new AtomicReference<>(roomHVACS);
+        /**
+         * The Hvacs requests.
+         */
         AtomicReference<Map<RoomModel, Double>> HVACSRequests = new AtomicReference<>(requestsForHVACS);
+        /**
+         * The Is room manual.
+         */
         AtomicReference<Map<String, Boolean>> isRoomManual = new AtomicReference<>(isroomHVACManual);
+        /**
+         * The Shc controller atomic reference.
+         */
         AtomicReference<SHCController> shcControllerAtomicReference = new AtomicReference<>(shcController);
 
         @Override
+        /**
+         * Run the clock
+         */
         public void run() {
 
             // Start an HVAC thread for every room. Every HVAC starts with the default target temp as the outside.
@@ -758,8 +838,6 @@ public class MainViewController {
                             scheduleTurnOnOffLight(lightName, "close");
                         }
                     }
-
-                    System.out.println(local.get());
 
                     // When entering these two for loops, a HVAC can be in four states:
                     // 1. Idle and not away mode
@@ -844,13 +922,19 @@ public class MainViewController {
                                     }
                                 }
 
-                                /**
-                                 * TODO Make the thread check the summer cooling again and again (maybe the windows and now closed and blocked) (need to keep windows open) (careful not to send the message 100 times)
-                                 */
-
                                 // Case #3 If the house is in away mode and the HVAC is on and it's a summer month and the room is not in manual mode, change target temp of the room to season temp
                                 if (awayModeOn && !HVACS.get().get(room).getStateHVAC().equals("Manual")) {
-                                    if (house.get().getSummerMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer") && !houseModel.isUnsetSummerTemp()) {
+                                    //refactoring Extract Variable, make condition more readable
+                                    final boolean monthIsASummerMonth = house.get().getSummerMonthList().contains(month);
+                                    final boolean monthIsAWinterMonth = house.get().getWinterMonthList().contains(month);
+                                    final boolean isRoomInZone = room.getZone() != null;
+                                    final boolean isSummerTemperatureSet = !houseModel.isUnsetSummerTemp();
+                                    final boolean isAwayModeSummer = !HVACS.get().get(room).getStateHVAC().equals("Away Mode Summer");
+                                    final boolean isAwayModeWinter = !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter");
+                                    final boolean isWinterTemperatureSet = !houseModel.isUnsetWinterTemp();
+
+                                    if(monthIsASummerMonth && isRoomInZone && isAwayModeSummer && isSummerTemperatureSet){
+
                                         // Set state to away mode summer
                                         HVACS.get().get(room).setTargetTemperature(house.get().getSummerTemperature());
                                         HVACS.get().get(room).setRate(0.1);
@@ -858,8 +942,10 @@ public class MainViewController {
                                         HVACS.get().get(room).setStateHVAC("Away Mode Summer");
                                         console.get().setText("Starting default heating/cooling for the summer in the " + room.getName() + ". Target temperature: " + house.get().getSummerTemperature() + " C. [Away Mode]");
 
-                                    } else if (house.get().getWinterMonthList().contains(month) && room.getZone() != null && !HVACS.get().get(room).getStateHVAC().equals("Away Mode Winter") && !houseModel.isUnsetWinterTemp()) {
+                                    } else if(monthIsAWinterMonth && isRoomInZone && isAwayModeWinter && isWinterTemperatureSet) {
+
                                         // Set state to away mode winter
+
                                         HVACS.get().get(room).setTargetTemperature(house.get().getWinterTemperature());
                                         HVACS.get().get(room).setRate(0.1);
                                         HVACS.get().get(room).setRounding(new DecimalFormat("#.#"));
@@ -904,16 +990,48 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Class for HVAC
+     */
     private class HVAC extends Thread {
 
+        /**
+         * The Room.
+         */
         AtomicReference<RoomModel> room;
+        /**
+         * The Rate.
+         */
         volatile double rate;
+        /**
+         * The Target temperature.
+         */
         volatile double targetTemperature;
+        /**
+         * The Df.
+         */
         DecimalFormat df;
+        /**
+         * The State hvac.
+         */
         String stateHVAC;
+        /**
+         * The Is manual.
+         */
         boolean isManual = false;
+        /**
+         * The Is room manual.
+         */
         AtomicReference<Map<String, Boolean>> isRoomManual = new AtomicReference<>(isroomHVACManual);
 
+        /**
+         * Instantiates a new Hvac.
+         *
+         * @param room              the room
+         * @param rate              the rate
+         * @param targetTemperature the target temperature
+         * @param df                the df
+         */
         HVAC(AtomicReference<RoomModel> room, double rate, double targetTemperature, DecimalFormat df) {
             this.room = room;
             this.rate = rate;
@@ -923,6 +1041,9 @@ public class MainViewController {
         }
 
         @Override
+        /**
+         * Run the HVAC
+         */
         public void run() {
             while (running.get()) { //Runs on the same variable as the simulation's clock
 
@@ -943,17 +1064,6 @@ public class MainViewController {
                 }
 
                 Platform.runLater(() -> {
-
-                    // Logs
-                    if (room.get().getName().equals("Bedroom")) {
-                        System.out.println("Room: " + room.get().getName());
-                        System.out.println("Rate: " + rate);
-                        System.out.println("Target temp: " + targetTemperature);
-                        System.out.println("Room temp live: " + room.get().getTemperature());
-                        System.out.println("HVAC state: " + stateHVAC);
-                        System.out.println("isManual: " + isManual);
-                    }
-
                     if (targetTemperature < room.get().getTemperature()) {
                         changeTempPeriod(Double.parseDouble(df.format(room.get().getTemperature() - rate)), room.get().getName(), isManual);
                     } else if (targetTemperature > room.get().getTemperature()) {
@@ -963,22 +1073,43 @@ public class MainViewController {
             }
         }
 
+        /**
+         * Set the rate
+         * @param rate
+         */
         void setRate(double rate) {
             this.rate = rate;
         }
 
+        /**
+         * Set the target temperature
+         * @param targetTemperature
+         */
         void setTargetTemperature(double targetTemperature) {
             this.targetTemperature = targetTemperature;
         }
 
+        /**
+         * Round a decimal
+         * @param df decimal format
+         */
         void setRounding(DecimalFormat df) {
             this.df = df;
         }
 
+        /**
+         * Gets state hvac.
+         *
+         * @return the state hvac
+         */
         String getStateHVAC() {
             return stateHVAC;
         }
 
+        /**
+         * Set the state of the HVAC
+         * @param state the state
+         */
         void setStateHVAC(String state) {
             this.stateHVAC = state;
             isManual = state.equals("Manual");
@@ -1046,7 +1177,6 @@ public class MainViewController {
         showUIElement(leftPanelTime, false);
         showUIElement(leftPanelTimeSpeed, false);
         showUIElement(leftPanelOutTemp, false);
-        showUIElement(leftPanelInTemp, false);
         showUIElement(labelLeftPanelSimParam, false);
         showUIElement(labelUserInfoLeftPanel, false);
 
@@ -1107,11 +1237,6 @@ public class MainViewController {
      */
     @FXML
     public void setInsideTemperature(ActionEvent event) {
-        double value = inTempSHS.getValue();
-
-        // shsController.setInsideTemperature(rooms, value);
-        drawLayout();
-        leftPanelInTemp.setText("Inside Temperature: " + inTempSHS.getValue().toString() + " C");
         saveSimulationConditions(event);
     }
 
@@ -1140,7 +1265,6 @@ public class MainViewController {
             saveDate.setDisable(true);
             saveTime.setDisable(true);
             saveOutsideTemp.setDisable(true);
-            saveInsideTemp.setDisable(true);
             loginButton.setDisable(true);
             saveTimeSpeed.setDisable(true);
 
@@ -1169,7 +1293,6 @@ public class MainViewController {
             saveDate.setDisable(false);
             saveTime.setDisable(false);
             saveOutsideTemp.setDisable(false);
-            saveInsideTemp.setDisable(false);
             loginButton.setDisable(false);
             saveTimeSpeed.setDisable(false);
 
@@ -1294,7 +1417,7 @@ public class MainViewController {
     /**
      * Save the simulation conditions (also prints on left panel and on House Layout).
      *
-     * @param event the event which specifies the button which the user interacted with in order to save a certain              simulation condition.
+     * @param event the event which specifies the button which the user interacted with in order to save a certain simulation condition.
      */
     @FXML
     public void saveSimulationConditions(ActionEvent event) {
@@ -1318,8 +1441,6 @@ public class MainViewController {
             printConsole.setText("The simulation time speed has been changed to " + timeSpeedComboBoxSHS.getValue() + "x.");
         } else if (event.getSource().equals(saveOutsideTemp)) {
             printConsole.setText("The outside temperature has been changed to " + outTempSHS.getValue().toString() + " Celsius.");
-        } else if (event.getSource().equals(saveInsideTemp)) {
-            printConsole.setText("The inside temperature has been changed to " + inTempSHS.getValue().toString() + " Celsius.");
         }
 
         turnOffSimulationWarning();
@@ -1331,7 +1452,7 @@ public class MainViewController {
      * been met.
      */
     private void turnOffSimulationWarning() {
-        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelInTemp.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
+        if (!leftPanelDate.getText().isEmpty() && !leftPanelTime.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelTimeSpeed.getText().isEmpty() && !leftPanelOutTemp.getText().isEmpty() && isLoggedIn) {
             turnOnOffSimulation.setDisable(false);
 
             warningLabelSimulation.setText("Welcome to the Best Smart\nHome Simulator Ever!\nYou are now Ready to\nStart the Simulation!");
@@ -1492,7 +1613,6 @@ public class MainViewController {
         showUIElement(leftPanelTime, true);
         showUIElement(leftPanelTimeSpeed, true);
         showUIElement(leftPanelOutTemp, true);
-        showUIElement(leftPanelInTemp, true);
         showUIElement(labelLeftPanelSimParam, true);
         showUIElement(labelUserInfoLeftPanel, true);
 
@@ -1699,6 +1819,10 @@ public class MainViewController {
         drawLayout();
     }
 
+
+    /**
+     * Change the temperature of the room
+     */
     @FXML
     void changeRoomTemperature() {
         String location = locationManComboBoxSHH.getValue();
@@ -1843,17 +1967,32 @@ public class MainViewController {
         callingAuthoritiesLabel.setVisible(false);
     }
 
+    /**
+     * Turn off the lights on a schedule
+     *
+     * @param location
+     * @param action
+     */
     private synchronized void scheduleTurnOnOffLight(String location, String action) {
         shcController.openOrCloseLights(location, true, action, houseModel, printConsole, true);
         drawLayout();
     }
 
-
+    /**
+     * Change the temperature of a room
+     *
+     * @param temperature
+     * @param location
+     * @param isManual
+     */
     private synchronized void changeTempPeriod(double temperature, String location, boolean isManual) {
         shhController.changeRoomTemperature(houseModel, printConsole, temperature, location);
         drawLayout();
     }
 
+    /**
+     * Set the season based on the month
+     */
     @FXML
     public void setMonthToSeason() {
         String monthSelected = month.getValue();
@@ -1861,6 +2000,9 @@ public class MainViewController {
         shsController.setMonthToSeason(houseModel, monthSelected, seasonSelected, printConsole);
     }
 
+    /**
+     * Set the temperature of a season
+     */
     @FXML
     public void setSeasonTemperature() {
         String season = seasonComboBoxSHH.getValue();
@@ -1878,6 +2020,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Set the room for a zone
+     */
     @FXML
     public void setRoomInZone() {
         String location = locationComboBoxSHH.getValue();
@@ -1885,6 +2030,9 @@ public class MainViewController {
         shhController.setRoomInZone(houseModel, printConsole, zone, location);
     }
 
+    /**
+     * Set the temperature of a zone for a period
+     */
     @FXML
     public void setTemperatureZonePeriod() {
         String zone = zoneTemperatureComboBox.getValue();
@@ -1893,6 +2041,9 @@ public class MainViewController {
         shhController.setTemperatureZonePeriod(houseModel, zone, period, temperature, printConsole);
     }
 
+    /**
+     * Turn the HVAC on or off
+     */
     @FXML
     public void turnOnOffHVAC() {
         // Flip text to off (by default, HVAC is on)
@@ -1909,6 +2060,9 @@ public class MainViewController {
         isHVACOn.set(saveHVAC.getText().equals("Turn Off HVAC"));
     }
 
+    /**
+     * Turn off the override
+     */
     @FXML
     public void turnOffOverride() {
         String location = locationOverrideComboBoxSHH.getValue();

@@ -14,10 +14,27 @@ import java.util.Map;
  */
 public class SHHController {
 
+    /**
+     * Change the room temperature
+     *
+     * @param houseModel the house model
+     * @param printConsole print to console
+     * @param temperature the temperature
+     * @param location the location
+     */
     public void changeRoomTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, double temperature, String location){
         houseModel.getRooms().get(location).setTemperature(temperature);
     }
 
+    /**
+     * Set the temperature of a season
+     *
+     * @param houseModel the house model
+     * @param printConsole print to console
+     * @param temperature the temperature
+     * @param season the season
+
+     */
     public void setSeasonTemperature(HouseModel houseModel, MainViewController.PrintConsole printConsole, Double temperature, String season){
         if(season.equals("Summer")){
             houseModel.setSummerTemperature(temperature);
@@ -29,6 +46,15 @@ public class SHHController {
         }
     }
 
+    /**
+     * Set the room in a zone
+     *
+     * @param houseModel the house model
+     * @param printConsole print to console
+     * @param zone the zone
+     * @param location the location
+
+     */
     public void setRoomInZone(HouseModel houseModel, MainViewController.PrintConsole printConsole, String zone, String location){
         houseModel.getRooms().get(location).setZone(houseModel.getZoneList().get(zone));
 
@@ -47,44 +73,15 @@ public class SHHController {
         printConsole.setText("Adding " + location + " to " + zone);
     }
 
-    public void changeZoneTemperatureToSeasonTemperature(Label date, HouseModel houseModel, MainViewController.PrintConsole printConsole){
-        String [] dateArray  = date.toString().split("-");
-        String month = dateArray[1];
-        boolean hasRoomInZone = false;
-
-        if(houseModel.getSummerMonthList().contains(month) == true){
-            for (Map.Entry<String, RoomModel> entry : houseModel.getRooms().entrySet()) {
-                if(!entry.getValue().getZone().equals("None")){
-                    hasRoomInZone = true;
-                    entry.getValue().setTemperature(houseModel.getSummerTemperature());
-                }
-            }
-            if(hasRoomInZone == true){
-                printConsole.setText("Changing all rooms in zone to the default Summer Temperature of " + houseModel.getSummerTemperature());
-            }
-            if(hasRoomInZone == false){
-                printConsole.setText("No changes in room temperature. All your zones are empty.");
-            }
-        }
-        else if(houseModel.getWinterMonthList().contains(month) == true){
-            for (Map.Entry<String, RoomModel> entry : houseModel.getRooms().entrySet()) {
-                if(!entry.getValue().getZone().equals("None")){
-                    hasRoomInZone = true;
-                    entry.getValue().setTemperature(houseModel.getWinterTemperature());
-                }
-            }
-            if(hasRoomInZone == true){
-                printConsole.setText("Changing all rooms in zone to the default Winter Temperature of " + houseModel.getWinterTemperature());
-            }
-            if(hasRoomInZone == false){
-                printConsole.setText("No changes in room temperature. All your zones are empty.");
-            }
-        }
-        else{
-            printConsole.setText("No changes in room temperature. This month is not linked to a season.");
-        }
-    }
-
+    /**
+     * Set the temperature for a zone for a period
+     *
+     * @param houseModel the house model
+     * @param zone the zone
+     * @param period the period
+     * @param temperature the temperature
+     * @param printConsole print to console
+     */
     public void setTemperatureZonePeriod(HouseModel houseModel, String zone, String period, double temperature, MainViewController.PrintConsole printConsole){
         if(period.equals("00:00 - 08:00")){
             houseModel.getZoneList().get(zone).setNightTemp(temperature);

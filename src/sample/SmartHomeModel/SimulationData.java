@@ -101,7 +101,16 @@ public class SimulationData {
             userList.add(defaultStranger);
         }
 
+        printDefaultUsers(userList);
+    }
+    //refactor extract method
 
+    /**
+     * Print the default users
+     *
+     * @param userList
+     */
+    private void printDefaultUsers(ArrayList<UserModel> userList){
         System.out.println("Default Users are created");
         for (UserModel userModel : userList) {
             System.out.println(userModel.getId());
@@ -113,6 +122,11 @@ public class SimulationData {
         }
     }
 
+    /**
+     * Load the existing user
+     *
+     * @throws IOException
+     */
     private void loadExistingUser() throws IOException{
         try {
             bufferedReader = new BufferedReader(new FileReader("Profiles.txt"));
@@ -143,8 +157,14 @@ public class SimulationData {
             System.out.println("Reached end of file");
         }
     }
+
     /**
-     * Create the House Model.
+     * Create the House Model
+     *
+     * @param width the width
+     * @param height the height
+     * @param xAxis the x-axis
+     * @param yAxis the y-axis
      */
     private void createHouse(int width, int height, int xAxis, int yAxis){
 

@@ -62,6 +62,9 @@ public class HouseModel {
         createZone();
     }
 
+    /**
+     * Create a zone
+     */
     private void createZone(){
         Zone zone1 = new Zone("Zone 1", outsideTemp);
         Zone zone2 = new Zone("Zone 2", outsideTemp);
@@ -75,40 +78,76 @@ public class HouseModel {
 
     }
 
+    /**
+     * Get the list of zones
+     * @return the zone list
+     */
     public Map<String, Zone> getZoneList(){
         return zoneList;
     }
 
+    /**
+     * Getter for the winter temperature
+     * @return winterTemperature double
+     */
     public double getWinterTemperature() {
         return winterTemperature;
     }
 
+    /**
+     * Setter for the winter temperature
+     * @param winterTemperature double
+     */
     public void setWinterTemperature(double winterTemperature) {
         this.winterTemperature = winterTemperature;
         unsetWinterTemp = false;
     }
 
+    /**
+     * Getter for the summer temperature
+     * @return summerTemperature double
+     */
     public double getSummerTemperature() {
         return summerTemperature;
     }
 
+    /**
+     * Setter for the summer temperature
+     * @param summerTemperature the summer temperature
+     */
     public void setSummerTemperature(double summerTemperature) {
         this.summerTemperature = summerTemperature;
         unsetSummerTemp = false;
     }
 
+    /**
+     * Get the list of summer months
+     * @return the summer month list
+     */
     public ArrayList<String> getSummerMonthList() {
         return summer;
     }
 
+    /**
+     * Setter for summer
+     * @param summer the summer month lists
+     */
     public void setSummer(ArrayList<String> summer) {
         this.summer = summer;
     }
 
+    /**
+     * Getter for the winter month list
+     * @return the winter month list
+     */
     public ArrayList<String> getWinterMonthList() {
         return winter;
     }
 
+    /**
+     * Setter for Winter
+     * @param winter the winter month list
+     */
     public void setWinter(ArrayList<String> winter) {
         this.winter = winter;
     }
@@ -205,10 +244,18 @@ public class HouseModel {
      */
     public int getyAxis() {return yAxis;}
 
+    /**
+     * Boolean for if Summer temp is not set
+     * @return unsetSummerTemp boolean
+     */
     public boolean isUnsetSummerTemp () {
         return unsetSummerTemp;
     }
 
+    /**
+     * Boolean for if Winter temp is not set
+     * @return unsetWinterTemp boolean
+     */
     public boolean isUnsetWinterTemp () {
         return unsetWinterTemp;
     }

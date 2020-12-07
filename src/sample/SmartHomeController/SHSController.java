@@ -34,10 +34,19 @@ public class SHSController implements Subject {
      */
     private int loggedUserID = -1;
 
+    /**
+     * The printwriter
+     */
     private PrintWriter printWriter;
 
+    /**
+     * The observer list
+     */
     private List<Observer> observerList;
 
+    /**
+     * The current state
+     */
     private Object state;
 
 
@@ -292,6 +301,14 @@ public class SHSController implements Subject {
         }
     }
 
+    /**
+     * Set the season based on a month
+     *
+     * @param houseModel the house model
+     * @param selectedMonth the selected month
+     * @param selectedSeason the selected season
+     * @param printConsole the print console
+     */
     public void setMonthToSeason(HouseModel houseModel, String selectedMonth, String selectedSeason, MainViewController.PrintConsole printConsole) {
 
         //Removing the month from the season if it was already set before

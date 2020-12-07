@@ -25,6 +25,7 @@ public class HouseViewController {
      * @param bp         the bp
      * @param houseModel the house model
      * @param userList   the user list
+     * @param manualOverride the manual override
      */
     public void drawLayout(BorderPane bp, HouseModel houseModel, ArrayList<UserModel> userList, Map<String, Boolean> manualOverride) {
 
@@ -72,21 +73,11 @@ public class HouseViewController {
             temperature.setY(houseModel.getRooms().get(roomName).getyAxis() + 30);
             temperature.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
 
-            if (manualOverride.containsKey(roomName) && manualOverride.get(roomName)) {
-                override = new Text("Manual override");
-                override.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
-                override.setY(houseModel.getRooms().get(roomName).getyAxis() + 45);
-                override.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
-                override.setFill(Color.RED);
-            }
+            override = manualOverride(houseModel, manualOverride, roomName, override);
 
             ImageView windowImageView = new ImageView();
 
-            if (!houseModel.getRooms().get(roomName).getWindow().isOpen()) {
-                windowImageView.setImage(houseModel.getRooms().get(roomName).getWindow().getImageClose());
-            } else {
-                windowImageView.setImage(houseModel.getRooms().get(roomName).getWindow().getImageOpen());
-            }
+            houseWindowImage(houseModel, roomName, windowImageView);
 
             Text hasObjectText;
             if (!houseModel.getRooms().get(roomName).getWindow().hasObject().get()) {
@@ -97,19 +88,11 @@ public class HouseViewController {
 
             ImageView lightImageView = new ImageView();
 
-            if (houseModel.getRooms().get(roomName).getLight().isOpen()) {
-                lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageOpen());
-            } else {
-                lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageClose());
-            }
+            houseLightImage(houseModel, roomName, lightImageView);
 
             ImageView doorImageView = new ImageView();
 
-            if (houseModel.getRooms().get(roomName).getDoor().isOpen()) {
-                doorImageView.setImage(houseModel.getRooms().get(roomName).getDoor().getImageOpen());
-            } else {
-                doorImageView.setImage(houseModel.getRooms().get(roomName).getDoor().getImageClose());
-            }
+            houseDoorImage(houseModel, roomName, doorImageView);
 
             Text doorIsLock;
             if (houseModel.getRooms().get(roomName).getDoor().isLocked()) {
@@ -147,19 +130,7 @@ public class HouseViewController {
                 Random r = new Random();
                 Text userName = new Text("• " + userModel.getName() + " (ID: " + userModel.getId() + ")");
 
-                if (userModel.getCurrentLocation().equals(houseModel.getRooms().get(roomName).getName())) {
-                    int xLow = (int) (0.2 * houseModel.getRooms().get(roomName).getWidth());
-                    int xHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getWidth());
-                    int xResult = r.nextInt(xHigh - xLow) + xLow;
-
-                    int yLow = (int) (0.2 * houseModel.getRooms().get(roomName).getHeight());
-                    int yHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getHeight());
-                    int yResult = r.nextInt(yHigh - yLow) + yLow;
-
-                    userName.setX(houseModel.getRooms().get(roomName).getxAxis() + xResult);
-                    userName.setY(houseModel.getRooms().get(roomName).getyAxis() + yResult);
-                    bp.getChildren().add(userName);
-                }
+                coordinates(bp, houseModel, roomName, userModel, r, userName);
             }
 
             bp.getChildren().addAll(text, r1);
@@ -290,5 +261,66 @@ public class HouseViewController {
                 bp.getChildren().add(userName);
             }
         }
+    }
+
+    private void coordinates(BorderPane bp, HouseModel houseModel, String roomName, UserModel userModel, Random r, Text userName) {
+        if (userModel.getCurrentLocation().equals(houseModel.getRooms().get(roomName).getName())) {
+            int xLow = (int) (0.2 * houseModel.getRooms().get(roomName).getWidth());
+            int xHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getWidth());
+            int xResult = r.nextInt(xHigh - xLow) + xLow;
+
+            int yLow = (int) (0.2 * houseModel.getRooms().get(roomName).getHeight());
+            int yHigh = (int) (0.8 * houseModel.getRooms().get(roomName).getHeight());
+            int yResult = r.nextInt(yHigh - yLow) + yLow;
+
+            userName.setX(houseModel.getRooms().get(roomName).getxAxis() + xResult);
+            userName.setY(houseModel.getRooms().get(roomName).getyAxis() + yResult);
+            bp.getChildren().add(userName);
+        }
+    }
+
+    private void houseDoorImage(HouseModel houseModel, String roomName, ImageView doorImageView) {
+        if (houseModel.getRooms().get(roomName).getDoor().isOpen()) {
+            doorImageView.setImage(houseModel.getRooms().get(roomName).getDoor().getImageOpen());
+        } else {
+            doorImageView.setImage(houseModel.getRooms().get(roomName).getDoor().getImageClose());
+        }
+    }
+
+    private void houseLightImage(HouseModel houseModel, String roomName, ImageView lightImageView) {
+        if (houseModel.getRooms().get(roomName).getLight().isOpen()) {
+            lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageOpen());
+        } else {
+            lightImageView.setImage(houseModel.getRooms().get(roomName).getLight().getImageClose());
+        }
+    }
+
+    private void houseWindowImage(HouseModel houseModel, String roomName, ImageView windowImageView) {
+        if (!houseModel.getRooms().get(roomName).getWindow().isOpen()) {
+            windowImageView.setImage(houseModel.getRooms().get(roomName).getWindow().getImageClose());
+        } else {
+            windowImageView.setImage(houseModel.getRooms().get(roomName).getWindow().getImageOpen());
+        }
+    }
+
+
+    /**
+     * Manual override
+     *
+     * @param houseModel the house model
+     * @param manualOverride the manual override
+     * @param roomName the name of the room
+     * @param override the override
+     * @return Text
+     */
+    private Text manualOverride(HouseModel houseModel, Map<String, Boolean> manualOverride, String roomName, Text override) {
+        if (manualOverride.containsKey(roomName) && manualOverride.get(roomName)) {
+            override = new Text("Manual override");
+            override.setX(houseModel.getRooms().get(roomName).getxAxis() + 5);
+            override.setY(houseModel.getRooms().get(roomName).getyAxis() + 45);
+            override.setFont(Font.font("Sans serif", FontWeight.BOLD, FontPosture.REGULAR, 10));
+            override.setFill(Color.RED);
+        }
+        return override;
     }
 }
